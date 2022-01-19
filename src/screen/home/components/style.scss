@@ -1,0 +1,30 @@
+@import 'constants/const-styles.scss';
+
+.home {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: $wheat;
+
+    &__preview {
+        width: 70%;
+        height: 400px;
+        margin-top: 20px;
+    }
+
+    .games {
+        margin-top: 50px;
+        display: flex;
+        flex-direction: row;
+
+        &__card {
+            margin: 0 30px;
+        }
+
+        &__logo {
+            width: 250px;
+            height: 250px;
+        }
+    }
+}

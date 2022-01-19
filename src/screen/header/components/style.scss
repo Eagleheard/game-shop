@@ -1,0 +1,32 @@
+@import 'constants/const-styles.scss';
+
+.header {
+    display: flex;
+    position: static;
+    align-items: center;
+    flex-direction: row;
+    justify-content: center;
+    background-color: $wheat;
+    border-bottom: 3px solid $black;
+
+    &__logo {
+      width: 70px;
+      justify-self: flex-start;
+    }
+
+    .navbar {
+        margin: 0 150px;
+    
+        &__item {
+          display: inline-block;
+          margin-right: 80px;
+        }
+    
+        &__link {
+          font-family: $roboto;
+          font-size: 18px;
+          text-decoration: none;
+          color: $black;
+        }
+      }
+}
