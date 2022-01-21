@@ -22,9 +22,18 @@
     &__item {
       color: $primary;
       font-size: 20px;
+      font-family: $lato;
       font-weight: 500;
       text-decoration: none;
       padding: 10px;
+    }
+
+    &__split {
+      width: 100%;
+      padding: 1px;
+      border: $primary;
+      background-color: $primary;
+
     }
   }
 }

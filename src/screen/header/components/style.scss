@@ -56,15 +56,7 @@
         color: $primary;
       }
     }
-
-    @include media-desktop {
-      .navbar {
-        &__item {
-          margin-right: 15px;
-        }
-      }
-    }
-    
+ 
     @include media-table-large {
       flex-direction: row;
       align-items: center;

@@ -1,20 +1,16 @@
 import React, { useState } from 'react';
-
 import { NavLink } from 'react-router-dom';
 
 import { Search } from 'components/search';
-
 import { ResponsiveHeader } from './responsive';
 
 import logo from 'assets/logo.png';
-
 import menu from 'assets/menu.jpg';
 
 import './style.scss';
 
 export const Header = () => {
   const [isNavVisible, setNavVisibility] = useState(false);
-
   return (
     <header className="header">
       <img src={logo} className="header__logo"></img>
@@ -37,7 +33,7 @@ export const Header = () => {
           </li>
         </ul>
       </nav>
-      {isNavVisible && <ResponsiveHeader />}
+      {isNavVisible && <ResponsiveHeader setNavVisibility={setNavVisibility} />}
       <Search />
       <div className="header__sign">
         <button className="header__sign-in"> Sign in</button>
