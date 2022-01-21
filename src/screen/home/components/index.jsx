@@ -1,6 +1,8 @@
 import React from 'react';
-import './style.scss';
+
 import preview from 'assets/preview.jpg';
+
+import './style.scss';
 
 export const Home = () => {
   const games = [

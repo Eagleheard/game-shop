@@ -1,27 +1,24 @@
 @import 'constants/const-styles.scss';
 
 .about {
-    background-color: $wheat;
+    background-color: $primary;
     display: flex;
     flex-direction: column;
     align-items: center;
 
     &__name {
-        align-self: flex-start;
-        margin-left: 220px;
         font-size: 32px;
-        font-style: $roboto;
-
+        font-family: $lato;
     }
 
     &__description {
-        width: 600px;
+        text-align: center;
+        font-family: $lato;
+        width: 50vw;
     }
 
     &__contact { 
-        align-self: flex-start;
-        margin-left: 220px;
         font-size: 32px;
-        font-style: $roboto;
+        font-family: $lato;
     }
 }

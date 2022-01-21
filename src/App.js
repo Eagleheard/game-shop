@@ -1,11 +1,10 @@
-import './App.css';
 import React from 'react';
+
 import { Route, Routes } from 'react-router-dom';
-import { Header } from 'screen/header/components';
-import { About } from 'screen/about/components';
-import { Store } from 'screen/store/components';
-import { Footer } from 'screen/footer/components';
-import { Home } from 'screen/home/components';
+
+import { Header, About, Store, Footer } from 'screen';
+
+import './App.css';
 
 function App() {
   return (
@@ -13,7 +12,7 @@ function App() {
       <Header />
       <div className="App__content">
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<div>home</div>} />
           <Route path="/about" element={<About />} />
           <Route path="/store" element={<Store />} />
         </Routes>

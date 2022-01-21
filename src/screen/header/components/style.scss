@@ -1,32 +1,85 @@
 @import 'constants/const-styles.scss';
+@import 'constants/media-queries.scss';
 
 .header {
     display: flex;
-    position: static;
     align-items: center;
     flex-direction: row;
-    justify-content: center;
-    background-color: $wheat;
-    border-bottom: 3px solid $black;
+    justify-content: space-evenly;
+    background-color: $secondary;
+
+    @include media-mobile-small {
+      justify-content: space-around;
+    }
 
     &__logo {
       width: 70px;
-      justify-self: flex-start;
+    }
+
+    &__btn {
+      width: 40px;
+      display: none;
+      padding: 0;
+      border: none;
+      background: none;
+      outline: none;
+      cursor: pointer;
+    }
+
+    &__sign-in {
+      border: none;
+      background-color: inherit;
+      color: $primary;
+      margin-right: 20px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    &__sign-up {
+      border: none;
+      background-color: inherit;
+      color: $primary;
+      font-size: 16px;
+      cursor: pointer;
     }
 
     .navbar {
-        margin: 0 150px;
+      &__item {
+        display: inline-block;
+      }
     
+      &__link {
+        margin: 0 30px 0;
+        font-family: $lato;
+        font-size: 18px;
+        text-decoration: none;
+        color: $primary;
+      }
+    }
+
+    @include media-desktop {
+      .navbar {
         &__item {
-          display: inline-block;
-          margin-right: 80px;
-        }
-    
-        &__link {
-          font-family: $roboto;
-          font-size: 18px;
-          text-decoration: none;
-          color: $black;
+          margin-right: 15px;
         }
       }
+    }
+    
+    @include media-table-large {
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-around;
+
+      &__sign {
+        display: none;
+      }
+
+      &__btn {
+        display: block;
+      }
+    
+      .navbar {
+        display: none;
+      }
+    }
 }
