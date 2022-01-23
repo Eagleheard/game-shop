@@ -58,7 +58,11 @@
 
         &.active {
           color: $search-primary;
-        } 
+        }
+        
+        &:hover {
+          color: $hover-link;
+        }
       }
     }
  
