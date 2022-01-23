@@ -26,6 +26,10 @@
       font-weight: 500;
       text-decoration: none;
       padding: 10px;
+
+      &.active {
+        color: $search-primary;
+      }
     }
 
     &__split {
@@ -33,7 +37,6 @@
       padding: 1px;
       border: $primary;
       background-color: $primary;
-
     }
   }
 }
