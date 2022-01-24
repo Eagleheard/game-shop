@@ -4,7 +4,6 @@
     background-color: $secondary;
   
     &__copyright {
-      margin: 0;
       font-family: $lato;
       font-style: normal;
       font-weight: normal;
@@ -12,6 +11,6 @@
       line-height: 21px;
       color: $primary;
       text-align: center;
-      padding: 11px 0 11px;
+      padding: 11px 0;
     }
 }

@@ -11,23 +11,24 @@ import './style.scss';
 
 export const Header = () => {
   const [isNavVisible, setNavVisibility] = useState(false);
+
   return (
     <header className="header">
       <img src={logo} className="header__logo"></img>
       <nav className="navbar">
         <ul className="navbar__menu">
           <li className="navbar__item">
-            <NavLink to="/" className="navbar__link">
+            <NavLink to="/" className="navbar__link  link">
               Home
             </NavLink>
           </li>
           <li className="navbar__item">
-            <NavLink to="/store" className="navbar__link">
+            <NavLink to="/store" className="navbar__link  link">
               Store
             </NavLink>
           </li>
           <li className="navbar__item">
-            <NavLink to="/about" className="navbar__link">
+            <NavLink to="/about" className="navbar__link link">
               About
             </NavLink>
           </li>
@@ -36,8 +37,8 @@ export const Header = () => {
       {isNavVisible && <ResponsiveHeader setNavVisibility={setNavVisibility} />}
       <Search />
       <div className="header__sign">
-        <button className="header__sign-in"> Sign in</button>
-        <button className="header__sign-up"> Sign up</button>
+        <button className="header__sign-in  link"> Sign in</button>
+        <button className="header__sign-up  link"> Sign up</button>
       </div>
       <img
         alt="burger"

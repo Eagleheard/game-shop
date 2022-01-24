@@ -29,17 +29,13 @@
     &__sign-in {
       border: none;
       background-color: inherit;
-      color: $primary;
       margin-right: 20px;
-      font-size: 16px;
       cursor: pointer;
     }
 
     &__sign-up {
       border: none;
       background-color: inherit;
-      color: $primary;
-      font-size: 16px;
       cursor: pointer;
     }
 
@@ -47,22 +43,6 @@
 
       &__item {
         display: inline-block;
-      }
-    
-      &__link {
-        margin: 0 30px 0;
-        font-family: $lato;
-        font-size: 18px;
-        text-decoration: none;
-        color: $primary;
-
-        &.active {
-          color: $search-primary;
-        }
-        
-        &:hover {
-          color: $hover-link;
-        }
       }
     }
  

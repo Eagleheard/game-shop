@@ -1,9 +1,10 @@
 @import 'constants/const-styles.scss';
 @import 'constants/media-queries.scss';
+@import 'constants/base.scss';
 
 .responsive-header {
   position: absolute;
-  margin-top: 350px;
+  margin-top: 340px;
   width: 100%;
   flex-direction: row;
 
@@ -12,25 +13,12 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 30px 0 30px;
+    padding: 30px 0;
     background: $secondary;
     box-shadow: 0 4px 8px 0 $black;
     border-bottom-left-radius: 10px;
     border-bottom-right-radius: 10px;
     opacity: 0.9;
-
-    &__item {
-      color: $primary;
-      font-size: 20px;
-      font-family: $lato;
-      font-weight: 500;
-      text-decoration: none;
-      padding: 10px;
-
-      &.active {
-        color: $search-primary;
-      }
-    }
 
     &__split {
       width: 100%;
