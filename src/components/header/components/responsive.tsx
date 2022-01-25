@@ -3,11 +3,11 @@ import { NavLink } from 'react-router-dom';
 
 import './responsive-style.scss';
 
-interface responsiveHeaderProps {
+interface ResponsiveHeaderProps {
   setNavVisibility: (navVisible: boolean) => void;
 }
 
-export const ResponsiveHeader = ({ setNavVisibility }: responsiveHeaderProps) => {
+export const ResponsiveHeader = ({ setNavVisibility }: ResponsiveHeaderProps) => {
   const handleClick = () => {
     setNavVisibility(false);
   };
