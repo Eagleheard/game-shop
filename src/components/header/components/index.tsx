@@ -5,16 +5,16 @@ import { Search } from 'components/search';
 import { ResponsiveHeader } from './responsive';
 
 import logo from 'assets/logo.png';
-import menu from 'assets/menu.jpg';
+import menu from 'assets/menu.png';
 
 import './style.scss';
 
 export const Header = () => {
-  const [isNavVisible, setNavVisibility] = useState(false);
+  const [isNavVisible, setNavVisibility] = useState<boolean>(false);
 
   return (
     <header className="header">
-      <img src={logo} className="header__logo"></img>
+      <img src={logo} className="header__logo" alt="logo"></img>
       <nav className="navbar">
         <ul className="navbar__menu">
           <li className="navbar__item">
