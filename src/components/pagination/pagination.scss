@@ -1,0 +1,66 @@
+@import 'constants/const-styles';
+
+.pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 50px;
+
+    &__prev-btn {
+      background: $secondary;
+      border: none;
+      padding: 10px;
+      color: $primary;
+      box-shadow: 0 0 3px $black;
+      margin: 0 10px;
+      cursor: pointer;
+
+      &--disabled {
+        pointer-events: none;
+        box-shadow: none;
+        background-color: $disable-btn;
+        color: $primary;
+      }
+    }
+
+    &__btn {
+      background: $secondary;
+      color: $primary;
+      border: 2px solid $black;
+      padding: 10px 15px;
+      border-radius: 50%;
+      height: 45px;
+      width: 45px;
+      margin: 0 5px;
+      cursor: pointer;
+
+      &--active {
+        border: 3px solid $search-primary;
+        
+        pointer-events: none;
+      }
+    }
+
+    &__next-btn {
+      background: $secondary;
+      border: none;
+      padding: 10px;
+      color: $primary;
+      box-shadow: 0 0 3px $black;
+      margin: 0 10px;
+      cursor: pointer;
+
+      &--disabled {
+        pointer-events: none;
+        box-shadow: none;
+        color: $primary;
+        background-color: $disable-btn;
+      }
+    }
+  }
+.component {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+
