@@ -2,8 +2,7 @@ import React from 'react';
 
 import './style.scss';
 
-export const Game = (props) => {
-  const { name, genre, author, price, logo } = props.gameData;
+export const Game = ({ gameData: { name, genre, author, price, logo } }) => {
   return (
     <div className="card">
       <img className="card__img" src={logo} alt="logo"></img>
