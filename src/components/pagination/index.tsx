@@ -1,10 +1,10 @@
 import React, { useMemo, useState } from 'react';
 import classNames from 'classnames';
 import './styles.scss';
-import { Game } from 'screen/home/components';
+import { IGame } from 'screen/home/components';
 
 interface PaginationProps {
-  gameData: Game[];
+  gameData: IGame[];
   dataLimit: number;
   RenderComponent: any;
 }
@@ -33,13 +33,13 @@ export const Pagination: React.FC<PaginationProps> = ({ gameData, dataLimit, Ren
   }, [gameData.slice(startIndex, endIndex)]);
 
   return (
-    <div>
+    <div className="pagination">
       <div className="component">
         {getPaginatedData.map((d) => (
           <RenderComponent key={d.id} gameData={d} />
         ))}
       </div>
-      <div className="pagination">
+      <div className="pagination__group">
         <button
           onClick={goToPreviousPage}
           className="pagination__navigation"

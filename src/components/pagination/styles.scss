@@ -4,8 +4,25 @@
 .pagination {
     display: flex;
     align-items: center;
+    flex-direction: column;
     justify-content: center;
-    margin-top: 50px;
+
+    .component {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+      margin-top: 50px;
+  
+      @include media-table-large {
+        flex-wrap: wrap;
+      }
+    }
+
+    &__group {
+      margin-top: 20px;
+      flex-direction: row;
+    }
 
     &__navigation {
       background: $secondary;
@@ -41,18 +58,6 @@
         border: 3px solid $search-primary;
         pointer-events: none;
       }
-    }
-  }
-
-  .component {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    margin-top: 50px;
-
-    @include media-table-large {
-      flex-wrap: wrap;
     }
   }
 

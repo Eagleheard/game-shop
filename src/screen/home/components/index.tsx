@@ -7,17 +7,17 @@ import { Game, Pagination } from 'screen';
 
 import './style.scss';
 
-export type Game = {
+export interface IGame {
   id: number;
   name: string;
   genre: string;
   author: string;
   price: string;
   logo: string;
-};
+}
 
-export const Home: React.FC<Game> = () => {
-  const [game, setGame] = useState<Game[]>([]);
+export const Home: React.FC = () => {
+  const [game, setGame] = useState<IGame[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const dataLimit = 3;
   useEffect(() => {
