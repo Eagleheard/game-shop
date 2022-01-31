@@ -2,7 +2,9 @@ import React from 'react';
 
 import './style.scss';
 
-export const Game = ({ gameData: { name, genre, author, price, logo } }) => {
+import { IGame } from 'types/game';
+
+export const Game = ({ name, genre, author, price, logo }: IGame) => {
   return (
     <div className="card">
       <img className="card__img" src={logo} alt="logo"></img>

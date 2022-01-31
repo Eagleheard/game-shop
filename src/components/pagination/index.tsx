@@ -1,12 +1,12 @@
 import React, { useMemo, useState } from 'react';
 import classNames from 'classnames';
 import './styles.scss';
-import { IGame } from 'screen/home/components';
+import { IGame } from 'types/game';
 
 interface PaginationProps {
   gameData: IGame[];
   dataLimit: number;
-  RenderComponent: any;
+  RenderComponent: React.FC<IGame>;
 }
 
 export const Pagination: React.FC<PaginationProps> = ({ gameData, dataLimit, RenderComponent }) => {
@@ -35,8 +35,17 @@ export const Pagination: React.FC<PaginationProps> = ({ gameData, dataLimit, Ren
   return (
     <div className="pagination">
       <div className="component">
-        {getPaginatedData.map((d) => (
-          <RenderComponent key={d.id} gameData={d} />
+        {getPaginatedData.map((data) => (
+          <RenderComponent
+            key={data.id}
+            gameData={data}
+            id={data.id}
+            name={data.name}
+            genre={data.genre}
+            author={data.author}
+            price={data.price}
+            logo={data.logo}
+          />
         ))}
       </div>
       <div className="pagination__group">

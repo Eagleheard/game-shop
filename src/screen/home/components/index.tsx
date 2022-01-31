@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { fetchData } from 'api/api';
+import { IGame } from 'types/game';
 
 import game1 from 'assets/game1.png';
 
@@ -7,16 +8,7 @@ import { Game, Pagination } from 'screen';
 
 import './style.scss';
 
-export interface IGame {
-  id: number;
-  name: string;
-  genre: string;
-  author: string;
-  price: string;
-  logo: string;
-}
-
-export const Home: React.FC = () => {
+export const Home = () => {
   const [game, setGame] = useState<IGame[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const dataLimit = 3;
