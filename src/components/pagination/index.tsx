@@ -36,16 +36,7 @@ export const Pagination: React.FC<PaginationProps> = ({ gameData, dataLimit, Ren
     <div className="pagination">
       <div className="component">
         {getPaginatedData.map((data) => (
-          <RenderComponent
-            key={data.id}
-            gameData={data}
-            id={data.id}
-            name={data.name}
-            genre={data.genre}
-            author={data.author}
-            price={data.price}
-            logo={data.logo}
-          />
+          <RenderComponent key={data.id} {...data} />
         ))}
       </div>
       <div className="pagination__group">
