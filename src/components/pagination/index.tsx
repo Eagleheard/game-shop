@@ -1,7 +1,8 @@
 import React, { useMemo, useState } from 'react';
 import classNames from 'classnames';
-import './styles.scss';
 import { IGame } from 'types/game';
+
+import './styles.scss';
 
 interface PaginationProps {
   gameData: IGame[];
@@ -24,18 +25,18 @@ export const Pagination: React.FC<PaginationProps> = ({ gameData, dataLimit, Ren
     setCurrentPage((page) => page - 1);
   };
 
-  const changePage = (num: number) => {
-    setCurrentPage(num);
+  const changePage = (page: number) => {
+    setCurrentPage(page);
   };
 
   const getPaginatedData = useMemo(() => {
     return gameData.slice(startIndex, endIndex);
-  }, [gameData.slice(startIndex, endIndex)]);
+  }, [startIndex, endIndex]);
 
   return (
     <div className="pagination">
       <div className="component">
-        {getPaginatedData.map((data) => (
+        {getPaginatedData.map((data: IGame) => (
           <RenderComponent key={data.id} {...data} />
         ))}
       </div>
@@ -45,7 +46,7 @@ export const Pagination: React.FC<PaginationProps> = ({ gameData, dataLimit, Ren
           className="pagination__navigation"
           disabled={currentPage === 1}
         >
-          ⮜
+          &laquo;
         </button>
         {page.map((item: number, index: number) => (
           <button
@@ -63,7 +64,7 @@ export const Pagination: React.FC<PaginationProps> = ({ gameData, dataLimit, Ren
           className="pagination__navigation"
           disabled={currentPage === pageCount}
         >
-          ⮞
+          &raquo;
         </button>
       </div>
     </div>
