@@ -17,7 +17,6 @@ export const Pagination: React.FC<PaginationProps> = ({ gameData, dataLimit, Ren
   const startIndex = currentPage * dataLimit - dataLimit;
   const endIndex = startIndex + dataLimit;
   const page: number[] = Array.from({ length: pageCount }, (v, i) => i + 1);
-  const currentGames = gameData.slice(startIndex, endIndex);
 
   const goToNextPage = () => {
     setCurrentPage((page) => page + 1);
@@ -32,13 +31,13 @@ export const Pagination: React.FC<PaginationProps> = ({ gameData, dataLimit, Ren
   };
 
   const getPaginatedData = useMemo(() => {
-    return currentGames;
-  }, [currentGames]);
+    return gameData.slice(startIndex, endIndex);
+  }, [gameData, startIndex, endIndex]);
 
   return (
     <div className="pagination">
       <div className="component">
-        {getPaginatedData.map((data: IGame) => (
+        {getPaginatedData.map((data) => (
           <RenderComponent key={data.id} {...data} />
         ))}
       </div>
