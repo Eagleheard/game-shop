@@ -1,5 +1,6 @@
-import { IGame } from './../types/game';
 import axios from 'axios';
+
+import { IGame } from 'types/game';
 
 export const fetchGames = async (): Promise<IGame[]> => {
   try {

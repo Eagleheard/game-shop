@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { fetchGames } from 'api/fetchGames';
-import { IGame } from 'types/game';
 
 import game1 from 'assets/game1.png';
 
 import { Game, Pagination } from 'screen';
+import { IGame } from 'types/game';
 
 import './style.scss';
 
@@ -16,7 +16,7 @@ export const Home = () => {
 
   useEffect(() => {
     const fillGames = async () => {
-      const data: IGame[] = await fetchGames();
+      const data = await fetchGames();
       return setGame(data);
     };
     setIsLoading(true);
