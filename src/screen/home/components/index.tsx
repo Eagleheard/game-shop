@@ -1,9 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { fetchGames } from 'api/fetchGames';
-<<<<<<< HEAD
 import classNames from 'classnames';
-=======
->>>>>>> master
 
 import game1 from 'assets/game1.png';
 import game3 from 'assets/game3.png';
@@ -47,10 +44,10 @@ export const Home = () => {
           >
             <button
               onClick={() => setPreviewPage((prevValue) => prevValue - 1)}
-              className="preview__navigation"
+              className="preview__navigation preview__prev-btn"
               disabled={previewPage === 0}
             >
-              ⮜
+              &laquo;
             </button>
             <img src={num.img} alt="preview logo" className="preview__img"></img>
             <div className="preview__description">
@@ -60,10 +57,10 @@ export const Home = () => {
             </div>
             <button
               onClick={() => setPreviewPage((prevValue) => prevValue + 1)}
-              className="preview__navigation"
+              className="preview__navigation preview__next-btn"
               disabled={previewPage === previewArray.length - 1}
             >
-              ⮞
+              &raquo;
             </button>
           </div>
         ))}
