@@ -2,12 +2,13 @@
 @import 'constants/media-queries.scss';
 
 .home {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    background-color: $primary;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: $primary;
 
+<<<<<<< HEAD
     .preview {
         display: flex;
         justify-content: center;
@@ -73,4 +74,17 @@
           }
         }
       }
+=======
+  &__preview {
+      width: 70%;
+      height: 200px;
+      margin-top: 20px;
+  }
+
+  &__games {
+      margin-top: 50px;
+      display: flex;
+      flex-direction: row;
+  }
+>>>>>>> master
 }

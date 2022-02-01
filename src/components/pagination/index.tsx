@@ -1,5 +1,6 @@
 import React, { useMemo, useState } from 'react';
 import classNames from 'classnames';
+
 import { IGame } from 'types/game';
 
 import './styles.scss';
@@ -31,12 +32,12 @@ export const Pagination: React.FC<PaginationProps> = ({ gameData, dataLimit, Ren
 
   const getPaginatedData = useMemo(() => {
     return gameData.slice(startIndex, endIndex);
-  }, [startIndex, endIndex]);
+  }, [gameData, startIndex, endIndex]);
 
   return (
     <div className="pagination">
       <div className="component">
-        {getPaginatedData.map((data: IGame) => (
+        {getPaginatedData.map((data) => (
           <RenderComponent key={data.id} {...data} />
         ))}
       </div>

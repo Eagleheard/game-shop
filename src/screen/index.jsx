@@ -1,7 +1,7 @@
-export { Header } from 'components/header/components/index';
-export { Home } from 'screen/home/components/index';
-export { Store } from 'screen/store/components/index';
-export { About } from 'screen/about/components/index';
-export { Footer } from 'components/footer/components/index';
-export { Game } from 'screen/game/components/index';
+export { Header } from 'components/header/components';
+export { Home } from 'screen/home/components';
+export { Store } from 'screen/store/components';
+export { About } from 'screen/about/components';
+export { Footer } from 'components/footer/components';
+export { Game } from 'screen/game/components';
 export { Pagination } from 'components/pagination';
