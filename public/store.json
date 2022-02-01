@@ -5,7 +5,9 @@
     "genre": "action",
     "author": "Author name",
     "price": "20$",
-    "logo": "https://iwantgames.ru/wp-content/uploads/it-takes-two-thumb-468x702.jpg"
+    "logo": "https://iwantgames.ru/wp-content/uploads/it-takes-two-thumb-468x702.jpg",
+    "new": false,
+    "popularity": 22
 },
 {
     "id": 2,
@@ -13,7 +15,9 @@
     "genre": "action",
     "author": "Author name",
     "price": "20$",
-    "logo": "https://iwantgames.ru/wp-content/uploads/crash-bandicoot-4-its-about-time-thumb-1-468x702.jpg"
+    "logo": "https://iwantgames.ru/wp-content/uploads/crash-bandicoot-4-its-about-time-thumb-1-468x702.jpg",
+    "new": false,
+    "popularity": 54.4
 },
 {
     "id": 3,
@@ -21,7 +25,9 @@
     "genre": "action",
     "author": "Author name",
     "price": "20$",
-    "logo": "https://iwantgames.ru/wp-content/uploads/biomutant-thumb-468x702.jpg"
+    "logo": "https://iwantgames.ru/wp-content/uploads/biomutant-thumb-468x702.jpg",
+    "new": true,
+    "popularity": 54
 },
 {
     "id": 4,
@@ -29,7 +35,9 @@
     "genre": "action",
     "author": "Author name",
     "price": "20$",
-    "logo": "https://iwantgames.ru/wp-content/uploads/life-is-strange-3-thumb-1-468x702.jpg"
+    "logo": "https://iwantgames.ru/wp-content/uploads/life-is-strange-3-thumb-1-468x702.jpg",
+    "new": true,
+    "popularity": 33
 },
 {
     "id": 5,
@@ -37,7 +45,9 @@
     "genre": "action",
     "author": "Author name",
     "price": "20$",
-    "logo": "https://iwantgames.ru/wp-content/uploads/potion-craft-alchemist-simulator-thumb-468x702.jpg"
+    "logo": "https://iwantgames.ru/wp-content/uploads/potion-craft-alchemist-simulator-thumb-468x702.jpg",
+    "new": true,
+    "popularity": 21
 },
 {
     "id": 6,
@@ -45,7 +55,9 @@
     "genre": "action",
     "author": "Author name",
     "price": "20$",
-    "logo": "https://iwantgames.ru/wp-content/uploads/new-world-thumb-468x702.jpg"
+    "logo": "https://iwantgames.ru/wp-content/uploads/new-world-thumb-468x702.jpg",
+    "new": false,
+    "popularity": 11
 },
 {
     "id": 7,
@@ -53,7 +65,9 @@
     "genre": "action",
     "author": "Author name",
     "price": "20$",
-    "logo": "https://iwantgames.ru/wp-content/uploads/the-dark-pictures-house-of-ashes-thumb-1-468x702.jpg"
+    "logo": "https://iwantgames.ru/wp-content/uploads/the-dark-pictures-house-of-ashes-thumb-1-468x702.jpg",
+    "new": false,
+    "popularity": 80.1
 },
 {
     "id": 8,
@@ -61,7 +75,9 @@
     "genre": "action",
     "author": "Author name",
     "price": "20$",
-    "logo": "https://iwantgames.ru/wp-content/uploads/marvels-guardians-of-the-galaxy-thumb-468x702.jpg"
+    "logo": "https://iwantgames.ru/wp-content/uploads/marvels-guardians-of-the-galaxy-thumb-468x702.jpg",
+    "new": false,
+    "popularity": 80.2
 },
 {
     "id": 9,
@@ -69,7 +85,9 @@
     "genre": "action",
     "author": "Author name",
     "price": "20$",
-    "logo": "https://iwantgames.ru/wp-content/uploads/forza-horizon-5-thumb-468x702.jpg"
+    "logo": "https://iwantgames.ru/wp-content/uploads/forza-horizon-5-thumb-468x702.jpg",
+    "new": false,
+    "popularity": 60
 },
 {
     "id": 10,
@@ -77,7 +95,9 @@
     "genre": "action",
     "author": "Author name",
     "price": "20$",
-    "logo": "https://iwantgames.ru/wp-content/uploads/riders-republic-thumb-468x702.jpg"
+    "logo": "https://iwantgames.ru/wp-content/uploads/riders-republic-thumb-468x702.jpg",
+    "new": false,
+    "popularity": 72.5
 }
 ]
     

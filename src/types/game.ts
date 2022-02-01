@@ -5,4 +5,6 @@ export interface IGame {
   author: string;
   price: string;
   logo: string;
+  new: boolean;
+  popularity: number;
 }

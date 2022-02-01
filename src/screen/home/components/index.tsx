@@ -22,6 +22,14 @@ export const Home = () => {
     { id: 2, img: game3, name: 'New Game 3', genre: 'RPG', price: '20$' },
   ];
 
+  const setNewGames = () => {
+    setGame((prevValue) => prevValue.filter((game) => game.new === true));
+  };
+
+  const setPopularGames = () => {
+    setGame((prevValue) => prevValue.sort((a, b) => (a.popularity < b.popularity ? 1 : -1)));
+  };
+
   useEffect(() => {
     const fillGames = async () => {
       const data = await fetchGames();
@@ -64,6 +72,17 @@ export const Home = () => {
             </button>
           </div>
         ))}
+      </div>
+      <div className="sort">
+        <button className="sort__btn">Our games ⬇</button>
+        <div className="sort__menu">
+          <a href="#" onClick={() => setNewGames()}>
+            New Games
+          </a>
+          <a href="#" onClick={() => setPopularGames()}>
+            Popular Games
+          </a>
+        </div>
       </div>
       {isLoading ? (
         <div>Loading</div>
