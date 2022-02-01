@@ -1,0 +1,18 @@
+@import 'constants/const-styles.scss';
+
+.card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+	border: 1px solid $card-primary;
+	border-radius: 3px;
+	background: $primary;
+	margin: 0 20px;
+	text-decoration: none;
+	color: $black;
+    width: 200px;
+
+    &__img {
+        width: 60%;
+    }
+}

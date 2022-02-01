@@ -1,4 +1,5 @@
 @import 'constants/const-styles.scss';
+@import 'constants/media-queries.scss';
 
 .footer {
     background-color: $secondary;
@@ -12,5 +13,9 @@
       color: $primary;
       text-align: center;
       padding: 11px 0;
+    }
+
+    @include media-table-large {
+      display: none;
     }
 }
