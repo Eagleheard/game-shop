@@ -1,0 +1,18 @@
+@import 'constants/const-styles.scss';
+
+.select {
+    align-self: flex-start;
+    margin-left: 260px;
+
+    &__item {
+        border: none;
+        font-size: 24px;
+        font-family: $lato;
+        color: $black;
+        text-align: center;
+    }
+
+    &__menu {
+        font-size: 18px;
+    }
+}

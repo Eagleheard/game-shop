@@ -2,10 +2,10 @@ import axios from 'axios';
 
 import { IGame } from 'types/interfaces';
 
-export const fetchGames = async (): Promise<IGame[]> => {
+export const fetchNewGames = async (): Promise<IGame[]> => {
   try {
     const { data } = await axios.get('./store.json');
-    return data;
+    return data.filter((game: IGame) => game.new);
   } catch (err) {
     throw err;
   }

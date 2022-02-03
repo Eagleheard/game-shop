@@ -5,16 +5,37 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-	border: 1px solid $card-primary;
-	border-radius: 3px;
+	border-radius: 10px;
+    box-shadow: 0 0 10px $black;
 	background: $primary;
-	margin: 0 20px;
+	margin: 0 29px;
 	text-decoration: none;
 	color: $black;
-    width: 200px;
+    width: 250px;
 
     &__img {
-        width: 60%;
+        border-radius: 25% 10%;
+        margin: 20px 24px 0;
+        width: 200px;
+        height: 200px;
+    }
+
+    &__description {
+        display: flex;
+        flex-direction: row;
+        font-family: $lato;
+        margin-top: 20px;
+    }
+
+    &__name, &__price {
+        font-weight: bold;
+        font-size: 18px;
+        padding: 0 20px;
+    }
+
+    &__genre, &__author {
+        font-size: 16px;
+        padding: 10px 20px;
     }
     
     @include media-table-large {
