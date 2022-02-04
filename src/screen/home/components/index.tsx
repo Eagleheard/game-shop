@@ -40,8 +40,8 @@ export const Home = () => {
       <Select
         placeholder={'Our games'}
         options={[
-          { label: 'New games', value: 'New games' },
-          { label: 'Popular games', value: 'Popular games' },
+          { id: 0, label: 'New games', value: 'New games' },
+          { id: 0, label: 'Popular games', value: 'Popular games' },
         ]}
         setNewGames={setNewGames}
         setPopularGames={setPopularGames}

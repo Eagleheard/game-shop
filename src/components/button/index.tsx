@@ -2,7 +2,14 @@ import React from 'react';
 
 import './styles.scss';
 
-export const Button = ({ symbol, setPage, style, disabled }) => {
+interface IButton {
+  symbol: string;
+  setPage: () => void;
+  style: string;
+  disabled: boolean;
+}
+
+export const Button: React.FC<IButton> = ({ symbol, setPage, style, disabled }) => {
   return (
     <button
       onClick={() => setPage()}
