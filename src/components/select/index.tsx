@@ -2,6 +2,7 @@ import React, { useEffect, useState, ChangeEvent, ChangeEventHandler } from 'rea
 
 import './styles.scss';
 
+const OUR_GAMES = 'Our games';
 const NEW_GAMES = 'New games';
 const POPULAR_GAMES = 'Popular games';
 
@@ -14,6 +15,7 @@ interface ISelect {
   }[];
   setNewGames: () => void;
   setPopularGames: () => void;
+  fillGames: () => void;
 }
 
 export const Select: React.FC<ISelect> = ({
@@ -21,6 +23,7 @@ export const Select: React.FC<ISelect> = ({
   options,
   setNewGames,
   setPopularGames,
+  fillGames,
 }) => {
   const [value, setValue] = useState<string>();
 
@@ -29,13 +32,17 @@ export const Select: React.FC<ISelect> = ({
   };
 
   useEffect(() => {
+    if (value === OUR_GAMES) {
+      fillGames();
+    }
+
     if (value === NEW_GAMES) {
       setNewGames();
     }
     if (value === POPULAR_GAMES) {
       setPopularGames();
     }
-  }, [value, setNewGames, setPopularGames]);
+  }, [value, fillGames, setNewGames, setPopularGames]);
 
   return (
     <label className="select">

@@ -14,6 +14,11 @@ export const Home = () => {
   const [games, setGames] = useState<IGame[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
+  const fillGames = async () => {
+    const data = await fetchGames();
+    setGames(data);
+  };
+
   const setNewGames = async () => {
     const newGames = await fetchNewGames();
     setGames(newGames);
@@ -25,10 +30,6 @@ export const Home = () => {
   };
 
   useEffect(() => {
-    const fillGames = async () => {
-      const data = await fetchGames();
-      return setGames(data);
-    };
     setIsLoading(true);
     fillGames();
     setIsLoading(false);
@@ -45,6 +46,7 @@ export const Home = () => {
         ]}
         setNewGames={setNewGames}
         setPopularGames={setPopularGames}
+        fillGames={fillGames}
       />
       {isLoading ? (
         <div>Loading</div>
