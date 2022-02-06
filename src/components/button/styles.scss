@@ -1,7 +1,7 @@
 @import 'constants/const-styles.scss';
+@import 'constants/media-queries.scss';
 
 .navigation {
-    position: absolute;
     background: $secondary;
     align-self: center;
     color: $primary;
@@ -14,14 +14,15 @@
     cursor: pointer;
     
     &__prev-btn {
+        position: absolute;
         left: 0;
     }
     &__next-btn {
+        position: absolute;
         right: 0;
     }
 
     &__pagination-btn {
-        position: static;
         padding: 5px 5px;
         width: 30px;
         height: 30px;
@@ -32,4 +33,39 @@
       border: 2px solid $search-primary;
       pointer-events: none;
     }
+
+    @include media-table-large {
+        padding: 0;
+        width: 35px;
+        height: 35px;
+
+        &__pagination-btn {
+            padding: 0;
+            width: 25px;
+            height: 25px;
+        }
+    }
+
+    @include media-mobile-large {
+        width: 30px;
+        height: 30px;
+
+        &__pagination-btn {
+            width: 20px;
+            height: 20px;
+        }
+    }
+
+    @include media-mobile-small {
+        width: 20px;
+        height: 20px;
+        font-size: 8px;
+
+        &__pagination-btn {
+            width: 15px;
+            height: 15px;
+            font-size: 8px;
+        }
+    }
+
 }

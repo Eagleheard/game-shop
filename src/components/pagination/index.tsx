@@ -2,9 +2,9 @@ import React, { useMemo, useState } from 'react';
 import classNames from 'classnames';
 
 import { IGame } from 'types/interfaces';
+import { Button } from 'components';
 
 import './styles.scss';
-import { Button } from 'screen';
 
 interface PaginationProps {
   gameData: IGame[];
@@ -44,9 +44,9 @@ export const Pagination: React.FC<PaginationProps> = ({ gameData, dataLimit, Ren
       </div>
       <div className="pagination__group">
         <Button
-          symbol={'«'}
-          setPage={goToPreviousPage}
-          style={'pagination-btn'}
+          text="«"
+          onClick={goToPreviousPage}
+          style="pagination-btn"
           disabled={currentPage === 1}
         />
         {page.map((item: number, index: number) => (
@@ -61,9 +61,9 @@ export const Pagination: React.FC<PaginationProps> = ({ gameData, dataLimit, Ren
           </button>
         ))}
         <Button
-          symbol={'»'}
-          setPage={goToNextPage}
-          style={'pagination-btn'}
+          text="»"
+          onClick={goToNextPage}
+          style="pagination-btn"
           disabled={currentPage === page.length}
         />
       </div>

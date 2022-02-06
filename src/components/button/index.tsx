@@ -3,20 +3,20 @@ import React from 'react';
 import './styles.scss';
 
 interface IButton {
-  symbol: string;
-  setPage: () => void;
+  text: string;
+  onClick: () => void;
   style: string;
   disabled: boolean;
 }
 
-export const Button: React.FC<IButton> = ({ symbol, setPage, style, disabled }) => {
+export const Button: React.FC<IButton> = ({ text, onClick, style, disabled }) => {
   return (
     <button
-      onClick={() => setPage()}
+      onClick={() => onClick()}
       className={`navigation navigation__${style}`}
       disabled={disabled}
     >
-      {symbol}
+      {text}
     </button>
   );
 };

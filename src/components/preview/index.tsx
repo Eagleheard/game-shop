@@ -3,7 +3,7 @@ import classNames from 'classnames';
 
 import { fetchPreviewGames } from 'api/fetchPreviewGames';
 
-import { Button } from 'components/button';
+import { Button } from 'components/Button';
 import { IGame } from 'types/interfaces';
 
 import './styles.scss';
@@ -44,7 +44,7 @@ export const Preview = () => {
         <div
           key={id}
           className={classNames('preview__container', {
-            'preview__container--active': previewGames[index] === previewGames[previewPage],
+            'preview__container--active': index === previewPage,
           })}
         >
           <img src={preview} alt="preview logo" className="preview__img"></img>
@@ -56,15 +56,15 @@ export const Preview = () => {
         </div>
       ))}
       <Button
-        symbol={'«'}
-        setPage={setPreviousPreviewPage}
-        style={'prev-btn'}
+        text="«"
+        onClick={setPreviousPreviewPage}
+        style="prev-btn"
         disabled={previewPage === 0}
       />
       <Button
-        symbol={'»'}
-        setPage={setNextPreviewPage}
-        style={'next-btn'}
+        text="»"
+        onClick={setNextPreviewPage}
+        style="next-btn"
         disabled={previewPage === previewGames.length - 1}
       />
     </div>

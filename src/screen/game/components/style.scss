@@ -5,51 +5,93 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-self: center;
 	border-radius: 10px;
     box-shadow: 0 0 10px $black;
 	background: $primary;
-	margin: 0 29px;
 	text-decoration: none;
 	color: $black;
-    width: 250px;
 
     &__img {
         border-radius: 25% 10%;
-        margin: 20px 24px 0;
-        width: 200px;
-        height: 200px;
+        margin: 10px;
+        width: 180px;
+        height: 180px;
     }
 
     &__description {
         display: flex;
         flex-direction: row;
         font-family: $lato;
-        margin-top: 20px;
     }
 
     &__name, &__price {
         font-weight: bold;
         font-size: 18px;
-        padding: 0 20px;
+        padding: 0 10px;
     }
 
     &__genre, &__author {
         font-size: 16px;
-        padding: 10px 20px;
+        padding: 10px 10px;
     }
     
+    @include media-desktop {
+        margin: 10px;
+    }
+
     @include media-table-large {
-        width: 150px;
-        font-size: 15px;
+
+        &__img {
+            margin: 10px 0;
+            width: 120px;
+            height: 120px;
+        }
+
+        &__name, &__price {
+            font-size: 14px;
+            padding: 0 5px;
+        }
+
+        &__genre, &__author {
+            font-size: 12px;
+            padding: 5px 5px;
+        }
     }
 
     @include media-table-small {
-        width: 125px;
-        font-size: 12px;
+
+        &__img {
+            width: 100px;
+            height: 100px;
+        }
     }
 
     @include media-mobile-large {
-        width: 100px;
-        margin: 10px;
+
+        &__name, &__price {
+            font-size: 12px;
+        }
+
+        &__genre, &__author {
+            font-size: 10px;
+        }
+    }
+
+    @include media-mobile-small {
+
+        &__img {
+            width: 90px;
+            height: 90px;
+            margin: 5px;
+        }
+
+        &__name, &__price {
+            font-size: 10px;
+        }
+
+        &__genre, &__author {
+            font-size: 8px;
+        }
     }
 }
