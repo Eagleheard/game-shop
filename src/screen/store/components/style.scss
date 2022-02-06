@@ -1,0 +1,32 @@
+@import 'constants/const-styles.scss';
+@import 'constants/media-queries.scss';
+
+.store {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    &__container {
+        justify-content: center;
+        align-items: center;
+        display: flex;
+        flex-direction: column;
+        width: 75%;
+        margin-top: 20px;
+    }
+
+    &__filter {
+        background-color: $secondary;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .select {
+        align-self: flex-end;
+    }
+
+    .card {
+        margin: 20px;
+    }
+}

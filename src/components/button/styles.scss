@@ -29,9 +29,9 @@
     }
     
     &:disabled {
-      background-color: $search-primary;
-      border: 2px solid $search-primary;
-      pointer-events: none;
+        background-color: $search-primary;
+        border: 2px solid $search-primary;
+        pointer-events: none;
     }
 
     @include media-table-large {
