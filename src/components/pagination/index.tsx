@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import classNames from 'classnames';
 
 import { IGame } from 'types/interfaces';
@@ -20,11 +20,11 @@ export const Pagination: React.FC<PaginationProps> = ({ gameData, dataLimit, Ren
   const page: number[] = Array.from({ length: pageCount }, (v, i) => i + 1);
 
   const goToNextPage = () => {
-    setCurrentPage((page) => page + 1);
+    setCurrentPage((prevPage) => prevPage + 1);
   };
 
   const goToPreviousPage = () => {
-    setCurrentPage((page) => page - 1);
+    setCurrentPage((prevPage) => prevPage - 1);
   };
 
   const changePage = (page: number) => {
@@ -34,6 +34,10 @@ export const Pagination: React.FC<PaginationProps> = ({ gameData, dataLimit, Ren
   const getPaginatedData = useMemo(() => {
     return gameData.slice(startIndex, endIndex);
   }, [gameData, startIndex, endIndex]);
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [gameData, setCurrentPage]);
 
   return (
     <div className="pagination">
