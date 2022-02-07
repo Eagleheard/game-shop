@@ -15,15 +15,29 @@
         margin-top: 20px;
     }
 
-    &__filter {
+    .filter {
         background-color: $secondary;
         display: flex;
         flex-direction: column;
         align-items: center;
+
+        &__select {
+            margin: 10px 0;
+            width: 84%;
+        }
+
+        &__select-item {
+            width: 100%;
+        }
+    }
+    
+    .search {
+        margin: 20px 20px 10px;
     }
 
-    .select {
+    &__select {
         align-self: flex-end;
+        margin-top: 10px;
     }
 
     .card {

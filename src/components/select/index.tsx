@@ -9,10 +9,11 @@ interface ISelect {
     value: string;
     label: string;
   }[];
+  style: string;
   handleSelect: (value: string) => void;
 }
 
-export const Select: React.FC<ISelect> = ({ placeholder, options, handleSelect }) => {
+export const Select: React.FC<ISelect> = ({ placeholder, options, style, handleSelect }) => {
   const [value, setValue] = useState<string>();
 
   const handleChange: ChangeEventHandler = (event: ChangeEvent<HTMLInputElement>) => {
@@ -21,11 +22,15 @@ export const Select: React.FC<ISelect> = ({ placeholder, options, handleSelect }
   };
 
   return (
-    <label className="select">
-      <select value={value} onChange={handleChange} className="select__item">
+    <label className={`select ${style}__select`}>
+      <select
+        value={value}
+        onChange={handleChange}
+        className={`select__item ${style}__select-item`}
+      >
         <option>{placeholder}</option>
         {options.map(({ id, value, label }) => (
-          <option key={id} value={value} className="select__menu">
+          <option key={id} value={value} className={`select__menu ${style}__select-menu`}>
             {label}
           </option>
         ))}

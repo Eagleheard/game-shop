@@ -67,6 +67,7 @@ export const Home = () => {
             { id: 0, label: 'New games', value: 'New games' },
             { id: 1, label: 'Popular games', value: 'Popular games' },
           ]}
+          style="home"
           handleSelect={handleSelect}
         />
         {isLoading ? (

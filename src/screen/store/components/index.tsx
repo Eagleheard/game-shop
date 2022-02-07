@@ -59,7 +59,7 @@ export const Store = () => {
 
   return (
     <div className="store">
-      <div className="store__filter">
+      <div className="filter">
         <Search />
         <Select
           placeholder={'Genre'}
@@ -69,8 +69,26 @@ export const Store = () => {
             { id: 2, label: 'Racing', value: 'Racing' },
             { id: 3, label: 'Adventure', value: 'Adventure' },
           ]}
+          style="filter"
           handleSelect={handleSelect}
         />
+        <div>
+          <label>Digital:</label>
+          <input type="checkbox" />
+        </div>
+        <div>
+          <label>Disk:</label>
+          <input type="checkbox" />
+        </div>
+        <div>
+          <label>Number of copies</label>
+          <input />
+        </div>
+        <div>
+          <input placeholder="min" />
+          <input placeholder="max" />
+        </div>
+        <button>Filter</button>
       </div>
       <div className="store__container">
         <Select
@@ -79,6 +97,7 @@ export const Store = () => {
             { id: 0, label: 'New games', value: 'New games' },
             { id: 1, label: 'Popular games', value: 'Popular games' },
           ]}
+          style="store"
           handleSelect={handleSelect}
         />
         {isLoading ? (
