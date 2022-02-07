@@ -107,7 +107,7 @@ export const Store = () => {
           <input placeholder="min" type="text" className="filter__price-min" />
           <input placeholder="max" type="text" className="filter__price-max" />
         </div>
-        <button onClick={() => searchGameByAuthor(input)}>Filter</button>
+        <button onClick={searchGameByAuthor}>Filter</button>
       </div>
       <div className="store__container">
         <Select
