@@ -1,31 +1,35 @@
-input {
-    border: 1px solid #999;
-    padding: 8px;
-    width: 300px;
+@import 'constants/const-styles.scss';
+
+.autocomplete {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 10px;
+
+  &__input {
+    height: 40px;
+    border: 2px solid $search-primary;
+    border-radius: 5px 5px 0 0;
+    outline: none;
+    background: $primary;
   }
-  .no-autocomplete {
-    color: #999;
-    padding: 8px;
-  }
-  .autocomplete {
-    border: 1px solid #999;
+
+  &__list {
+    background-color: $primary;
+    border: 2px solid $search-primary;
     border-top-width: 0;
     list-style: none;
-    margin-top: 0;
-    max-height: 143px;
-    overflow-y: auto;
-    padding-left: 0;
-    width: calc(300px + 1rem);
+    width: 100%;
+
+    &--active:hover {
+      background-color: $hover-link;
+      cursor: pointer;
+      font-weight: 700;
+    }
   }
-  .autocomplete li {
+
+  &__error {
+    color: $black;
     padding: 8px;
   }
-  .autocomplete > .active,
-  .autocomplete li:hover {
-    background-color: darkgray;
-    cursor: pointer;
-    font-weight: 700;
-  }
-  .autocomplete li:not(:last-of-type) {
-    border-bottom: 1px solid #999;
-  }
+}

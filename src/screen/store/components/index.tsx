@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { fetchGames } from 'api/fetchGames';
 import { fetchNewGames } from 'api/fetchNewGames';
 import { fetchPopularGames } from 'api/fetchPopularGames';
+import { fetchGameByAuthor } from 'api/fetchGameByAuthor';
 
 import { Game } from 'screen';
 import { Pagination, Select, Autocomplete } from 'components';
@@ -19,6 +20,10 @@ enum constants {
 export const Store = () => {
   const [games, setGames] = useState<IGame[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isDiskChecked, setIsDiskChecked] = useState<boolean>(false);
+
+  const [filtered, setFiltered] = useState<string[]>([]);
+  const [input, setInput] = useState<string>('');
 
   const fillGames = async () => {
     const data = await fetchGames();
@@ -33,6 +38,12 @@ export const Store = () => {
   const setPopularGames = async () => {
     const popularGames = await fetchPopularGames();
     setGames(popularGames);
+  };
+
+  const searchGameByAuthor = async () => {
+    const gamesByAuthor = await fetchGameByAuthor(input);
+    setGames(gamesByAuthor);
+    console.log(gamesByAuthor);
   };
 
   const handleSelect = (value: string) => {
@@ -60,7 +71,13 @@ export const Store = () => {
   return (
     <div className="store">
       <div className="filter">
-        <Autocomplete author={games.map(({ author }) => author)} />
+        <Autocomplete
+          author={games.map(({ author }) => author)}
+          setFiltered={setFiltered}
+          setInput={setInput}
+          input={input}
+          filtered={filtered}
+        />
         <Select
           placeholder={'Genre'}
           options={[
@@ -72,23 +89,25 @@ export const Store = () => {
           style="filter"
           handleSelect={handleSelect}
         />
-        <div>
+        <div className="filter__digital">
           <label>Digital:</label>
           <input type="checkbox" />
         </div>
-        <div>
+        <div className="filter__disk">
           <label>Disk:</label>
-          <input type="checkbox" />
+          <input type="checkbox" onClick={() => setIsDiskChecked((prevValue) => !prevValue)} />
         </div>
-        <div>
-          <label>Number of copies</label>
-          <input />
+        {isDiskChecked && (
+          <div className="filter__copies">
+            <input placeholder="Number of copies" type="text" />
+          </div>
+        )}
+        <p>Price:</p>
+        <div className="filter__price">
+          <input placeholder="min" type="text" className="filter__price-min" />
+          <input placeholder="max" type="text" className="filter__price-max" />
         </div>
-        <div>
-          <input placeholder="min" />
-          <input placeholder="max" />
-        </div>
-        <button>Filter</button>
+        <button onClick={() => searchGameByAuthor(input)}>Filter</button>
       </div>
       <div className="store__container">
         <Select

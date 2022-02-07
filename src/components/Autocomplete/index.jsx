@@ -2,11 +2,9 @@ import React, { useState } from 'react';
 
 import './style.scss';
 
-export const Autocomplete = ({ author }) => {
+export const Autocomplete = ({ author, setInput, setFiltered, input, filtered }) => {
   const [active, setActive] = useState(0);
-  const [filtered, setFiltered] = useState([]);
   const [isShow, setIsShow] = useState(false);
-  const [input, setInput] = useState('');
 
   const onChange = (e) => {
     const input = e.currentTarget.value;
@@ -30,7 +28,6 @@ export const Autocomplete = ({ author }) => {
 
   const onKeyDown = (e) => {
     if (e.keyCode === 13) {
-      // enter key
       setActive(0);
       setIsShow(false);
       setInput(filtered[active]);
@@ -38,7 +35,6 @@ export const Autocomplete = ({ author }) => {
       // up arrow
       return active === 0 ? null : setActive(active - 1);
     } else if (e.keyCode === 40) {
-      // down arrow
       return active - 1 === filtered.length ? null : setActive(active + 1);
     }
   };
@@ -47,11 +43,11 @@ export const Autocomplete = ({ author }) => {
     if (isShow && input) {
       if (filtered.length) {
         return (
-          <ul className="autocomplete">
+          <ul className="autocomplete__list">
             {filtered.map((suggestion, index) => {
               let className;
               if (index === active) {
-                className = 'active';
+                className = 'autocomplete__list--active';
               }
               return (
                 <li className={className} key={suggestion} onClick={onClick}>
@@ -63,7 +59,7 @@ export const Autocomplete = ({ author }) => {
         );
       } else {
         return (
-          <div className="no-autocomplete">
+          <div className="autocomplete__error">
             <em>Not found</em>
           </div>
         );
@@ -72,9 +68,16 @@ export const Autocomplete = ({ author }) => {
     return <></>;
   };
   return (
-    <>
-      <input type="text" onChange={onChange} onKeyDown={onKeyDown} value={input} />
+    <div className="autocomplete">
+      <input
+        type="text"
+        onChange={onChange}
+        onKeyDown={onKeyDown}
+        value={input}
+        className="autocomplete__input"
+        placeholder="Author"
+      />
       {renderAutocomplete()}
-    </>
+    </div>
   );
 };
