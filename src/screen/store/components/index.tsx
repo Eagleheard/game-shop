@@ -4,7 +4,7 @@ import { fetchNewGames } from 'api/fetchNewGames';
 import { fetchPopularGames } from 'api/fetchPopularGames';
 
 import { Game } from 'screen';
-import { Pagination, Search, Select } from 'components';
+import { Pagination, Select, Autocomplete } from 'components';
 import { IGame } from 'types/interfaces';
 
 import './style.scss';
@@ -60,7 +60,7 @@ export const Store = () => {
   return (
     <div className="store">
       <div className="filter">
-        <Search />
+        <Autocomplete author={games.map(({ author }) => author)} />
         <Select
           placeholder={'Genre'}
           options={[

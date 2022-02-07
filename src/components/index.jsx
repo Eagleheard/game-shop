@@ -5,3 +5,4 @@ export { Footer } from 'components/Footer/components';
 export { Header } from 'components/Header/components';
 export { Search } from 'components/Search';
 export { Select } from 'components/Select';
+export { Autocomplete } from 'components/Autocomplete';
