@@ -6,7 +6,7 @@
     align-self: center;
     color: $primary;
     border: 2px solid $secondary;
-    padding: 10px 15px;
+    padding: 5px;
     border-radius: 50%;
     height: 45px;
     width: 45px;
@@ -23,7 +23,6 @@
     }
 
     &__pagination-btn {
-        padding: 5px 5px;
         width: 30px;
         height: 30px;
     }
