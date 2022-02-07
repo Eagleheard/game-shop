@@ -8,6 +8,7 @@
     height: 357px;
     width: 95%;
     margin: 10px 0 20px;
+    overflow: hidden;
 
     &__img {
       width: 100%;
@@ -20,11 +21,24 @@
       justify-content: flex-end;
       height: 100%;
       width: 100%;
-      transition: opacity 1s;
       opacity: 0;
+      transition: transform 1s;
     
       &--active {
         opacity: 1;
+        transform: translateX(0);
+      }
+  
+      &--next {
+        transform: translateX(370px);
+      }
+  
+      &--prev {
+        transform: translateX(-370px);
+      }
+
+      &--first {
+        transform: translateX(740px);
       }
       
       &::before {

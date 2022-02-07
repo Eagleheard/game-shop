@@ -45,9 +45,19 @@ export const Preview = () => {
           key={id}
           className={classNames('preview__container', {
             'preview__container--active': index === previewPage,
+            'preview__container--prev': index === previewPage - 1,
+            'preview__container--next': index === previewPage + 1,
           })}
         >
-          <img src={preview} alt="preview logo" className="preview__img"></img>
+          <img
+            src={preview}
+            alt="preview logo"
+            className={classNames('preview__img', {
+              'preview__img--active': index === previewPage,
+              'preview__img--prev': index === previewPage - 1,
+              'preview__img--next': index === previewPage + 1,
+            })}
+          ></img>
           <div className="preview__description">
             <h1 className="preview__name">{name}</h1>
             <p className="preview__genre">Genre: {genre}</p>
