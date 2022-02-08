@@ -2,10 +2,9 @@ import React from 'react';
 import classNames from 'classnames';
 
 import { IGame } from 'types/interfaces';
-import { Button } from 'components';
+import { Button, usePagination } from 'components';
 
 import './styles.scss';
-import usePagination from '../hooks/usePagination';
 
 interface PaginationProps {
   gameData: IGame[];

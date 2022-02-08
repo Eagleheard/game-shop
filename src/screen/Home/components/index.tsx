@@ -2,10 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { fetchGames } from 'api/fetchGames';
 import { fetchNewGames } from 'api/fetchNewGames';
 import { fetchPopularGames } from 'api/fetchPopularGames';
-import usePagination from 'components/Pagination/hooks/usePagination';
 
 import { Game } from 'screen';
-import { Pagination, Select, Preview } from 'components';
+import { Pagination, Select, Preview, usePagination } from 'components';
 import { IGame } from 'types/interfaces';
 
 import './style.scss';
