@@ -46,12 +46,12 @@ export const Home = () => {
         setNewGames();
         break;
       case sortOptions.POPULAR_GAMES:
-        changePage(1);
         setPopularGames();
         break;
       default:
         fillGames();
     }
+    changePage(1);
   };
 
   useEffect(() => {
