@@ -6,7 +6,7 @@
     display: flex;
     justify-content: flex-end;
     height: 357px;
-    width: 95%;
+    width: 97%;
     margin: 10px 0 20px;
     overflow: hidden;
 
@@ -22,23 +22,10 @@
       height: 100%;
       width: 100%;
       opacity: 0;
-      transition: transform 1s;
+      transition: opacity 1s;
     
       &--active {
         opacity: 1;
-        transform: translateX(0);
-      }
-  
-      &--next {
-        transform: translateX(370px);
-      }
-  
-      &--prev {
-        transform: translateX(-370px);
-      }
-
-      &--first {
-        transform: translateX(740px);
       }
       
       &::before {

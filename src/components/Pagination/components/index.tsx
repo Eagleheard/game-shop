@@ -1,10 +1,11 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React from 'react';
 import classNames from 'classnames';
 
 import { IGame } from 'types/interfaces';
 import { Button } from 'components';
 
 import './styles.scss';
+import usePagination from '../hooks/usePagination';
 
 interface PaginationProps {
   gameData: IGame[];
@@ -13,36 +14,14 @@ interface PaginationProps {
 }
 
 export const Pagination: React.FC<PaginationProps> = ({ gameData, dataLimit, RenderComponent }) => {
-  const [currentPage, setCurrentPage] = useState<number>(1);
-  const pageCount = Math.ceil(gameData.length / dataLimit);
-  const startIndex = currentPage * dataLimit - dataLimit;
-  const endIndex = startIndex + dataLimit;
+  const { goToNextPage, goToPreviousPage, changePage, currentPage, pageCount, getPaginatedData } =
+    usePagination(gameData, dataLimit);
   const page: number[] = Array.from({ length: pageCount }, (v, i) => i + 1);
-
-  const goToNextPage = () => {
-    setCurrentPage((prevPage) => prevPage + 1);
-  };
-
-  const goToPreviousPage = () => {
-    setCurrentPage((prevPage) => prevPage - 1);
-  };
-
-  const changePage = (page: number) => {
-    setCurrentPage(page);
-  };
-
-  const getPaginatedData = useMemo(() => {
-    return gameData.slice(startIndex, endIndex);
-  }, [gameData, startIndex, endIndex]);
-
-  useEffect(() => {
-    setCurrentPage(1);
-  }, [gameData, setCurrentPage]);
 
   return (
     <div className="pagination">
       <div className="component">
-        {getPaginatedData.map((data) => (
+        {getPaginatedData.map((data: IGame) => (
           <RenderComponent key={data.id} {...data} />
         ))}
       </div>
@@ -53,9 +32,9 @@ export const Pagination: React.FC<PaginationProps> = ({ gameData, dataLimit, Ren
           style="pagination-btn"
           disabled={currentPage === 1}
         />
-        {page.map((item: number, index: number) => (
+        {page.map((item: number) => (
           <button
-            key={index}
+            key={item}
             onClick={() => changePage(item)}
             className={classNames('pagination__btn', {
               'pagination__btn--active': currentPage === item,

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { fetchGames } from 'api/fetchGames';
 import { fetchNewGames } from 'api/fetchNewGames';
 import { fetchPopularGames } from 'api/fetchPopularGames';
+import usePagination from 'components/Pagination/hooks/usePagination';
 
 import { Game } from 'screen';
 import { Pagination, Select, Preview } from 'components';
@@ -10,7 +11,8 @@ import { IGame } from 'types/interfaces';
 import './style.scss';
 
 const DATA_LIMIT = 4;
-enum constants {
+
+enum sortOptions {
   OUR_GAMES = 'Our games',
   NEW_GAMES = 'New games',
   POPULAR_GAMES = 'Popular games',
@@ -19,6 +21,7 @@ enum constants {
 export const Home = () => {
   const [games, setGames] = useState<IGame[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const { changePage } = usePagination(games);
 
   const fillGames = async () => {
     const data = await fetchGames();
@@ -37,13 +40,14 @@ export const Home = () => {
 
   const handleSelect = (value: string) => {
     switch (value) {
-      case constants.OUR_GAMES:
+      case sortOptions.OUR_GAMES:
         fillGames();
         break;
-      case constants.NEW_GAMES:
+      case sortOptions.NEW_GAMES:
         setNewGames();
         break;
-      case constants.POPULAR_GAMES:
+      case sortOptions.POPULAR_GAMES:
+        changePage(1);
         setPopularGames();
         break;
       default:
@@ -62,7 +66,7 @@ export const Home = () => {
       <div className="home__container">
         <Preview />
         <Select
-          placeholder={'Our games'}
+          placeholder="Our games"
           options={[
             { id: 0, label: 'New games', value: 'New games' },
             { id: 1, label: 'Popular games', value: 'Popular games' },
