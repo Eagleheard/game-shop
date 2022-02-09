@@ -2,21 +2,29 @@ import React from 'react';
 import classNames from 'classnames';
 
 import { IGame } from 'types/interfaces';
-import { Button, usePagination } from 'components';
+import { Button } from 'components';
 
 import './styles.scss';
 
 interface PaginationProps {
-  gameData: IGame[];
-  dataLimit: number;
   RenderComponent: React.FC<IGame>;
+  page: number[];
+  getPaginatedData: IGame[];
+  currentPage: number;
+  goToNextPage: () => void;
+  goToPreviousPage: () => void;
+  changePage: (page: number) => void;
 }
 
-export const Pagination: React.FC<PaginationProps> = ({ gameData, dataLimit, RenderComponent }) => {
-  const { goToNextPage, goToPreviousPage, changePage, currentPage, pageCount, getPaginatedData } =
-    usePagination(gameData, dataLimit);
-  const page: number[] = Array.from({ length: pageCount }, (v, i) => i + 1);
-
+export const Pagination: React.FC<PaginationProps> = ({
+  getPaginatedData,
+  goToNextPage,
+  goToPreviousPage,
+  changePage,
+  page,
+  currentPage,
+  RenderComponent,
+}) => {
   return (
     <div className="pagination">
       <div className="component">

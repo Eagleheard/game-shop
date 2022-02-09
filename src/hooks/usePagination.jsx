@@ -5,10 +5,15 @@ export const usePagination = (gameData, dataLimit) => {
   const startIndex = currentPage * dataLimit - dataLimit;
   const endIndex = startIndex + dataLimit;
   const pageCount = Math.ceil(gameData.length / dataLimit);
+  const page = Array.from({ length: pageCount }, (v, i) => i + 1);
 
   const getPaginatedData = useMemo(() => {
     return gameData.slice(startIndex, endIndex);
   }, [gameData, startIndex, endIndex]);
+
+  const changePage = (page) => {
+    setCurrentPage(page);
+  };
 
   const goToNextPage = () => {
     setCurrentPage((prevPage) => prevPage + 1);
@@ -18,18 +23,14 @@ export const usePagination = (gameData, dataLimit) => {
     setCurrentPage((prevPage) => prevPage - 1);
   };
 
-  const changePage = (page) => {
-    setCurrentPage(page);
-  };
-
   return {
     goToNextPage,
     goToPreviousPage,
     changePage,
     getPaginatedData,
     currentPage,
-    pageCount,
     startIndex,
     endIndex,
+    page,
   };
 };
