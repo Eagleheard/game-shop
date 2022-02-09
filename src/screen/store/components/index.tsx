@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { fetchGames } from 'api/fetchGames';
-import { fetchNewGames } from 'api/fetchNewGames';
-import { fetchPopularGames } from 'api/fetchPopularGames';
-import { fetchGameByAuthor } from 'api/fetchGameByAuthor';
 
 import { Game } from 'screen';
-import { Pagination, Select, Autocomplete } from 'components';
+import { Pagination, Select } from 'components';
+import { Filter } from 'components/Filter';
 import { IGame } from 'types/interfaces';
 
 import './style.scss';
+import { fetchGameByAuthor } from 'api/fetchGameByAuthor';
+import { fetchGameByGenre } from 'api/fetchGameByGenre';
+import { fetchPopularGames } from 'api/fetchPopularGames';
+import { fetchNewGames } from 'api/fetchNewGames';
 
 const DATA_LIMIT = 8;
 enum constants {
@@ -20,10 +22,6 @@ enum constants {
 export const Store = () => {
   const [games, setGames] = useState<IGame[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [isDiskChecked, setIsDiskChecked] = useState<boolean>(false);
-
-  const [filtered, setFiltered] = useState<string[]>([]);
-  const [input, setInput] = useState<string>('');
 
   const fillGames = async () => {
     const data = await fetchGames();
@@ -40,10 +38,14 @@ export const Store = () => {
     setGames(popularGames);
   };
 
-  const searchGameByAuthor = async () => {
-    const gamesByAuthor = await fetchGameByAuthor(input);
-    setGames(gamesByAuthor);
-    console.log(gamesByAuthor);
+  const setGamesByAuthor = async (author: string) => {
+    const games = await fetchGameByAuthor(author);
+    setGames(games);
+  };
+
+  const handleFilterSelect = async (genre: string) => {
+    const games = await fetchGameByGenre(genre);
+    setGames(games);
   };
 
   const handleSelect = (value: string) => {
@@ -67,48 +69,15 @@ export const Store = () => {
     fillGames();
     setIsLoading(false);
   }, []);
-
+  console.log(games);
   return (
     <div className="store">
-      <div className="filter">
-        <Autocomplete
-          author={games.map(({ author }) => author)}
-          setFiltered={setFiltered}
-          setInput={setInput}
-          input={input}
-          filtered={filtered}
-        />
-        <Select
-          placeholder={'Genre'}
-          options={[
-            { id: 0, label: 'Action', value: 'Action' },
-            { id: 1, label: 'RPG', value: 'RPG' },
-            { id: 2, label: 'Racing', value: 'Racing' },
-            { id: 3, label: 'Adventure', value: 'Adventure' },
-          ]}
-          style="filter"
-          handleSelect={handleSelect}
-        />
-        <div className="filter__digital">
-          <label>Digital:</label>
-          <input type="checkbox" />
-        </div>
-        <div className="filter__disk">
-          <label>Disk:</label>
-          <input type="checkbox" onClick={() => setIsDiskChecked((prevValue) => !prevValue)} />
-        </div>
-        {isDiskChecked && (
-          <div className="filter__copies">
-            <input placeholder="Number of copies" type="text" />
-          </div>
-        )}
-        <p>Price:</p>
-        <div className="filter__price">
-          <input placeholder="min" type="text" className="filter__price-min" />
-          <input placeholder="max" type="text" className="filter__price-max" />
-        </div>
-        <button onClick={searchGameByAuthor}>Filter</button>
-      </div>
+      <Filter
+        games={games}
+        setGamesByAuthor={setGamesByAuthor}
+        deleteFilter={fillGames}
+        handleSelect={handleFilterSelect}
+      />
       <div className="store__container">
         <Select
           placeholder={'Our games'}
