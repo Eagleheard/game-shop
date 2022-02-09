@@ -4,13 +4,14 @@ import { fetchNewGames } from 'api/fetchNewGames';
 import { fetchPopularGames } from 'api/fetchPopularGames';
 
 import { Game } from 'screen';
+import { usePagination } from 'hooks';
 import { Pagination, Select, Preview } from 'components';
 import { IGame } from 'types/interfaces';
 
 import './style.scss';
 
 const DATA_LIMIT = 4;
-enum constants {
+enum sortOptions {
   OUR_GAMES = 'Our games',
   NEW_GAMES = 'New games',
   POPULAR_GAMES = 'Popular games',
@@ -19,6 +20,8 @@ enum constants {
 export const Home = () => {
   const [games, setGames] = useState<IGame[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const { goToNextPage, goToPreviousPage, changePage, currentPage, page, getPaginatedData } =
+    usePagination(games, DATA_LIMIT);
 
   const fillGames = async () => {
     const data = await fetchGames();
@@ -37,18 +40,19 @@ export const Home = () => {
 
   const handleSelect = (value: string) => {
     switch (value) {
-      case constants.OUR_GAMES:
+      case sortOptions.OUR_GAMES:
         fillGames();
         break;
-      case constants.NEW_GAMES:
+      case sortOptions.NEW_GAMES:
         setNewGames();
         break;
-      case constants.POPULAR_GAMES:
+      case sortOptions.POPULAR_GAMES:
         setPopularGames();
         break;
       default:
         fillGames();
     }
+    changePage(1);
   };
 
   useEffect(() => {
@@ -62,7 +66,7 @@ export const Home = () => {
       <div className="home__container">
         <Preview />
         <Select
-          placeholder={'Our games'}
+          placeholder="Our games"
           options={[
             { id: 0, label: 'New games', value: 'New games' },
             { id: 1, label: 'Popular games', value: 'Popular games' },
@@ -73,7 +77,15 @@ export const Home = () => {
         {isLoading ? (
           <div>Loading</div>
         ) : (
-          <Pagination gameData={games} RenderComponent={Game} dataLimit={DATA_LIMIT} />
+          <Pagination
+            RenderComponent={Game}
+            goToNextPage={goToNextPage}
+            goToPreviousPage={goToPreviousPage}
+            currentPage={currentPage}
+            page={page}
+            getPaginatedData={getPaginatedData}
+            changePage={changePage}
+          />
         )}
       </div>
     </div>

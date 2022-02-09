@@ -6,8 +6,9 @@
     display: flex;
     justify-content: flex-end;
     height: 357px;
-    width: 95%;
+    width: 97%;
     margin: 10px 0 20px;
+    overflow: hidden;
 
     &__img {
       width: 100%;
@@ -20,8 +21,8 @@
       justify-content: flex-end;
       height: 100%;
       width: 100%;
-      transition: opacity 1s;
       opacity: 0;
+      transition: opacity 1s;
     
       &--active {
         opacity: 1;
@@ -44,14 +45,14 @@
       color: $primary;
       font-family: $lato;
       text-align: center;
-      padding: 0 70px;
+      right: 70px;
     }
 
     @include media-table-large {
       height: 300px;
 
       &__description {
-        padding: 0 50px;
+        right: 50px;
       }
     }
 
@@ -77,7 +78,7 @@
       
       &__description {
         font-size: 6px;
-        padding: 0 30px;
+        right: 30px;
       }
     }
   }
