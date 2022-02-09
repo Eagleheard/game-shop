@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 
-import { Search } from 'components/search';
+import { Search } from 'components/Search';
 import { ResponsiveHeader } from './responsive';
 
 import logo from 'assets/logo.png';

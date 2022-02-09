@@ -1,0 +1,99 @@
+@import 'constants/const-styles.scss';
+@import 'constants/media-queries.scss';
+
+.card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-self: center;
+	border-radius: 10px;
+    box-shadow: 0 0 10px $black;
+	background: $primary;
+	text-decoration: none;
+	color: $black;
+
+    &__img {
+        border-radius: 25% 10%;
+        margin: 10px;
+        width: 180px;
+        height: 180px;
+    }
+
+    &__description {
+        display: flex;
+        flex-direction: row;
+        font-family: $lato;
+    }
+
+    &__name, &__price {
+        font-weight: bold;
+        font-size: 18px;
+        padding: 0 10px;
+    }
+
+    &__genre, &__author {
+        font-size: 16px;
+        padding: 10px;
+    }
+    
+    @include media-desktop {
+        margin: 10px;
+    }
+
+    @include media-table-large {
+
+        &__img {
+            margin: 10px 0;
+            width: 120px;
+            height: 120px;
+        }
+
+        &__name, &__price {
+            font-size: 14px;
+            padding: 0 5px;
+        }
+
+        &__genre, &__author {
+            font-size: 12px;
+            padding: 5px;
+        }
+    }
+
+    @include media-table-small {
+
+        &__img {
+            width: 100px;
+            height: 100px;
+        }
+    }
+
+    @include media-mobile-large {
+        box-shadow: 0 0 5px $black;
+
+        &__name, &__price {
+            font-size: 12px;
+        }
+
+        &__genre, &__author {
+            font-size: 10px;
+        }
+    }
+
+    @include media-mobile-small {
+        margin: 5px 0;
+
+        &__img {
+            width: 90px;
+            height: 90px;
+            margin: 5px;
+        }
+
+        &__name, &__price {
+            font-size: 10px;
+        }
+
+        &__genre, &__author {
+            font-size: 8px;
+        }
+    }
+}

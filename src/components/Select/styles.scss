@@ -1,0 +1,26 @@
+@import 'constants/const-styles.scss';
+@import 'constants/media-queries.scss';
+
+.select {
+    align-self: flex-start;
+
+    &__item {
+        border: none;
+        font-size: 24px;
+        font-family: $lato;
+        color: $black;
+        text-align: center;
+
+        @include media-table-large {
+            font-size: 20px;
+        }
+    
+        @include media-mobile-large {
+            font-size: 16px;
+        }
+    }
+
+    &__menu {
+        font-size: 18px;
+    }
+}

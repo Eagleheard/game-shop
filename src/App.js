@@ -1,7 +1,8 @@
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 
-import { Header, About, Store, Footer, Home } from 'screen';
+import { About, Store, Home } from 'screen';
+import { Header, Footer } from 'components';
 
 import './App.css';
 

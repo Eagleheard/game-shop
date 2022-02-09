@@ -1,0 +1,69 @@
+@import 'constants/const-styles.scss';
+@import 'constants/media-queries.scss';
+
+.navigation {
+    background: $secondary;
+    align-self: center;
+    color: $primary;
+    border: 2px solid $secondary;
+    padding: 5px;
+    border-radius: 50%;
+    height: 45px;
+    width: 45px;
+    margin: 0 5px;
+    cursor: pointer;
+    
+    &__prev-btn {
+        position: absolute;
+        left: 0;
+    }
+    &__next-btn {
+        position: absolute;
+        right: 0;
+    }
+
+    &__pagination-btn {
+        width: 30px;
+        height: 30px;
+    }
+    
+    &:disabled {
+      background-color: $search-primary;
+      border: 2px solid $search-primary;
+      pointer-events: none;
+    }
+
+    @include media-table-large {
+        width: 35px;
+        height: 35px;
+
+        &__pagination-btn {
+            width: 25px;
+            height: 25px;
+        }
+    }
+
+    @include media-mobile-large {
+        padding: 0;
+        width: 30px;
+        height: 30px;
+
+        &__pagination-btn {
+            width: 20px;
+            height: 20px;
+        }
+    }
+
+    @include media-mobile-small {
+        width: 20px;
+        height: 20px;
+        font-size: 8px;
+
+        &__pagination-btn {
+            width: 15px;
+            height: 15px;
+            font-size: 8px;
+        }
+    }
+
+}
