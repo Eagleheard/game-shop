@@ -11,6 +11,7 @@ import { fetchGameByAuthor } from 'api/fetchGameByAuthor';
 import { fetchGameByGenre } from 'api/fetchGameByGenre';
 import { fetchPopularGames } from 'api/fetchPopularGames';
 import { fetchNewGames } from 'api/fetchNewGames';
+import { usePagination } from 'hooks';
 
 const DATA_LIMIT = 8;
 enum constants {
@@ -22,6 +23,8 @@ enum constants {
 export const Store = () => {
   const [games, setGames] = useState<IGame[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const { goToNextPage, goToPreviousPage, changePage, currentPage, page, getPaginatedData } =
+    usePagination(games, DATA_LIMIT);
 
   const fillGames = async () => {
     const data = await fetchGames();
@@ -91,7 +94,15 @@ export const Store = () => {
         {isLoading ? (
           <div>Loading</div>
         ) : (
-          <Pagination gameData={games} RenderComponent={Game} dataLimit={DATA_LIMIT} />
+          <Pagination
+            RenderComponent={Game}
+            goToNextPage={goToNextPage}
+            goToPreviousPage={goToPreviousPage}
+            currentPage={currentPage}
+            page={page}
+            getPaginatedData={getPaginatedData}
+            changePage={changePage}
+          />
         )}
       </div>
     </div>
