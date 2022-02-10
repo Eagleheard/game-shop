@@ -2,9 +2,11 @@ import React, { useState } from 'react';
 
 import './style.scss';
 
-export const Autocomplete = ({ author, setInput, setFiltered, input, filtered }) => {
+export const Autocomplete = ({ author }) => {
   const [active, setActive] = useState(0);
   const [isShow, setIsShow] = useState(false);
+  const [filtered, setFiltered] = useState([]);
+  const [input, setInput] = useState();
 
   const onChange = (e) => {
     const input = e.currentTarget.value;
@@ -24,19 +26,6 @@ export const Autocomplete = ({ author, setInput, setFiltered, input, filtered })
     setFiltered([]);
     setIsShow(false);
     setInput(e.currentTarget.innerText);
-  };
-
-  const onKeyDown = (e) => {
-    if (e.keyCode === 13) {
-      setActive(0);
-      setIsShow(false);
-      setInput(filtered[active]);
-    } else if (e.keyCode === 38) {
-      // up arrow
-      return active === 0 ? null : setActive(active - 1);
-    } else if (e.keyCode === 40) {
-      return active - 1 === filtered.length ? null : setActive(active + 1);
-    }
   };
 
   const renderAutocomplete = () => {
@@ -72,7 +61,6 @@ export const Autocomplete = ({ author, setInput, setFiltered, input, filtered })
       <input
         type="text"
         onChange={onChange}
-        onKeyDown={onKeyDown}
         value={input}
         className="autocomplete__input"
         placeholder="Author"

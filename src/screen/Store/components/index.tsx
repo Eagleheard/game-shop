@@ -1,20 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { fetchGames } from 'api/fetchGames';
+import { fetchPopularGames } from 'api/fetchPopularGames';
+import { fetchNewGames } from 'api/fetchNewGames';
 
 import { Game } from 'screen';
 import { Pagination, Select } from 'components';
 import { Filter } from 'components/Filter';
 import { IGame } from 'types/interfaces';
-
-import './style.scss';
-import { fetchGameByAuthor } from 'api/fetchGameByAuthor';
-import { fetchGameByGenre } from 'api/fetchGameByGenre';
-import { fetchPopularGames } from 'api/fetchPopularGames';
-import { fetchNewGames } from 'api/fetchNewGames';
 import { usePagination } from 'hooks';
 
+import './style.scss';
+
 const DATA_LIMIT = 8;
-enum constants {
+enum sortOptions {
   OUR_GAMES = 'Our games',
   NEW_GAMES = 'New games',
   POPULAR_GAMES = 'Popular games',
@@ -41,25 +39,15 @@ export const Store = () => {
     setGames(popularGames);
   };
 
-  const setGamesByAuthor = async (author: string) => {
-    const games = await fetchGameByAuthor(author);
-    setGames(games);
-  };
-
-  const handleFilterSelect = async (genre: string) => {
-    const games = await fetchGameByGenre(genre);
-    setGames(games);
-  };
-
   const handleSelect = (value: string) => {
     switch (value) {
-      case constants.OUR_GAMES:
+      case sortOptions.OUR_GAMES:
         fillGames();
         break;
-      case constants.NEW_GAMES:
+      case sortOptions.NEW_GAMES:
         setNewGames();
         break;
-      case constants.POPULAR_GAMES:
+      case sortOptions.POPULAR_GAMES:
         setPopularGames();
         break;
       default:
@@ -72,15 +60,10 @@ export const Store = () => {
     fillGames();
     setIsLoading(false);
   }, []);
-  console.log(games);
+
   return (
     <div className="store">
-      <Filter
-        games={games}
-        setGamesByAuthor={setGamesByAuthor}
-        deleteFilter={fillGames}
-        handleSelect={handleFilterSelect}
-      />
+      <Filter games={games} fillGames={fillGames} />
       <div className="store__container">
         <Select
           placeholder={'Our games'}

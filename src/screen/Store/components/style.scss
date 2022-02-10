@@ -14,46 +14,6 @@
         width: 75%;
         margin-top: 20px;
     }
-
-    .filter {
-        background-color: $primary;
-        box-shadow: 0 0 10px $black;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        width: 18%;
-
-        &__select {
-            margin: 10px 0;
-            width: 30%;
-        }
-
-        &__select-item {
-            width: 100%;
-            font-size: 20px;
-        }
-
-        &__digital, &__disk {
-            display: flex;
-            flex-direction: row;
-            width: 50%;
-            font-family: $lato;
-            justify-content: space-between;
-        }
-
-        &__price {
-            display: flex;
-            justify-content: center;
-            margin: 10px 0;
-
-            &-min, &-max {
-                width: 20%;
-                margin: 0 20px;
-            }
-        }
-
-
-    }
     
     .search {
         margin: 20px 20px 10px;

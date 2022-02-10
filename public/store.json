@@ -2,7 +2,7 @@
     {
     "id": 1,
     "name": "Game 1",
-    "genre": "action",
+    "genre": "Action",
     "author": "Blizzard",
     "price": "20$",
     "logo": "https://iwantgames.ru/wp-content/uploads/it-takes-two-thumb-468x702.jpg",
@@ -12,7 +12,7 @@
 {
     "id": 2,
     "name": "Game 2",
-    "genre": "action",
+    "genre": "Action",
     "author": "Blizzard",
     "price": "20$",
     "logo": "https://iwantgames.ru/wp-content/uploads/crash-bandicoot-4-its-about-time-thumb-1-468x702.jpg",
@@ -22,7 +22,7 @@
 {
     "id": 3,
     "name": "Game 3",
-    "genre": "action",
+    "genre": "RPG",
     "author": "Rockstar",
     "price": "20$",
     "logo": "https://iwantgames.ru/wp-content/uploads/biomutant-thumb-468x702.jpg",
@@ -32,7 +32,7 @@
 {
     "id": 4,
     "name": "Game 4",
-    "genre": "action",
+    "genre": "Adventure",
     "author": "Rockstar",
     "price": "20$",
     "logo": "https://iwantgames.ru/wp-content/uploads/life-is-strange-3-thumb-1-468x702.jpg",
@@ -42,7 +42,7 @@
 {
     "id": 5,
     "name": "Game 5",
-    "genre": "action",
+    "genre": "RPG",
     "author": "Capcom",
     "price": "20$",
     "logo": "https://iwantgames.ru/wp-content/uploads/potion-craft-alchemist-simulator-thumb-468x702.jpg",
@@ -52,7 +52,7 @@
 {
     "id": 6,
     "name": "Game 6",
-    "genre": "action",
+    "genre": "Adventure",
     "author": "Nintendo",
     "price": "20$",
     "logo": "https://iwantgames.ru/wp-content/uploads/new-world-thumb-468x702.jpg",
@@ -64,7 +64,7 @@
 {
     "id": 7,
     "name": "Game 7",
-    "genre": "action",
+    "genre": "Race",
     "author": "Nintendo",
     "price": "20$",
     "logo": "https://iwantgames.ru/wp-content/uploads/the-dark-pictures-house-of-ashes-thumb-1-468x702.jpg",
@@ -76,7 +76,7 @@
 {
     "id": 8,
     "name": "Game 8",
-    "genre": "action",
+    "genre": "Race",
     "author": "Kojima games",
     "price": "20$",
     "logo": "https://iwantgames.ru/wp-content/uploads/marvels-guardians-of-the-galaxy-thumb-468x702.jpg",
@@ -88,7 +88,7 @@
 {
     "id": 9,
     "name": "Game 9",
-    "genre": "action",
+    "genre": "Action",
     "author": "Ubisoft",
     "price": "20$",
     "logo": "https://iwantgames.ru/wp-content/uploads/forza-horizon-5-thumb-468x702.jpg",
@@ -98,7 +98,7 @@
 {
     "id": 10,
     "name": "Game 10",
-    "genre": "action",
+    "genre": "Action",
     "author": "Ubisoft",
     "price": "20$",
     "logo": "https://iwantgames.ru/wp-content/uploads/riders-republic-thumb-468x702.jpg",
