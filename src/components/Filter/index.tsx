@@ -28,7 +28,7 @@ export const Filter: React.FC<IFilter> = ({ games, fillGames }) => {
   return (
     <div className="filter">
       <form onSubmit={handleSubmit(submitForm)} className="filter__form">
-        <Autocomplete author={games.map(({ author }) => author)} />
+        <Autocomplete author={games.map(({ author }) => author)} register={register} />
         <Select
           placeholder={'Genre'}
           options={[
@@ -39,6 +39,7 @@ export const Filter: React.FC<IFilter> = ({ games, fillGames }) => {
           ]}
           style="filter"
           handleSelect={handleFilterSelect}
+          {...register('genre')}
         />
         <div className="filter__digital">
           <label>Digital:</label>

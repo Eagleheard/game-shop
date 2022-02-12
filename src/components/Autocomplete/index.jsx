@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
+import classNames from 'classnames';
 
 import './style.scss';
 
-export const Autocomplete = ({ author }) => {
+export const Autocomplete = ({ author, register }) => {
   const [active, setActive] = useState(0);
   const [isShow, setIsShow] = useState(false);
   const [filtered, setFiltered] = useState([]);
@@ -34,12 +35,14 @@ export const Autocomplete = ({ author }) => {
         return (
           <ul className="autocomplete__list">
             {filtered.map((suggestion, index) => {
-              let className;
-              if (index === active) {
-                className = 'autocomplete__list--active';
-              }
               return (
-                <li className={className} key={suggestion} onClick={onClick}>
+                <li
+                  className={classNames('autocomplete__list-item', {
+                    'autocomplete__list-item--active': index === active,
+                  })}
+                  key={suggestion}
+                  onClick={onClick}
+                >
                   {suggestion}
                 </li>
               );
@@ -62,6 +65,9 @@ export const Autocomplete = ({ author }) => {
         type="text"
         onChange={onChange}
         value={input}
+        {...register('author', {
+          onChange: onChange,
+        })}
         className="autocomplete__input"
         placeholder="Author"
       />
