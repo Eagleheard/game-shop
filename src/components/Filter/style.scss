@@ -3,55 +3,78 @@
 .filter {
     background-color: $primary;
     box-shadow: 0 0 10px $black;
-    width: 18%;
+    width: 13%;
+    align-self: flex-start;
+    margin-top: 90px;
 
     &__form {
         display: flex;
         flex-direction: column;
-        align-items: center;
+        align-items: flex-start;
+        padding: 0 10px;
     }
 
     &__select {
         margin: 10px 0;
-        width: 30%;
-    }
-
-    &__select-item {
-        width: 100%;
-        font-size: 20px;
+        width: 60%;
+        font-size: 16px;
     }
 
     &__digital, &__disk {
+        padding: 10px 0;
         display: flex;
         flex-direction: row;
-        width: 50%;
+        width: 80%;
         font-family: $lato;
         justify-content: space-between;
     }
 
+    &__copies {
+        padding: 0 5px;
+        margin: 10px 0;
+        height: 20px;
+        border: 2px solid $search-primary;
+        background: $primary;
+    }
+
     &__price {
         display: flex;
-        justify-content: center;
         margin: 10px 0;
 
         &-min, &-max {
-            margin: 0 10px;
-            width: 30%;
+            margin-right: 10px;
+            padding: 10px 5px;
+            width: 40%;
             height: 20px;
             border: 2px solid $search-primary;
-            outline: none;
             background: $primary;
         }
     }
 
-    &__btn {
+    &__buttons{
+        display: flex;
+        justify-content: space-between;
+        width: 85%;
+        margin: 10px 0;
+    }
+
+    &__search-btn {
         border: none;
         font-family: $lato;
         background: $search-primary;
         border-radius: 5px;
-        padding: 5px;
+        padding: 10px;
         cursor: pointer;
-        margin: 10px 20px;
+    }
+
+    &__clear-btn {
+        border: none;
+        font-family: $lato;
+        border: 2px solid $search-primary;
+        background: $primary;
+        border-radius: 5px;
+        padding: 10px;
+        cursor: pointer;
     }
 
 

@@ -66,10 +66,11 @@ export const Store = () => {
       <Filter games={games} fillGames={fillGames} />
       <div className="store__container">
         <Select
-          placeholder={'Our games'}
+          placeholder="Our games"
           options={[
-            { id: 0, label: 'New games', value: 'New games' },
-            { id: 1, label: 'Popular games', value: 'Popular games' },
+            { id: 0, label: 'Our games', value: 'Our games' },
+            { id: 1, label: 'New games', value: 'New games' },
+            { id: 2, label: 'Popular games', value: 'Popular games' },
           ]}
           style="store"
           handleSelect={handleSelect}

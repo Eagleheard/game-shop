@@ -30,7 +30,7 @@ export const Filter: React.FC<IFilter> = ({ games, fillGames }) => {
       <form onSubmit={handleSubmit(submitForm)} className="filter__form">
         <Autocomplete author={games.map(({ author }) => author)} register={register} />
         <Select
-          placeholder={'Genre'}
+          placeholder="Genre"
           options={[
             { id: 0, label: 'Action', value: 'Action' },
             { id: 1, label: 'RPG', value: 'RPG' },
@@ -39,7 +39,6 @@ export const Filter: React.FC<IFilter> = ({ games, fillGames }) => {
           ]}
           style="filter"
           handleSelect={handleFilterSelect}
-          {...register('genre')}
         />
         <div className="filter__digital">
           <label>Digital:</label>
@@ -50,8 +49,8 @@ export const Filter: React.FC<IFilter> = ({ games, fillGames }) => {
           <input type="checkbox" onClick={() => setIsDiskChecked((prevValue) => !prevValue)} />
         </div>
         {isDiskChecked && (
-          <div className="filter__copies">
-            <input placeholder="Number of copies" type="text" />
+          <div>
+            <input placeholder="Number of copies" className="filter__copies" type="text" />
           </div>
         )}
         <p>Price:</p>
@@ -69,11 +68,11 @@ export const Filter: React.FC<IFilter> = ({ games, fillGames }) => {
             className="filter__price-max"
           />
         </div>
-        <div>
-          <button type="submit" className="filter__btn">
+        <div className="filter__buttons">
+          <button type="submit" className="filter__search-btn">
             Filter
           </button>
-          <button onClick={() => fillGames} className="filter__btn">
+          <button onClick={() => fillGames} className="filter__clear-btn">
             Clear
           </button>
         </div>

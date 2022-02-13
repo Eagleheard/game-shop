@@ -1,13 +1,11 @@
 import React, { useState } from 'react';
-import classNames from 'classnames';
 
 import './style.scss';
 
 export const Autocomplete = ({ author, register }) => {
-  const [active, setActive] = useState(0);
   const [isShow, setIsShow] = useState(false);
   const [filtered, setFiltered] = useState([]);
-  const [input, setInput] = useState();
+  const [input, setInput] = useState('');
 
   const onChange = (e) => {
     const input = e.currentTarget.value;
@@ -16,14 +14,12 @@ export const Autocomplete = ({ author, register }) => {
         suggestion.toLowerCase().indexOf(input.toLowerCase()) === 0 &&
         index === author.indexOf(suggestion),
     );
-    setActive(0);
     setFiltered(newFilteredSuggestions);
     setIsShow(true);
     setInput(e.currentTarget.value);
   };
 
   const onClick = (e) => {
-    setActive(0);
     setFiltered([]);
     setIsShow(false);
     setInput(e.currentTarget.innerText);
@@ -34,15 +30,9 @@ export const Autocomplete = ({ author, register }) => {
       if (filtered.length) {
         return (
           <ul className="autocomplete__list">
-            {filtered.map((suggestion, index) => {
+            {filtered.map((suggestion) => {
               return (
-                <li
-                  className={classNames('autocomplete__list-item', {
-                    'autocomplete__list-item--active': index === active,
-                  })}
-                  key={suggestion}
-                  onClick={onClick}
-                >
+                <li key={suggestion} onClick={onClick}>
                   {suggestion}
                 </li>
               );

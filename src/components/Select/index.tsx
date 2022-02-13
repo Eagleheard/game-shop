@@ -1,4 +1,4 @@
-import React, { useState, ChangeEvent, ChangeEventHandler } from 'react';
+import React, { useState } from 'react';
 
 import './styles.scss';
 
@@ -14,27 +14,29 @@ interface ISelect {
 }
 
 export const Select: React.FC<ISelect> = ({ placeholder, options, style, handleSelect }) => {
-  const [value, setValue] = useState<string>();
+  const [value, setValue] = useState<string>(placeholder);
+  const [isListHidden, setIsListHidden] = useState<boolean>(true);
 
-  const handleChange: ChangeEventHandler = (event: ChangeEvent<HTMLInputElement>) => {
-    setValue(event.target.value);
-    handleSelect(event.target.value);
+  const handleChange = (label: string) => {
+    setValue(label);
+    handleSelect(label);
+    setIsListHidden(false);
   };
 
   return (
-    <label className={`select ${style}__select`}>
-      <select
-        value={value}
-        onChange={handleChange}
-        className={`select__item ${style}__select-item`}
-      >
-        <option>{placeholder}</option>
-        {options.map(({ id, value, label }) => (
-          <option key={id} value={value} className={`select__menu ${style}__select-menu`}>
-            {label}
-          </option>
-        ))}
-      </select>
+    <label
+      className={`select ${style}__select`}
+      onClick={() => setIsListHidden((prevValue) => !prevValue)}
+    >
+      {value} ↓
+      <div className="select__menu">
+        {!isListHidden &&
+          options.map(({ id, label }) => (
+            <div key={id} className="select__menu-item" onClick={() => handleChange(label)}>
+              {label}
+            </div>
+          ))}
+      </div>
     </label>
   );
 };
