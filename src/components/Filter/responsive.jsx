@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { fetchGameByGenre } from 'api/fetchGameByGenre';
 
-import { Autocomplete, Select } from 'components';
+import { Autocomplete, Select, Submit } from 'components';
 
 import './responsive-style.scss';
 
@@ -70,12 +70,8 @@ export const ResponsiveFilter = ({ games, fillGames, setIsFilterVisible }) => {
           />
         </div>
         <div className="responsive-filter__buttons">
-          <button type="submit" className="responsive-filter__search-btn">
-            Filter
-          </button>
-          <button onClick={() => fillGames} className="responsive-filter__clear-btn">
-            Clear
-          </button>
+          <Submit style="search" text="Filter" />
+          <Submit style="clear" text="Clear" />
         </div>
       </form>
     </div>

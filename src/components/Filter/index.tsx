@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { fetchGameByGenre } from 'api/fetchGameByGenre';
 
-import { Autocomplete, Select } from 'components';
+import { Autocomplete, Select, Submit } from 'components';
 import { IGame } from 'types/interfaces';
 
 import './style.scss';
@@ -69,12 +69,8 @@ export const Filter: React.FC<IFilter> = ({ games, fillGames }) => {
           />
         </div>
         <div className="filter__buttons">
-          <button type="submit" className="filter__search-btn">
-            Filter
-          </button>
-          <button onClick={() => fillGames} className="filter__clear-btn">
-            Clear
-          </button>
+          <Submit style="search" text="Filter" />
+          <Submit style="clear" text="Clear" />
         </div>
       </form>
     </div>

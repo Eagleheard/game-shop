@@ -54,6 +54,7 @@
             height: 20px;
             border: 2px solid $search-primary;
             background: $primary;
+            cursor: pointer;
         }
     }
 
@@ -61,6 +62,7 @@
         border: none;
         background-color: transparent;
         align-self: flex-end;
+        cursor: pointer;
     }
 
     &__buttons{
@@ -68,24 +70,5 @@
         justify-content: space-between;
         width: 85%;
         margin: 10px 0;
-    }
-
-    &__search-btn {
-        border: none;
-        font-family: $lato;
-        background: $search-primary;
-        border-radius: 5px;
-        padding: 10px;
-        cursor: pointer;
-    }
-
-    &__clear-btn {
-        border: none;
-        font-family: $lato;
-        border: 2px solid $search-primary;
-        background: $primary;
-        border-radius: 5px;
-        padding: 10px;
-        cursor: pointer;
     }
 }

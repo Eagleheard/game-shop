@@ -1,0 +1,16 @@
+@import 'constants/const-styles.scss';
+@import 'constants/media-queries.scss';
+
+.submit {
+    border: none;
+    font-family: $lato;
+    background: $search-primary;
+    border-radius: 5px;
+    padding: 10px;
+    cursor: pointer;
+
+    &__clear {
+        border: 2px solid $search-primary;
+        background: $primary;
+    }
+}
