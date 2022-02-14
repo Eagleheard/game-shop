@@ -17,15 +17,23 @@
       width: 100%;
       margin-top: 20px;
   
-      @include media-desktop {
+      @include media-desktop-large {
         grid-template-rows: auto auto;
-        grid-template-columns: auto auto;
-        grid-template-areas: "game game";
+        grid-template-columns: auto auto auto;
+        grid-template-areas: "game game game";
         justify-content: space-between;
       }
 
+      @include media-desktop {
+        grid-template-columns: auto auto;
+        grid-template-areas: "game game";
+      }
+
       @include media-mobile-small {
-        margin-top: 5px;
+        justify-content: center;
+        grid-template-columns: auto;
+        grid-template-areas: "game";
+        margin-top: 10px;
       }
     }
 

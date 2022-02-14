@@ -48,6 +48,10 @@
       right: 70px;
     }
 
+    @include media-desktop-large {
+      width: 100%;
+    }
+
     @include media-table-large {
       height: 300px;
 

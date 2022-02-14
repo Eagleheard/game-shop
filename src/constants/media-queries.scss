@@ -1,5 +1,11 @@
 @import './const-styles.scss';
 
+@mixin media-desktop-large {
+  @media (max-width: $desktop-width-large) {
+    @content;
+  }
+}
+
 @mixin media-desktop {
   @media (max-width: $desktop-width) {
     @content;

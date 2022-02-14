@@ -36,30 +36,15 @@
         padding: 10px;
     }
 
-    @include media-table-large {
-
-        &__img {
-            margin: 10px 0;
-            width: 120px;
-            height: 120px;
-        }
-
-        &__name, &__price {
-            font-size: 14px;
-            padding: 0 5px;
-        }
-
-        &__genre, &__author {
-            font-size: 12px;
-            padding: 5px;
-        }
+    @include media-desktop-large {
+        margin: 10px 0;
     }
 
     @include media-table-small {
 
         &__img {
-            width: 100px;
-            height: 100px;
+            width: 140px;
+            height: 140px;
         }
     }
 

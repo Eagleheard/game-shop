@@ -19,4 +19,27 @@
   &__select {
     align-self: flex-start;
   }
+
+  @include media-desktop {
+
+    &__select {
+      font-size: 20px;
+
+      &-menu {
+        width: 20%;
+      }
+    }
+  }
+
+  @include media-table-large {
+
+    &__container {
+      width: 90%;
+    }
+
+    &__select {
+      width: 45%;
+      font-size: 20px;
+    }
+  }
 }
