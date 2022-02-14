@@ -1,13 +1,19 @@
 import React, { useState } from 'react';
+import { FieldValues, UseFormRegister } from 'react-hook-form';
 
 import './style.scss';
 
-export const Autocomplete = ({ author, register }) => {
-  const [isShow, setIsShow] = useState(false);
-  const [filtered, setFiltered] = useState([]);
-  const [input, setInput] = useState('');
+interface IAutocomplete {
+  author: string[];
+  register: UseFormRegister<FieldValues>;
+}
 
-  const onChange = (e) => {
+export const Autocomplete: React.FC<IAutocomplete> = ({ author, register }) => {
+  const [isShow, setIsShow] = useState<boolean>(false);
+  const [filtered, setFiltered] = useState<string[]>([]);
+  const [input, setInput] = useState<string>('');
+
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const input = e.currentTarget.value;
     const newFilteredSuggestions = author.filter(
       (suggestion, index) =>
@@ -19,7 +25,7 @@ export const Autocomplete = ({ author, register }) => {
     setInput(e.currentTarget.value);
   };
 
-  const onClick = (e) => {
+  const onClick = (e: React.MouseEvent<HTMLElement>) => {
     setFiltered([]);
     setIsShow(false);
     setInput(e.currentTarget.innerText);
@@ -53,7 +59,6 @@ export const Autocomplete = ({ author, register }) => {
     <div className="autocomplete">
       <input
         type="text"
-        onChange={onChange}
         value={input}
         {...register('author', {
           onChange: onChange,
