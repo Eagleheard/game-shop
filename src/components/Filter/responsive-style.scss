@@ -1,12 +1,13 @@
-@import 'constants/const-styles';
-@import 'constants/media-queries.scss';
+@import 'constants/const-styles.scss';
 
-.filter {
+.responsive-filter {
+    position: absolute;
     background-color: $primary;
     box-shadow: 0 0 10px $black;
-    width: 15%;
+    width: 200px;
     align-self: flex-start;
-    margin: 90px 50px 0 0;
+    top: 100px;
+    left: 0;
 
     &__form {
         display: flex;
@@ -17,8 +18,12 @@
 
     &__select {
         margin: 10px 0;
-        width: 60%;
         font-size: 16px;
+        width: 50%;
+
+        &-menu {
+            width: 70%;
+        }
     }
 
     &__digital, &__disk {
@@ -52,6 +57,12 @@
         }
     }
 
+    &__close-btn {
+        border: none;
+        background-color: transparent;
+        align-self: flex-end;
+    }
+
     &__buttons{
         display: flex;
         justify-content: space-between;
@@ -76,9 +87,5 @@
         border-radius: 5px;
         padding: 10px;
         cursor: pointer;
-    }
-
-    @include media-table-large {
-        display: none;
     }
 }

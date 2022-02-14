@@ -9,7 +9,10 @@ import { Filter } from 'components/Filter';
 import { IGame } from 'types/interfaces';
 import { usePagination } from 'hooks';
 
+import filter from 'assets/filter.png';
+
 import './style.scss';
+import { ResponsiveFilter } from 'components/Filter/responsive';
 
 const DATA_LIMIT = 8;
 enum sortOptions {
@@ -21,6 +24,7 @@ enum sortOptions {
 export const Store = () => {
   const [games, setGames] = useState<IGame[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isFilterVisible, setIsFilterVisible] = useState<boolean>(false);
   const { goToNextPage, goToPreviousPage, changePage, currentPage, page, getPaginatedData } =
     usePagination(games, DATA_LIMIT);
 
@@ -37,6 +41,10 @@ export const Store = () => {
   const setPopularGames = async () => {
     const popularGames = await fetchPopularGames();
     setGames(popularGames);
+  };
+
+  const setFilter = () => {
+    setIsFilterVisible((prevValue) => !prevValue);
   };
 
   const handleSelect = (value: string) => {
@@ -64,17 +72,27 @@ export const Store = () => {
   return (
     <div className="store">
       <Filter games={games} fillGames={fillGames} />
-      <div className="store__container">
-        <Select
-          placeholder="Our games"
-          options={[
-            { id: 0, label: 'Our games', value: 'Our games' },
-            { id: 1, label: 'New games', value: 'New games' },
-            { id: 2, label: 'Popular games', value: 'Popular games' },
-          ]}
-          style="store"
-          handleSelect={handleSelect}
+      {isFilterVisible && (
+        <ResponsiveFilter
+          games={games}
+          fillGames={fillGames}
+          setIsFilterVisible={setIsFilterVisible}
         />
+      )}
+      <div className="store__container">
+        <div className="store__options">
+          <img src={filter} className="store__filter-icon" onClick={() => setFilter()} />
+          <Select
+            placeholder="Our games"
+            options={[
+              { id: 0, label: 'Our games', value: 'Our games' },
+              { id: 1, label: 'New games', value: 'New games' },
+              { id: 2, label: 'Popular games', value: 'Popular games' },
+            ]}
+            style="store"
+            handleSelect={handleSelect}
+          />
+        </div>
         {isLoading ? (
           <div>Loading</div>
         ) : (

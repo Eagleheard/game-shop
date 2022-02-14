@@ -29,10 +29,14 @@ export const Select: React.FC<ISelect> = ({ placeholder, options, style, handleS
       onClick={() => setIsListHidden((prevValue) => !prevValue)}
     >
       {value} ↓
-      <div className="select__menu">
+      <div className={`select__menu ${style}__select-menu`}>
         {!isListHidden &&
           options.map(({ id, label }) => (
-            <div key={id} className="select__menu-item" onClick={() => handleChange(label)}>
+            <div
+              key={id}
+              className={`select__menu-item ${style}__select-menu-item`}
+              onClick={() => handleChange(label)}
+            >
               {label}
             </div>
           ))}
