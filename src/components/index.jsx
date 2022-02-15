@@ -3,6 +3,7 @@ export { Preview } from 'components/Preview';
 export { Pagination } from 'components/Pagination/components';
 export { Footer } from 'components/Footer/components';
 export { Header } from 'components/Header/components';
+export { ResponsiveFilter } from 'components/Filter/responsive';
 export { Search } from 'components/Search';
 export { Select } from 'components/Select';
 export { Autocomplete } from 'components/Autocomplete';

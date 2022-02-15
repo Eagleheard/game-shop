@@ -4,7 +4,7 @@ import { fetchPopularGames } from 'api/fetchPopularGames';
 import { fetchNewGames } from 'api/fetchNewGames';
 
 import { Game } from 'screen';
-import { Pagination, Select } from 'components';
+import { Pagination, Select, ResponsiveFilter } from 'components';
 import { Filter } from 'components/Filter';
 import { IGame } from 'types/interfaces';
 import { usePagination } from 'hooks';
@@ -12,7 +12,6 @@ import { usePagination } from 'hooks';
 import filter from 'assets/filter.png';
 
 import './style.scss';
-import { ResponsiveFilter } from 'components/Filter/responsive';
 
 const DATA_LIMIT = 8;
 enum sortOptions {

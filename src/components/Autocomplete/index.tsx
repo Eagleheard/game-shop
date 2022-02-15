@@ -1,38 +1,38 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { FieldValues, UseFormRegister } from 'react-hook-form';
 
 import './style.scss';
 
 interface IAutocomplete {
-  author: string[];
+  options: string[];
   register: UseFormRegister<FieldValues>;
 }
 
-export const Autocomplete: React.FC<IAutocomplete> = ({ author, register }) => {
+export const Autocomplete: React.FC<IAutocomplete> = ({ options, register }) => {
   const [isShow, setIsShow] = useState<boolean>(false);
   const [filtered, setFiltered] = useState<string[]>([]);
-  const [input, setInput] = useState<string>('');
+  const [value, setValue] = useState<string>('');
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const input = e.currentTarget.value;
-    const newFilteredSuggestions = author.filter(
+    const newFilteredSuggestions = options.filter(
       (suggestion, index) =>
         suggestion.toLowerCase().indexOf(input.toLowerCase()) === 0 &&
-        index === author.indexOf(suggestion),
+        index === options.indexOf(suggestion),
     );
     setFiltered(newFilteredSuggestions);
     setIsShow(true);
-    setInput(e.currentTarget.value);
+    setValue(e.currentTarget.value);
   };
 
   const onClick = (e: React.MouseEvent<HTMLElement>) => {
     setFiltered([]);
     setIsShow(false);
-    setInput(e.currentTarget.innerText);
+    setValue(e.currentTarget.innerText);
   };
 
-  const renderAutocomplete = () => {
-    if (isShow && input) {
+  const renderAutocomplete = useMemo(() => {
+    if (isShow && value) {
       if (filtered.length) {
         return (
           <ul className="autocomplete__list">
@@ -45,28 +45,29 @@ export const Autocomplete: React.FC<IAutocomplete> = ({ author, register }) => {
             })}
           </ul>
         );
-      } else {
-        return (
-          <div className="autocomplete__error">
-            <em>Not found</em>
-          </div>
-        );
       }
+
+      return (
+        <div className="autocomplete__error">
+          <em>Not found</em>
+        </div>
+      );
     }
     return <></>;
-  };
+  }, [filtered, isShow, value]);
+
   return (
     <div className="autocomplete">
       <input
         type="text"
-        value={input}
-        {...register('author', {
-          onChange: onChange,
+        value={value}
+        {...register('options', {
+          onChange,
         })}
         className="autocomplete__input"
         placeholder="Author"
       />
-      {renderAutocomplete()}
+      {renderAutocomplete}
     </div>
   );
 };

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import { fetchGameByGenre } from 'api/fetchGameByGenre';
 
 import { Autocomplete, Select, Submit } from 'components';
@@ -14,9 +14,14 @@ interface IFilter {
 
 export const Filter: React.FC<IFilter> = ({ games, fillGames }) => {
   const [isDiskChecked, setIsDiskChecked] = useState<boolean>(false);
-  const { register, handleSubmit } = useForm();
+  const {
+    register,
+    handleSubmit,
+    getValues,
+    formState: { errors },
+  } = useForm();
 
-  const submitForm = (data: any) => {
+  const submitForm: SubmitHandler<FieldValues> = (data) => {
     console.log(data);
   };
 
@@ -28,7 +33,7 @@ export const Filter: React.FC<IFilter> = ({ games, fillGames }) => {
   return (
     <div className="filter">
       <form onSubmit={handleSubmit(submitForm)} className="filter__form">
-        <Autocomplete author={games.map(({ author }) => author)} register={register} />
+        <Autocomplete options={games.map(({ author }) => author)} register={register} />
         <Select
           placeholder="Genre"
           options={[
@@ -56,17 +61,34 @@ export const Filter: React.FC<IFilter> = ({ games, fillGames }) => {
         <p>Price:</p>
         <div className="filter__price">
           <input
-            {...register('min price')}
+            {...register('min_price', {
+              validate: {
+                matchesMinPrice: (value) => {
+                  return value >= 0 || 'Price cannot be lower than zero';
+                },
+              },
+            })}
             placeholder="min price"
+            pattern="\d*"
             type="text"
             className="filter__price-min"
           />
+          {errors.min_price && console.log(errors.min_price.message)}
           <input
-            {...register('max price')}
-            placeholder="max price"
+            {...register('max_price', {
+              validate: {
+                matchesMaxPrice: (value) => {
+                  const { min_price } = getValues();
+                  return value >= min_price || 'Price cannot be lower than min price';
+                },
+              },
+            })}
+            placeholder="max_price"
+            pattern="\d*"
             type="text"
             className="filter__price-max"
           />
+          {errors.max_price && console.log(errors.max_price.message)}
         </div>
         <div className="filter__buttons">
           <Submit style="search" text="Filter" />
