@@ -14,6 +14,7 @@ interface IForm {
 
 export const Form: React.FC<IForm> = ({ games, fillGames }) => {
   const [isDiskChecked, setIsDiskChecked] = useState<boolean>(false);
+
   const {
     register,
     handleSubmit,
@@ -62,7 +63,7 @@ export const Form: React.FC<IForm> = ({ games, fillGames }) => {
       </div>
       {isDiskChecked && (
         <div>
-          <input placeholder="Number of copies" className="filter__copies" type="text" />
+          <input placeholder="Number of copies" className="form__copies" type="text" />
         </div>
       )}
       <p className="form__price-label">Price:</p>
@@ -71,32 +72,32 @@ export const Form: React.FC<IForm> = ({ games, fillGames }) => {
           {...register('min_price', {
             validate: {
               matchesMinPrice: (value) => {
-                return value >= 0 || 'Price cannot be lower than zero';
+                return value >= 0 || 'Price should be bigger then 0';
               },
             },
           })}
+          onKeyPress={(e) => !/[0-9]/.test(e.key) && e.preventDefault()}
           placeholder="min price"
-          pattern="\d*"
           type="text"
           className="form__price-min"
         />
-        {errors.min_price && console.log(errors.min_price.message)}
         <input
           {...register('max_price', {
             validate: {
               matchesMaxPrice: (value) => {
                 const { min_price } = getValues();
-                return value >= min_price || 'Price cannot be lower than min price';
+                return value >= min_price || 'Max price should be bigger then min price';
               },
             },
           })}
+          onKeyPress={(e) => !/[0-9]/.test(e.key) && e.preventDefault()}
           placeholder="max price"
-          pattern="\d*"
           type="text"
           className="form__price-max"
         />
-        {errors.max_price && console.log(errors.max_price.message)}
       </div>
+      {errors.min_price && <p className="form__error">{errors.min_price.message}</p>}
+      {errors.max_price && <p className="form__error">{errors.max_price.message}</p>}
       <div className="form__buttons">
         <Submit style="search" text="Filter" />
         <Submit style="clear" text="Clear" />

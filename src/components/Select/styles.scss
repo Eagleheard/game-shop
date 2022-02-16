@@ -6,10 +6,17 @@
     cursor: pointer;
     padding-left: 10px;
 
+    &__input {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
     &__menu {
         position: absolute;
         background-color: $primary;
-        width: 10%;
+        width: 14%;
+        margin-top: 12px;
         box-shadow: 0 0 5px $black;
 
         &-item {

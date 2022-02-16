@@ -14,7 +14,7 @@ interface ISelect {
 }
 
 export const Select: React.FC<ISelect> = ({ placeholder, options, style, handleSelect }) => {
-  const [value, setValue] = useState<string>(placeholder);
+  const [value, setValue] = useState<string>();
   const [isListHidden, setIsListHidden] = useState<boolean>(true);
 
   const handleChange = (label: string) => {
@@ -28,7 +28,14 @@ export const Select: React.FC<ISelect> = ({ placeholder, options, style, handleS
       className={`select ${style}__select`}
       onClick={() => setIsListHidden((prevValue) => !prevValue)}
     >
-      {value} ↓
+      <div className="select__input">
+        {!value ? (
+          <p className={`select__placeholder ${style}__placeholder`}>{placeholder}</p>
+        ) : (
+          value
+        )}
+        {isListHidden ? <p>↓</p> : <p>↑</p>}
+      </div>
       <div className={`select__menu ${style}__select-menu`}>
         {!isListHidden &&
           options.map(({ id, label }) => (

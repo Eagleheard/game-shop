@@ -48,9 +48,9 @@ export const Autocomplete: React.FC<IAutocomplete> = ({ options, register }) => 
       }
 
       return (
-        <div className="autocomplete__error">
-          <em>Not found</em>
-        </div>
+        <ul className="autocomplete__list">
+          <li>Not found</li>
+        </ul>
       );
     }
     return <></>;
