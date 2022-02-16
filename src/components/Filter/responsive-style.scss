@@ -2,73 +2,18 @@
 
 .responsive-filter {
     position: absolute;
+    display: flex;
+    flex-direction: column;
     background-color: $primary;
     box-shadow: 0 0 10px $black;
     width: 200px;
     align-self: flex-start;
-    top: 100px;
     left: 0;
 
-    &__form {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        padding: 0 10px;
-    }
-
-    &__select {
-        margin: 10px 0;
-        font-size: 16px;
-        width: 50%;
-
-        &-menu {
-            width: 70%;
-        }
-    }
-
-    &__digital, &__disk {
-        padding: 10px 0;
-        display: flex;
-        flex-direction: row;
-        width: 80%;
-        font-family: $lato;
-        justify-content: space-between;
-    }
-
-    &__copies {
-        padding: 0 5px;
-        margin: 10px 0;
-        height: 20px;
-        border: 2px solid $search-primary;
-        background: $primary;
-    }
-
-    &__price {
-        display: flex;
-        margin: 10px 0;
-
-        &-min, &-max {
-            margin-right: 10px;
-            padding: 10px 5px;
-            width: 40%;
-            height: 20px;
-            border: 2px solid $search-primary;
-            background: $primary;
-            cursor: pointer;
-        }
-    }
-
     &__close-btn {
-        border: none;
-        background-color: transparent;
         align-self: flex-end;
-        cursor: pointer;
-    }
-
-    &__buttons {
-        display: flex;
-        justify-content: space-between;
-        width: 85%;
-        margin: 10px 0;
+        border: none;
+        outline: none;
+        background-color: transparent;
     }
 }

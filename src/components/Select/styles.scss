@@ -2,10 +2,9 @@
 @import 'constants/media-queries.scss';
 
 .select {
-    width: 20%;
     font-family: $lato;
-    font-size: 24px;
     cursor: pointer;
+    padding-left: 10px;
 
     &__menu {
         position: absolute;
@@ -15,7 +14,7 @@
 
         &-item {
             border: 1px solid $search-primary;
-            padding: 2px;
+            padding: 5px 7px;
             cursor: pointer;
 
             &:hover {
