@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import { useOutsideClick } from 'rooks';
+import { useClickOutside } from 'hooks';
 
 import './styles.scss';
 
@@ -22,7 +22,7 @@ export const Select: React.FC<ISelect> = ({ placeholder, options, style, handleS
     setIsListHidden((prevValue) => !prevValue);
   };
 
-  useOutsideClick(selectRef, outsideClick);
+  useClickOutside(selectRef, outsideClick);
 
   const handleChange = (label: string) => {
     setValue(label);
@@ -47,10 +47,10 @@ export const Select: React.FC<ISelect> = ({ placeholder, options, style, handleS
         {!isListHidden &&
           options.map(({ id, label }) => (
             <div
-              ref={selectRef}
               key={id}
               className={`select__menu-item ${style}__select-menu-item`}
               onClick={() => handleChange(label)}
+              ref={selectRef}
             >
               {label}
             </div>
