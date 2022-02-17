@@ -3,6 +3,7 @@ import React from 'react';
 import './style.scss';
 
 import { IGame } from 'types/interfaces';
+import { NavLink } from 'react-router-dom';
 
 export const Game = ({ name, genre, author, price, logo }: IGame) => {
   return (
@@ -15,7 +16,7 @@ export const Game = ({ name, genre, author, price, logo }: IGame) => {
         </div>
         <div>
           <p className="card__price">Price: {price}</p>
-          <p className="card__author">{author}</p>
+          <NavLink to={`/${author}`}>{author}</NavLink>
         </div>
       </div>
     </div>

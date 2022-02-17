@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Controller, FieldValues, SubmitHandler, useForm } from 'react-hook-form';
+import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import { fetchGameByGenre } from 'api/fetchGameByGenre';
 
 import { Autocomplete, Select, Submit } from 'components';
@@ -20,7 +20,6 @@ export const Form: React.FC<IForm> = ({ games, fillGames }) => {
     handleSubmit,
     getValues,
     formState: { errors },
-    control,
   } = useForm();
 
   const submitForm: SubmitHandler<FieldValues> = (data) => {
@@ -35,17 +34,17 @@ export const Form: React.FC<IForm> = ({ games, fillGames }) => {
   return (
     <form onSubmit={handleSubmit(submitForm)} className="form">
       <Autocomplete options={games.map(({ author }) => author)} register={register} />
-          <Select
-            placeholder="Genre"
-            options={[
-              { id: 0, label: 'Action', value: 'Action' },
-              { id: 1, label: 'RPG', value: 'RPG' },
-              { id: 2, label: 'Racing', value: 'Racing' },
-              { id: 3, label: 'Adventure', value: 'Adventure' },
-            ]}
-            style="form"
-            handleSelect={handleFilterSelect}
-          />
+      <Select
+        placeholder="Genre"
+        options={[
+          { id: 0, label: 'Action', value: 'Action' },
+          { id: 1, label: 'RPG', value: 'RPG' },
+          { id: 2, label: 'Racing', value: 'Racing' },
+          { id: 3, label: 'Adventure', value: 'Adventure' },
+        ]}
+        style="form"
+        handleSelect={handleFilterSelect}
+      />
       <p className="form__game-type">Game type:</p>
       <div className="form__digital">
         <input type="checkbox" />
