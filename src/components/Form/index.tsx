@@ -35,10 +35,6 @@ export const Form: React.FC<IForm> = ({ games, fillGames }) => {
   return (
     <form onSubmit={handleSubmit(submitForm)} className="form">
       <Autocomplete options={games.map(({ author }) => author)} register={register} />
-      <Controller
-        control={control}
-        name="genre"
-        render={() => (
           <Select
             placeholder="Genre"
             options={[
@@ -50,8 +46,6 @@ export const Form: React.FC<IForm> = ({ games, fillGames }) => {
             style="form"
             handleSelect={handleFilterSelect}
           />
-        )}
-      />
       <p className="form__game-type">Game type:</p>
       <div className="form__digital">
         <input type="checkbox" />
