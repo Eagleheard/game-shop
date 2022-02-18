@@ -19,7 +19,7 @@ export const Select: React.FC<ISelect> = ({ placeholder, options, style, handleS
   const [isListHidden, setIsListHidden] = useState<boolean>(true);
   const selectRef = useRef(null);
   const outsideClick = () => {
-    setIsListHidden((prevValue) => !prevValue);
+    setIsListHidden(true);
   };
 
   useClickOutside(selectRef, outsideClick);
@@ -29,13 +29,14 @@ export const Select: React.FC<ISelect> = ({ placeholder, options, style, handleS
     handleSelect(label);
     setIsListHidden(true);
   };
-
+  console.log(isListHidden);
   return (
-    <label
-      className={`select ${style}__select`}
-      onClick={() => setIsListHidden((prevValue) => !prevValue)}
-    >
-      <div className="select__input">
+    <label className={`select ${style}__select`}>
+      <div
+        className="select__input"
+        ref={selectRef}
+        onClick={() => setIsListHidden((prevValue) => !prevValue)}
+      >
         {!value ? (
           <p className={`select__placeholder ${style}__placeholder`}>{placeholder}</p>
         ) : (
@@ -50,7 +51,6 @@ export const Select: React.FC<ISelect> = ({ placeholder, options, style, handleS
               key={id}
               className={`select__menu-item ${style}__select-menu-item`}
               onClick={() => handleChange(label)}
-              ref={selectRef}
             >
               {label}
             </div>
