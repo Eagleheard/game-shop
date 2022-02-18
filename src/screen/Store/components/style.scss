@@ -8,7 +8,6 @@
     &__container {
         display: flex;
         flex-direction: column;
-        width: 60%;
     }
 
     &__options {
@@ -18,7 +17,7 @@
 
     &__select {
         justify-self: flex-end;
-        width: 17%;
+        margin-right: 20px;
     }
 
     .card {
@@ -45,7 +44,6 @@
         }
 
         &__select { 
-            width: 25%;
             font-size: 20px;
 
             &-menu {

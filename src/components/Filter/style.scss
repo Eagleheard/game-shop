@@ -59,6 +59,10 @@
         margin: 10px 0;
     }
 
+    @include media-desktop {
+        width: 25%;
+    }
+
     @include media-table-large {
         display: none;
     }
