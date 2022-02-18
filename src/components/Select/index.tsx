@@ -29,7 +29,7 @@ export const Select: React.FC<ISelect> = ({ placeholder, options, style, handleS
     handleSelect(label);
     setIsListHidden(true);
   };
-  console.log(isListHidden);
+
   return (
     <label className={`select ${style}__select`}>
       <div
