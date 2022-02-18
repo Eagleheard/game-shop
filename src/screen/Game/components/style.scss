@@ -49,6 +49,14 @@
         }
     }
 
+    @include media-table-large {
+
+        &__img {
+            width: 240px;
+            height: 240px;
+        }
+    }
+
     @include media-table-small {
 
         &__img {
@@ -70,18 +78,21 @@
     }
 
     @include media-mobile-small {
-        margin: 5px 0;
+        margin: 20px 0;
 
         &__img {
-            margin: 5px;
+            margin: 20px;
+            width: 250px;
+            height: 290px;
         }
 
         &__name, &__price {
-            font-size: 12px;
+            font-size: 18px;
         }
 
         &__genre, &__author {
-            font-size: 10px;
+            font-size: 14px;
+            padding: 20px;
         }
     }
 }
