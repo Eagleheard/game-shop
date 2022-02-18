@@ -19,13 +19,13 @@
   
       @include media-desktop-large {
         grid-template-rows: auto auto;
-        grid-template-columns: auto auto auto;
+        grid-template-columns: repeat(auto-fit, 210px);
         grid-template-areas: "game game game";
         justify-content: space-between;
       }
 
       @include media-desktop {
-        grid-template-columns: auto auto;
+        grid-template-columns: repeat(auto-fit, 45%);
         grid-template-areas: "game game";
       }
 

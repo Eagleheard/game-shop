@@ -60,13 +60,18 @@
     @include media-table-small {
 
         &__img {
-            width: 140px;
-            height: 140px;
+            width: 180px;
+            height: 180px;
         }
     }
 
     @include media-mobile-large {
         box-shadow: 0 0 5px $black;
+
+        &__img {
+            width: 160px;
+            height: 160px;
+        }
 
         &__name, &__price {
             font-size: 12px;
