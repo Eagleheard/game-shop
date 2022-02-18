@@ -17,7 +17,7 @@ interface ISelect {
 export const Select: React.FC<ISelect> = ({ placeholder, options, style, handleSelect }) => {
   const [value, setValue] = useState<string>();
   const [isListHidden, setIsListHidden] = useState<boolean>(true);
-  const selectRef = useRef<HTMLDivElement>(null);
+  const selectRef = useRef(null);
   const outsideClick = () => {
     setIsListHidden((prevValue) => !prevValue);
   };
@@ -27,7 +27,7 @@ export const Select: React.FC<ISelect> = ({ placeholder, options, style, handleS
   const handleChange = (label: string) => {
     setValue(label);
     handleSelect(label);
-    setIsListHidden(false);
+    setIsListHidden(true);
   };
 
   return (

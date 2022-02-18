@@ -6,9 +6,10 @@ import './style.scss';
 interface IAutocomplete {
   options: string[];
   register: UseFormRegister<FieldValues>;
+  name: string;
 }
 
-export const Autocomplete: React.FC<IAutocomplete> = ({ options, register }) => {
+export const Autocomplete: React.FC<IAutocomplete> = ({ options, register, name }) => {
   const [isShow, setIsShow] = useState<boolean>(false);
   const [filtered, setFiltered] = useState<string[]>([]);
   const [value, setValue] = useState<string>('');
@@ -61,7 +62,7 @@ export const Autocomplete: React.FC<IAutocomplete> = ({ options, register }) => 
       <input
         type="text"
         value={value}
-        {...register('options', {
+        {...register(name, {
           onChange,
         })}
         className="autocomplete__input"
