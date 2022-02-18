@@ -40,6 +40,14 @@
         margin: 10px 0;
     }
 
+    @include media-desktop {
+
+        &__img {
+            width: 220px;
+            height: 220px;
+        }
+    }
+
     @include media-table-small {
 
         &__img {
@@ -64,17 +72,15 @@
         margin: 5px 0;
 
         &__img {
-            width: 90px;
-            height: 90px;
             margin: 5px;
         }
 
         &__name, &__price {
-            font-size: 10px;
+            font-size: 12px;
         }
 
         &__genre, &__author {
-            font-size: 8px;
+            font-size: 10px;
         }
     }
 }
