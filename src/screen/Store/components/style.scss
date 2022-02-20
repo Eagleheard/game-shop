@@ -22,6 +22,7 @@
 
     .card {
         margin: 20px;
+        width: 90%;
     }
 
     &__filter-icon {
@@ -58,6 +59,11 @@
 
         .card {
             margin: 10px 0;
+
+            &__img {
+                width: 90%;
+                height: 45%;
+            }
         }
     }
 
