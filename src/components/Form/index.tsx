@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Controller, FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 
 import { Autocomplete, Checkbox, Select, Button } from 'components';
@@ -18,15 +18,24 @@ export const Form: React.FC<IForm> = ({ games }) => {
     handleSubmit,
     getValues,
     control,
+    reset,
     formState: { errors },
   } = useForm();
 
   const submitForm: SubmitHandler<FieldValues> = (data) => {
     console.log(data);
+    reset();
   };
 
   return (
-    <form onSubmit={handleSubmit(submitForm)} className="form">
+    <form
+      onSubmit={handleSubmit(submitForm)}
+      onReset={(event) => {
+        event.preventDefault();
+        reset({ author: '', genre: '' });
+      }}
+      className="form"
+    >
       <Controller
         name="author"
         control={control}
@@ -116,8 +125,8 @@ export const Form: React.FC<IForm> = ({ games }) => {
         </div>
       )}
       <div className="form__buttons">
-        <Button style="search" text="Filter" type="submit" />
-        <Button style="clear" text="Clear" type="reset" />
+        <Button style="search" text="Filter" type="submit" onClick={() => submitForm} />
+        <Button style="clear" text="Clear" type="reset" onClick={() => reset} />
       </div>
     </form>
   );

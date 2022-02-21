@@ -4,7 +4,7 @@ import './styles.scss';
 
 interface IButton {
   text: string;
-  onClick?: () => void;
+  onClick: () => void;
   style: string;
   disabled?: boolean;
   type?: 'submit' | 'reset' | 'button';
