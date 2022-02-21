@@ -27,7 +27,17 @@ export const Form: React.FC<IForm> = ({ games }) => {
 
   return (
     <form onSubmit={handleSubmit(submitForm)} className="form">
-      <Autocomplete options={games.map(({ author }) => author)} register={register} name="Author" />
+      <Controller
+        name="author"
+        control={control}
+        render={({ field: { onChange } }) => (
+          <Autocomplete
+            options={games.map(({ author }) => author)}
+            name="Author"
+            onChangeInput={onChange}
+          />
+        )}
+      />
       <Controller
         name="genre"
         control={control}
