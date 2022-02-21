@@ -11,12 +11,13 @@ interface ISelect {
     label: string;
   }[];
   style: string;
+  selectedValue?: string;
   handleSelect: (value: string) => void;
 }
 
 export const Select: React.FC<ISelect> = ({ placeholder, options, style, handleSelect }) => {
-  const [value, setValue] = useState<string>();
   const [isListHidden, setIsListHidden] = useState<boolean>(true);
+  const [value, setValue] = useState<string>('');
   const selectRef = useRef(null);
   const outsideClick = () => {
     setIsListHidden(true);
@@ -42,7 +43,7 @@ export const Select: React.FC<ISelect> = ({ placeholder, options, style, handleS
         ) : (
           value
         )}
-        {isListHidden ? <p>↓</p> : <p>↑</p>}
+        <p>{isListHidden ? '↓' : '↑'}</p>
       </div>
       <div className={`select__menu ${style}__select-menu`}>
         {!isListHidden &&

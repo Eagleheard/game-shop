@@ -66,7 +66,7 @@ export const Autocomplete: React.FC<IAutocomplete> = ({ options, register, name 
           onChange,
         })}
         className="autocomplete__input"
-        placeholder="Author"
+        placeholder={name}
       />
       {renderAutocomplete}
     </div>

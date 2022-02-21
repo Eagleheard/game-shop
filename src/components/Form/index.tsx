@@ -1,44 +1,37 @@
 import React, { useState } from 'react';
 import { Controller, FieldValues, SubmitHandler, useForm } from 'react-hook-form';
-import { fetchGameByGenre } from 'api/fetchGameByGenre';
 
-import { Autocomplete, Select, Submit } from 'components';
+import { Autocomplete, Checkbox, Select, Submit } from 'components';
 import { IGame } from 'types/interfaces';
 
 import './style.scss';
 
 interface IForm {
   games: IGame[];
-  fillGames: (data: IGame[]) => void;
 }
 
-export const Form: React.FC<IForm> = ({ games, fillGames }) => {
+export const Form: React.FC<IForm> = ({ games }) => {
   const [isDiskChecked, setIsDiskChecked] = useState<boolean>(false);
 
   const {
     register,
     handleSubmit,
     getValues,
-    formState: { errors },
     control,
+    formState: { errors },
   } = useForm();
 
   const submitForm: SubmitHandler<FieldValues> = (data) => {
     console.log(data);
   };
 
-  const handleFilterSelect = async (genre: string) => {
-    const games = await fetchGameByGenre(genre);
-    fillGames(games);
-  };
-
   return (
     <form onSubmit={handleSubmit(submitForm)} className="form">
-      <Autocomplete options={games.map(({ author }) => author)} register={register} name="author" />
+      <Autocomplete options={games.map(({ author }) => author)} register={register} name="Author" />
       <Controller
-        control={control}
         name="genre"
-        render={() => (
+        control={control}
+        render={({ field: { onChange } }) => (
           <Select
             placeholder="Genre"
             options={[
@@ -48,28 +41,14 @@ export const Form: React.FC<IForm> = ({ games, fillGames }) => {
               { id: 3, label: 'Adventure', value: 'Adventure' },
             ]}
             style="form"
-            handleSelect={handleFilterSelect}
+            handleSelect={onChange}
           />
         )}
       />
-      <p className="form__game-type">Game type:</p>
-      <div className="form__digital">
-        <input type="checkbox" />
-        <label className="form__digital-label">Digital</label>
-      </div>
-      <div className="form__disk">
-        <input type="checkbox" onClick={() => setIsDiskChecked((prevValue) => !prevValue)} />
-        <label className="form__disk-label">Disk</label>
-      </div>
-      {isDiskChecked && (
-        <div>
-          <input placeholder="Number of copies" className="form__copies" type="text" />
-        </div>
-      )}
       <p className="form__price-label">Price:</p>
       <div className="form__price">
         <input
-          {...register('min_price', {
+          {...register('minPrice', {
             validate: {
               matchesMinPrice: (value) => {
                 return value >= 0 || 'Price should be bigger then 0';
@@ -82,11 +61,11 @@ export const Form: React.FC<IForm> = ({ games, fillGames }) => {
           className="form__price-min"
         />
         <input
-          {...register('max_price', {
+          {...register('maxPrice', {
             validate: {
               matchesMaxPrice: (value) => {
-                const { min_price } = getValues();
-                return value >= min_price || 'Max price should be bigger then min price';
+                const { minPrice } = getValues();
+                return value >= minPrice || 'Max price should be bigger then min price';
               },
             },
           })}
@@ -96,8 +75,36 @@ export const Form: React.FC<IForm> = ({ games, fillGames }) => {
           className="form__price-max"
         />
       </div>
-      {errors.min_price && <p className="form__error">{errors.min_price.message}</p>}
-      {errors.max_price && <p className="form__error">{errors.max_price.message}</p>}
+      {errors.minPrice && <p className="form__error">{errors.minPrice.message}</p>}
+      {errors.maxPrice && <p className="form__error">{errors.maxPrice.message}</p>}
+      <p className="form__game-type">Game type:</p>
+      <Controller
+        name="digital"
+        control={control}
+        render={({ field: { onChange } }) => <Checkbox label="Digital" onClick={onChange} />}
+      />
+      <Controller
+        name="disk"
+        control={control}
+        render={({ field: { onChange } }) => (
+          <Checkbox
+            label="Disk"
+            onChange={onChange}
+            onClick={() => setIsDiskChecked((prevValue) => !prevValue)}
+          />
+        )}
+      />
+      {isDiskChecked && (
+        <div>
+          <input
+            placeholder="Number of copies"
+            className="form__copies"
+            type="text"
+            {...register('copies')}
+            onKeyPress={(e) => !/[0-9]/.test(e.key) && e.preventDefault()}
+          />
+        </div>
+      )}
       <div className="form__buttons">
         <Submit style="search" text="Filter" />
         <Submit style="clear" text="Clear" />
