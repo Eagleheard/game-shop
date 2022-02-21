@@ -3,7 +3,7 @@ import { Route, Routes } from 'react-router-dom';
 
 import { About, Store, Home } from 'screen';
 import { Header, Footer } from 'components';
-import { Author } from 'screen/Author/components';
+import { AuthorContainer } from 'screen/Author/components/container';
 
 import './App.css';
 
@@ -16,7 +16,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
           <Route path="/store" element={<Store />} />
-          <Route path="/:author" element={<Author />} />
+          <Route path="/:author" element={<AuthorContainer />} />
         </Routes>
       </div>
       <Footer />

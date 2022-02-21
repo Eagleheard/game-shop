@@ -16,7 +16,11 @@ export const Game = ({ name, genre, author, price, logo }: IGame) => {
         </div>
         <div>
           <p className="card__price">Price: {price}</p>
-          <NavLink to={`/${author}`}>{author}</NavLink>
+          <p className="card__author">
+            <NavLink className="card__author--link" to={`/${author}`}>
+              {author}
+            </NavLink>
+          </p>
         </div>
       </div>
     </div>

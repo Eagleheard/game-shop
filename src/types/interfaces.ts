@@ -10,3 +10,10 @@ export interface IGame {
   new: boolean;
   popularity: number;
 }
+
+export interface IAuthor {
+  id: number;
+  name: string;
+  description: string;
+  logo: string;
+}
