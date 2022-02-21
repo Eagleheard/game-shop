@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Controller, FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 
-import { Autocomplete, Checkbox, Select, Submit } from 'components';
+import { Autocomplete, Checkbox, Select, Button } from 'components';
 import { IGame } from 'types/interfaces';
 
 import './style.scss';
@@ -116,8 +116,8 @@ export const Form: React.FC<IForm> = ({ games }) => {
         </div>
       )}
       <div className="form__buttons">
-        <Submit style="search" text="Filter" />
-        <Submit style="clear" text="Clear" />
+        <Button style="search" text="Filter" type="submit" />
+        <Button style="clear" text="Clear" type="reset" />
       </div>
     </form>
   );
