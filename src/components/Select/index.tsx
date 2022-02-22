@@ -11,15 +11,16 @@ interface ISelect {
     label: string;
   }[];
   style: string;
+  selectedValue?: string;
   handleSelect: (value: string) => void;
 }
 
 export const Select: React.FC<ISelect> = ({ placeholder, options, style, handleSelect }) => {
-  const [value, setValue] = useState<string>();
   const [isListHidden, setIsListHidden] = useState<boolean>(true);
-  const selectRef = useRef<HTMLDivElement>(null);
+  const [value, setValue] = useState<string>('');
+  const selectRef = useRef(null);
   const outsideClick = () => {
-    setIsListHidden((prevValue) => !prevValue);
+    setIsListHidden(true);
   };
 
   useClickOutside(selectRef, outsideClick);
@@ -27,21 +28,22 @@ export const Select: React.FC<ISelect> = ({ placeholder, options, style, handleS
   const handleChange = (label: string) => {
     setValue(label);
     handleSelect(label);
-    setIsListHidden(false);
+    setIsListHidden(true);
   };
 
   return (
-    <label
-      className={`select ${style}__select`}
-      onClick={() => setIsListHidden((prevValue) => !prevValue)}
-    >
-      <div className="select__input">
+    <label className={`select ${style}__select`}>
+      <div
+        className="select__input"
+        ref={selectRef}
+        onClick={() => setIsListHidden((prevValue) => !prevValue)}
+      >
         {!value ? (
           <p className={`select__placeholder ${style}__placeholder`}>{placeholder}</p>
         ) : (
           value
         )}
-        {isListHidden ? <p>↓</p> : <p>↑</p>}
+        <p>{isListHidden ? '↓' : '↑'}</p>
       </div>
       <div className={`select__menu ${style}__select-menu`}>
         {!isListHidden &&
@@ -50,7 +52,6 @@ export const Select: React.FC<ISelect> = ({ placeholder, options, style, handleS
               key={id}
               className={`select__menu-item ${style}__select-menu-item`}
               onClick={() => handleChange(label)}
-              ref={selectRef}
             >
               {label}
             </div>

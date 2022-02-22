@@ -7,6 +7,7 @@
     align-items: center;
     justify-self: center;
 	border-radius: 10px;
+    width: 100%;
     box-shadow: 0 0 10px $black;
 	background: $primary;
 	text-decoration: none;
@@ -36,6 +37,7 @@
         padding: 10px;
     }
 
+<<<<<<< HEAD
     &__author {
         font-size: 16px;
         padding: 10px;
@@ -53,34 +55,43 @@
     }
 
     @include media-table-large {
+=======
+    @include media-desktop-large {
+        margin: 10px 0;
+    }
+
+    @include media-desktop {
+>>>>>>> master
 
         &__img {
-            margin: 10px 0;
-            width: 120px;
-            height: 120px;
+            width: 220px;
+            height: 220px;
         }
+    }
 
-        &__name, &__price {
-            font-size: 14px;
-            padding: 0 5px;
-        }
+    @include media-table-large {
 
-        &__genre, &__author {
-            font-size: 12px;
-            padding: 5px;
+        &__img {
+            width: 240px;
+            height: 240px;
         }
     }
 
     @include media-table-small {
 
         &__img {
-            width: 100px;
-            height: 100px;
+            width: 180px;
+            height: 180px;
         }
     }
 
     @include media-mobile-large {
         box-shadow: 0 0 5px $black;
+
+        &__img {
+            width: 145px;
+            height: 145px;
+        }
 
         &__name, &__price {
             font-size: 12px;
@@ -92,20 +103,21 @@
     }
 
     @include media-mobile-small {
-        margin: 5px 0;
+        margin: 20px 0;
 
         &__img {
-            width: 90px;
-            height: 90px;
-            margin: 5px;
+            margin: 20px;
+            width: 250px;
+            height: 290px;
         }
 
         &__name, &__price {
-            font-size: 10px;
+            font-size: 18px;
         }
 
         &__genre, &__author {
-            font-size: 8px;
+            font-size: 14px;
+            padding: 20px;
         }
     }
 }

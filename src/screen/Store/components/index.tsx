@@ -70,13 +70,9 @@ export const Store = () => {
 
   return (
     <div className="store">
-      <Filter games={games} fillGames={fillGames} />
+      <Filter games={games} />
       {isFilterVisible && (
-        <ResponsiveFilter
-          games={games}
-          fillGames={fillGames}
-          setIsFilterVisible={setIsFilterVisible}
-        />
+        <ResponsiveFilter games={games} handleClose={() => setIsFilterVisible(false)} />
       )}
       <div className="store__container">
         <div className="store__options">

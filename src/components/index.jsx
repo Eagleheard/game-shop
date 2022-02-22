@@ -8,4 +8,4 @@ export { ResponsiveFilter } from 'components/Filter/responsive';
 export { Search } from 'components/Search';
 export { Select } from 'components/Select';
 export { Autocomplete } from 'components/Autocomplete';
-export { Submit } from 'components/Submit';
+export { Checkbox } from 'components/Checkbox';

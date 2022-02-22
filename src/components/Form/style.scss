@@ -1,17 +1,24 @@
 @import 'constants/const-styles';
+@import 'constants/media-queries';
 
 .form {
     display: flex;
+    position: relative;
     flex-direction: column;
     align-items: flex-start;
     padding: 0 10px;
 
     &__select {
-        margin: 10px 0;
+        margin: 5px 0;
         padding: 10px;
         width: 100%;
         font-size: 14px;
         border: 2px solid $search-primary;
+        
+        &-menu {
+            left: 10px;
+            width: 91%;
+        }
     }
 
     &__placeholder {
@@ -26,22 +33,11 @@
         font-weight: bold;
     }
 
-    &__digital, &__disk {
-        margin: 5px 0;
-        display: flex;
-        flex-direction: row;
-        width: 100%;
-        font-family: $lato;
-
-        &-label {
-            margin-left: 10px;
-        }
-    }
-
     &__copies {
-        padding: 0 5px;
+        width: 100%;
+        padding: 0 10px;
         margin: 10px 0;
-        height: 20px;
+        height: 40px;
         border: 2px solid $search-primary;
         background: $primary;
     }
@@ -55,7 +51,7 @@
         &-label {
             font-family: $lato;
             font-size: 18px;
-            margin: 10px 0;
+            margin: 5px 0;
             font-weight: bold;
         }
 
@@ -80,5 +76,26 @@
         justify-content: space-between;
         width: 100%;
         margin: 20px 0;
+    }
+
+    @include media-table-large {
+
+        &__select-menu {
+            width: 97%;
+        }
+    }
+
+    @include media-mobile-large {
+
+        &__select-menu {
+            width: 96%;
+        }
+    }
+
+    @include media-mobile-small {
+        
+        &__select-menu {
+            width: 95%;
+        }
     }
 }

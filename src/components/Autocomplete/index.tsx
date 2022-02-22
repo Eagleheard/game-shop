@@ -1,14 +1,14 @@
 import React, { useMemo, useState } from 'react';
-import { FieldValues, UseFormRegister } from 'react-hook-form';
 
 import './style.scss';
 
 interface IAutocomplete {
   options: string[];
-  register: UseFormRegister<FieldValues>;
+  name: string;
+  onChangeInput: (input: string) => void;
 }
 
-export const Autocomplete: React.FC<IAutocomplete> = ({ options, register }) => {
+export const Autocomplete: React.FC<IAutocomplete> = ({ options, name, onChangeInput }) => {
   const [isShow, setIsShow] = useState<boolean>(false);
   const [filtered, setFiltered] = useState<string[]>([]);
   const [value, setValue] = useState<string>('');
@@ -29,6 +29,7 @@ export const Autocomplete: React.FC<IAutocomplete> = ({ options, register }) => 
     setFiltered([]);
     setIsShow(false);
     setValue(e.currentTarget.innerText);
+    onChangeInput(e.currentTarget.innerText);
   };
 
   const renderAutocomplete = useMemo(() => {
@@ -54,18 +55,16 @@ export const Autocomplete: React.FC<IAutocomplete> = ({ options, register }) => 
       );
     }
     return <></>;
-  }, [filtered, isShow, value]);
+  }, [filtered, isShow, value, onClick]);
 
   return (
     <div className="autocomplete">
       <input
         type="text"
         value={value}
-        {...register('options', {
-          onChange,
-        })}
         className="autocomplete__input"
-        placeholder="Author"
+        placeholder={name}
+        onChange={onChange}
       />
       {renderAutocomplete}
     </div>
