@@ -26,6 +26,10 @@ export const Form: React.FC<IForm> = ({ games }) => {
     console.log(data);
   };
 
+  const handleReset = () => {
+    reset();
+  };
+
   useEffect(() => {
     reset({ author: '', genre: '' });
   }, [reset]);
@@ -122,7 +126,7 @@ export const Form: React.FC<IForm> = ({ games }) => {
       )}
       <div className="form__buttons">
         <Button style="search" text="Filter" type="submit" onClick={() => submitForm} />
-        <Button style="clear" text="Clear" type="reset" onClick={() => reset()} />
+        <Button style="clear" text="Clear" type="reset" onClick={handleReset} />
       </div>
     </form>
   );
