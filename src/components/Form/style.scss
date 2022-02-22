@@ -1,11 +1,12 @@
 @import 'constants/const-styles';
+@import 'constants/media-queries';
 
 .form {
     display: flex;
+    position: relative;
     flex-direction: column;
     align-items: flex-start;
     padding: 0 10px;
-    position: relative;
 
     &__select {
         margin: 5px 0;
@@ -16,7 +17,7 @@
         
         &-menu {
             left: 10px;
-            width: 89%;
+            width: 91%;
         }
     }
 
@@ -75,5 +76,26 @@
         justify-content: space-between;
         width: 100%;
         margin: 20px 0;
+    }
+
+    @include media-table-large {
+
+        &__select-menu {
+            width: 97%;
+        }
+    }
+
+    @include media-mobile-large {
+
+        &__select-menu {
+            width: 96%;
+        }
+    }
+
+    @include media-mobile-small {
+        
+        &__select-menu {
+            width: 95%;
+        }
     }
 }
