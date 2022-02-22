@@ -32,11 +32,13 @@ export const AuthorContainer = () => {
   return isLoading ? (
     <p>Loading...</p>
   ) : (
-    authorInfo.map(({ id, name, description, logo }) => (
+    authorInfo.map(({ id, name, description, logo, location, popularity }) => (
       <Author
         key={id}
         name={name}
         description={description}
+        location={location}
+        popularity={popularity}
         logo={logo}
         authorGames={authorGames}
       />

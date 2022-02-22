@@ -10,13 +10,22 @@ import './style.scss';
 interface IAuthor {
   name: string;
   description: string;
+  location: string;
+  popularity: number;
   logo: string;
   authorGames: IGame[];
 }
 
 const DATA_LIMIT = 4;
 
-export const Author: React.FC<IAuthor> = ({ name, description, logo, authorGames }) => {
+export const Author: React.FC<IAuthor> = ({
+  name,
+  description,
+  logo,
+  authorGames,
+  location,
+  popularity,
+}) => {
   const { goToNextPage, goToPreviousPage, changePage, currentPage, page, getPaginatedData } =
     usePagination(authorGames, DATA_LIMIT);
 
@@ -26,18 +35,22 @@ export const Author: React.FC<IAuthor> = ({ name, description, logo, authorGames
         <img src={logo} className="author__logo" />
         <div className="author__info">
           <p className="author__name">{name}</p>
-          <p className="author__description">{description}</p>
+          <p className="author__location">Location: {location}</p>
+          <p className="author__popularity">Popularity: {popularity}%</p>
         </div>
       </div>
-      <Pagination
-        RenderComponent={Game}
-        goToNextPage={goToNextPage}
-        goToPreviousPage={goToPreviousPage}
-        currentPage={currentPage}
-        page={page}
-        getPaginatedData={getPaginatedData}
-        changePage={changePage}
-      />
+      <p className="author__description">{description}</p>
+      <div className="author__games">
+        <Pagination
+          RenderComponent={Game}
+          goToNextPage={goToNextPage}
+          goToPreviousPage={goToPreviousPage}
+          currentPage={currentPage}
+          page={page}
+          getPaginatedData={getPaginatedData}
+          changePage={changePage}
+        />
+      </div>
     </div>
   );
 };
