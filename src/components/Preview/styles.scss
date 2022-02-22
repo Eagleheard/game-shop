@@ -6,7 +6,7 @@
     display: flex;
     justify-content: flex-end;
     height: 357px;
-    width: 97%;
+    width: 100%;
     margin: 10px 0 20px;
     overflow: hidden;
 
@@ -46,6 +46,10 @@
       font-family: $lato;
       text-align: center;
       right: 70px;
+    }
+
+    @include media-desktop-large {
+      width: 100%;
     }
 
     @include media-table-large {

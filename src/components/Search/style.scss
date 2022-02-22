@@ -1,4 +1,5 @@
 @import 'constants/const-styles.scss';
+@import 'constants/media-queries.scss';
 
 .search {
   display: flex;
@@ -22,5 +23,24 @@
     border-radius: 0 5px 5px 0;
     padding: 0 15px;
     cursor: pointer;
+  }
+
+  @include media-mobile-large {
+
+    &__field {
+      width: 150px;
+      height: 30px;
+    }
+
+    &__btn {
+      height: 30px;
+    }
+  }
+
+  @include media-mobile-small {
+
+    &__field {
+      width: 120px;
+    }
   }
 }

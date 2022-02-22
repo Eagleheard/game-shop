@@ -125,8 +125,8 @@ export const Form: React.FC<IForm> = ({ games }) => {
         </div>
       )}
       <div className="form__buttons">
-        <Button style="search" text="Filter" type="submit" onClick={() => submitForm} />
         <Button style="clear" text="Clear" type="reset" onClick={handleReset} />
+        <Button style="search" text="Filter" type="submit" onClick={() => submitForm} />
       </div>
     </form>
   );
