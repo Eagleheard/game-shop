@@ -18,6 +18,8 @@
 
   &__select {
     align-self: flex-start;
+    padding: 0;
+    font-size: 20px;
   }
 
   @include media-desktop {
