@@ -44,4 +44,32 @@
       font-size: 20px;
     }
   }
+
+  @include media-table-large {
+
+    &__select-menu {
+      width: 25%;
+    }
+  }
+
+  @include media-table-small {
+
+    &__select-menu {
+      width: 35%;
+    }
+  }
+
+  @include media-mobile-large {
+    
+    &__select-menu {
+      width: 40%;
+    }
+  }
+
+  @include media-mobile-small {
+    
+    &__select-menu {
+      width: 45%;
+    }
+  }
 }
