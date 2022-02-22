@@ -1,0 +1,19 @@
+@import 'constants/const-styles.scss';
+
+.responsive-filter {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    background-color: $primary;
+    box-shadow: 0 0 10px $black;
+    width: 200px;
+    align-self: flex-start;
+    left: 0;
+
+    &__close-btn {
+        align-self: flex-end;
+        border: none;
+        outline: none;
+        background-color: transparent;
+    }
+}

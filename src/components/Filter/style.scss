@@ -1,0 +1,14 @@
+@import 'constants/const-styles';
+@import 'constants/media-queries.scss';
+
+.filter {
+    background-color: $primary;
+    box-shadow: 0 0 10px $black;
+    width: 15%;
+    align-self: flex-start;
+    margin: 90px 50px 0 0;
+
+    @include media-table-large {
+        display: none;
+    }
+}

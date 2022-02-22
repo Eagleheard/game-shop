@@ -28,9 +28,31 @@
     }
     
     &:disabled {
-      background-color: $search-primary;
-      border: 2px solid $search-primary;
-      pointer-events: none;
+        background-color: $search-primary;
+        border: 2px solid $search-primary;
+        pointer-events: none;
+    }
+
+    &__search {
+        height: 5%;
+        border: none;
+        font-family: $lato;
+        background: $search-primary;
+        color: $black;
+        border-radius: 5px;
+        padding: 8px;
+        cursor: pointer;
+    }
+
+    &__clear {
+        height: 5%;
+        font-family: $lato;
+        background: $primary;
+        color: $black;
+        border-radius: 5px;
+        border: 2px solid $search-primary;
+        padding: 5px;
+        cursor: pointer;
     }
 
     @include media-table-large {
@@ -40,6 +62,10 @@
         &__pagination-btn {
             width: 25px;
             height: 25px;
+        }
+
+        &__search, &__clear {
+            width: 30%;
         }
     }
 
@@ -52,6 +78,10 @@
             width: 20px;
             height: 20px;
         }
+
+        &__search, &__clear {
+            width: 30%;
+        }
     }
 
     @include media-mobile-small {
@@ -63,6 +93,12 @@
             width: 15px;
             height: 15px;
             font-size: 8px;
+        }
+
+        &__search, &__clear {
+            font-size: 12px;
+            height: 25px;
+            width: 30%;
         }
     }
 

@@ -1,4 +1,5 @@
-import React, { useState, ChangeEvent, ChangeEventHandler } from 'react';
+import React, { useRef, useState } from 'react';
+import { useClickOutside } from 'hooks';
 
 import './styles.scss';
 
@@ -9,27 +10,53 @@ interface ISelect {
     value: string;
     label: string;
   }[];
+  style: string;
+  selectedValue?: string;
   handleSelect: (value: string) => void;
 }
 
-export const Select: React.FC<ISelect> = ({ placeholder, options, handleSelect }) => {
-  const [value, setValue] = useState<string>();
+export const Select: React.FC<ISelect> = ({ placeholder, options, style, handleSelect }) => {
+  const [isListHidden, setIsListHidden] = useState<boolean>(true);
+  const [value, setValue] = useState<string>('');
+  const selectRef = useRef(null);
+  const outsideClick = () => {
+    setIsListHidden(true);
+  };
 
-  const handleChange: ChangeEventHandler = (event: ChangeEvent<HTMLInputElement>) => {
-    setValue(event.target.value);
-    handleSelect(event.target.value);
+  useClickOutside(selectRef, outsideClick);
+
+  const handleChange = (label: string) => {
+    setValue(label);
+    handleSelect(label);
+    setIsListHidden(true);
   };
 
   return (
-    <label className="select">
-      <select value={value} onChange={handleChange} className="select__item">
-        <option>{placeholder}</option>
-        {options.map(({ id, value, label }) => (
-          <option key={id} value={value} className="select__menu">
-            {label}
-          </option>
-        ))}
-      </select>
+    <label className={`select ${style}__select`}>
+      <div
+        className="select__input"
+        ref={selectRef}
+        onClick={() => setIsListHidden((prevValue) => !prevValue)}
+      >
+        {!value ? (
+          <p className={`select__placeholder ${style}__placeholder`}>{placeholder}</p>
+        ) : (
+          value
+        )}
+        <p>{isListHidden ? '↓' : '↑'}</p>
+      </div>
+      <div className={`select__menu ${style}__select-menu`}>
+        {!isListHidden &&
+          options.map(({ id, label }) => (
+            <div
+              key={id}
+              className={`select__menu-item ${style}__select-menu-item`}
+              onClick={() => handleChange(label)}
+            >
+              {label}
+            </div>
+          ))}
+      </div>
     </label>
   );
 };

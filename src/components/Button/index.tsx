@@ -6,12 +6,18 @@ interface IButton {
   text: string;
   onClick: () => void;
   style: string;
-  disabled: boolean;
+  disabled?: boolean;
+  type?: 'submit' | 'reset' | 'button';
 }
 
-export const Button: React.FC<IButton> = ({ text, onClick, style, disabled }) => {
+export const Button: React.FC<IButton> = ({ text, onClick, style, disabled, type }) => {
   return (
-    <button onClick={onClick} className={`navigation navigation__${style}`} disabled={disabled}>
+    <button
+      type={type}
+      onClick={onClick}
+      className={`navigation navigation__${style}`}
+      disabled={disabled}
+    >
       {text}
     </button>
   );
