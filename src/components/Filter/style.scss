@@ -8,6 +8,7 @@
     align-self: flex-start;
     margin: 90px 50px 0 0;
 
+<<<<<<< HEAD
     &__form {
         display: flex;
         flex-direction: column;
@@ -63,6 +64,8 @@
         width: 25%;
     }
 
+=======
+>>>>>>> master
     @include media-table-large {
         display: none;
     }

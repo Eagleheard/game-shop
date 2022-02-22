@@ -13,11 +13,17 @@
     &__options {
         display: grid;
         margin-top: 20px;
+        width: 100%;
     }
 
     &__select {
         justify-self: flex-end;
+<<<<<<< HEAD
         margin-right: 20px;
+=======
+        font-size: 20px;
+        width: 19%;
+>>>>>>> master
     }
 
     .card {
