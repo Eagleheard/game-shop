@@ -23,13 +23,13 @@ export const Autocomplete: React.FC<IAutocomplete> = ({ options, name, onChangeI
     setFiltered(newFilteredSuggestions);
     setIsShow(true);
     setValue(e.currentTarget.value);
-    onChangeInput(e.currentTarget.value);
   };
 
   const onClick = (e: React.MouseEvent<HTMLElement>) => {
     setFiltered([]);
     setIsShow(false);
     setValue(e.currentTarget.innerText);
+    onChangeInput(e.currentTarget.innerText);
   };
 
   const renderAutocomplete = useMemo(() => {
@@ -55,7 +55,7 @@ export const Autocomplete: React.FC<IAutocomplete> = ({ options, name, onChangeI
       );
     }
     return <></>;
-  }, [filtered, isShow, value]);
+  }, [filtered, isShow, value, onClick]);
 
   return (
     <div className="autocomplete">

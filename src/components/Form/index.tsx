@@ -24,18 +24,14 @@ export const Form: React.FC<IForm> = ({ games }) => {
 
   const submitForm: SubmitHandler<FieldValues> = (data) => {
     console.log(data);
-    reset();
   };
 
+  useEffect(() => {
+    reset({ author: '', genre: '' });
+  }, [reset]);
+
   return (
-    <form
-      onSubmit={handleSubmit(submitForm)}
-      onReset={(event) => {
-        event.preventDefault();
-        reset({ author: '', genre: '' });
-      }}
-      className="form"
-    >
+    <form onSubmit={handleSubmit(submitForm)} className="form">
       <Controller
         name="author"
         control={control}
@@ -126,7 +122,7 @@ export const Form: React.FC<IForm> = ({ games }) => {
       )}
       <div className="form__buttons">
         <Button style="search" text="Filter" type="submit" onClick={() => submitForm} />
-        <Button style="clear" text="Clear" type="reset" onClick={() => reset} />
+        <Button style="clear" text="Clear" type="reset" onClick={() => reset()} />
       </div>
     </form>
   );
