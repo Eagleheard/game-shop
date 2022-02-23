@@ -32,9 +32,25 @@
         padding: 0 10px;
     }
 
-    &__genre, &__author {
+    &__genre {
         font-size: 16px;
         padding: 10px;
+    }
+
+    &__author {
+        font-size: 16px;
+        padding: 10px;
+        text-decoration: none;
+        color: $black;
+
+        &--link {
+            text-decoration: none;
+            color: $black;
+            
+            &:hover {
+                color: $hover-link;
+            }
+        }
     }
 
     @include media-desktop-large {
