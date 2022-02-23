@@ -32,16 +32,18 @@ export const Author: React.FC<IAuthor> = ({
   return (
     <div className="author">
       <div className="author__container">
-        <img src={logo} className="author__logo" />
         <div className="author__info">
-          <p className="author__name">{name}</p>
-          <p className="author__location">Location: {location}</p>
-          <p className="author__popularity">Popularity: {popularity}%</p>
+          <img src={logo} className="author__logo" />
+          <div className="about">
+            <p className="about__name">{name}</p>
+            <p className="about__location">Location: {location}</p>
+            <p className="about__popularity">Popularity: {popularity}%</p>
+          </div>
         </div>
-      </div>
-      <div className="description">
-        <p className="description__label">Description: </p>
-        <p className="description__text">{description}</p>
+        <div className="description">
+          <p className="description__label">Description: </p>
+          <p className="description__text">{description}</p>
+        </div>
       </div>
       <div className="author__games">
         <Pagination
