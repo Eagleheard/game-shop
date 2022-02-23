@@ -39,7 +39,10 @@ export const Author: React.FC<IAuthor> = ({
           <p className="author__popularity">Popularity: {popularity}%</p>
         </div>
       </div>
-      <p className="author__description">{description}</p>
+      <div className="description">
+        <p className="description__label">Description: </p>
+        <p className="description__text">{description}</p>
+      </div>
       <div className="author__games">
         <Pagination
           RenderComponent={Game}
