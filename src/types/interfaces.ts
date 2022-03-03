@@ -23,5 +23,5 @@ export interface IAuthor {
   location: string;
   popularity: number;
   description: string;
-  logo: string;
+  image: string;
 }
