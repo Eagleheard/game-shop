@@ -60,7 +60,7 @@ export const Preview = () => {
           ></img>
           <div className="preview__description">
             <h1 className="preview__name">{name}</h1>
-            <p className="preview__genre">Genre: {genre}</p>
+            <p className="preview__genre">Genre: {genre.genreName}</p>
             <h1 className="preview__price">Price: {price}</h1>
           </div>
         </div>

@@ -28,7 +28,7 @@ export const Store = () => {
     usePagination(games, DATA_LIMIT);
 
   const fillGames = async () => {
-    const data = await fetchGames();
+    const data = await fetchGames(currentPage, DATA_LIMIT);
     setGames(data);
   };
 
