@@ -11,7 +11,7 @@
     .component {
       display: grid;
       grid-template-rows: auto;
-      grid-template-columns: repeat(auto-fill, 23%);
+      grid-template-columns: repeat(auto-fill, 210px);
       grid-template-areas: "game game game game";
       justify-content: space-between;
       width: 100%;

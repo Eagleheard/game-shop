@@ -16,7 +16,7 @@ export const AuthorContainer = () => {
     const data = await fetchAuthor(id);
     setAuthorInfo(data);
   }, [id]);
-  console.log(authorGames);
+
   const searchAuthorGames = useCallback(async () => {
     const data = await fetchGameByAuthor(id);
     setAuthorGames(data);

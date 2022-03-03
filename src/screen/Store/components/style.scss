@@ -8,6 +8,7 @@
     &__container {
         display: flex;
         flex-direction: column;
+        width: 70%;
     }
 
     &__options {
@@ -23,8 +24,7 @@
     }
 
     .card {
-        margin: 20px;
-        width: 90%;
+        margin-top: 20px;
     }
 
     &__filter-icon {
