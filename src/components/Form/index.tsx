@@ -30,8 +30,8 @@ export const Form: React.FC<IForm> = ({ games }) => {
   } = useForm();
 
   const fillGenres = async () => {
-    const data = await fetchGenres();
-    setGenres(data);
+    const response = await fetchGenres();
+    setGenres(response.data);
   };
 
   const submitForm: SubmitHandler<FieldValues> = (data) => {
