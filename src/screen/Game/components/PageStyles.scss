@@ -11,7 +11,6 @@
         width: 65%;
         display: flex;
         flex-direction: column;
-        justify-content: space-around;
         align-items: center;
         padding: 20px 0;
         margin-top: 20px;
@@ -19,19 +18,34 @@
     }
 
     &__logo {
-        width: 25%;
+        width: 35%;
     }
 
     &__info {
         display: flex;
         flex-direction: row;
-        justify-content: space-around;
+        justify-content: space-between;
         font-family: $lato;
+        width: 90%;
+    }
+
+    &__price {
+        font-family: $lato;
+        font-size: 18px;
+    }
+
+    &__buying {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
     }
 
     .about {
-        align-self: center;
-        align-items: flex-start;
+        align-items: center;
+        justify-content: space-between;
+        width: 30%;
 
         &__name {
             font-size: 24px;
@@ -40,12 +54,33 @@
             align-self: center;
             color: $secondary;
         }
+
+        &__author {
+            font-size: 16px;
+            text-decoration: none;
+            margin-top: 5px;
+            color: $black;
+    
+            &--link {
+                text-decoration: none;
+                color: $black;
+                
+                &:hover {
+                    color: $hover-link;
+                }
+            }
+        }
+
+        &__popularity {
+            font-size: 16px;
+            margin-top: 5px;
+        }
     }
 
     .description {
         text-align: left;
         margin-top: 30px;
-        padding: 0 20px;
+        width: 90%;
 
         &__label {
             font-family: $lato;
@@ -58,11 +93,6 @@
         &__text {
             font-family: $lato;
         }
-    }
-
-    &__games {
-        margin-top: 30px;
-        width: 65%;
     }
 
     @include media-desktop {

@@ -58,6 +58,19 @@
         cursor: pointer;
     }
 
+    &__buy {
+        border: none;
+        font-family: $lato;
+        background: $search-primary;
+        color: $black;
+        border-radius: 5px;
+        padding: 3px;
+        margin: 0;
+        width: 50%;
+        height: 30px;
+        cursor: pointer;
+    }
+
     @include media-table-large {
         width: 35px;
         height: 35px;
