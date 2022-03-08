@@ -2,7 +2,7 @@ import { Pagination } from 'components';
 import { usePagination } from 'hooks';
 import React from 'react';
 
-import { Game } from 'screen';
+import { Card } from 'screen';
 import { IGame } from 'types/interfaces';
 
 import './style.scss';
@@ -47,7 +47,7 @@ export const Author: React.FC<IAuthor> = ({
       </div>
       <div className="author__games">
         <Pagination
-          RenderComponent={Game}
+          RenderComponent={Card}
           goToNextPage={goToNextPage}
           goToPreviousPage={goToPreviousPage}
           currentPage={currentPage}

@@ -1,26 +1,25 @@
+import { Button } from 'components';
 import React from 'react';
-
-import './style.scss';
-
 import { IGame } from 'types/interfaces';
-import { NavLink } from 'react-router-dom';
 
-export const Game = ({ name, genre, author, price, logo }: IGame) => {
+import './PageStyles.scss';
+
+export const GamePage: React.FC<IGame> = ({ name, image, popularity, price }) => {
   return (
-    <div className="card">
-      <img className="card__img" src={logo} alt="logo"></img>
-      <div className="card__description">
-        <div className="card__main-information">
-          <p className="card__name">{name}</p>
-          <p className="card__genre">{genre}</p>
+    <div className="game">
+      <div className="game__container">
+        <div className="game__info">
+          <img src={image} className="game__logo" />
+          <div className="about">
+            <p className="about__name">{name}</p>
+            <p className="about__location">Price: {price}$</p>
+            <p className="about__popularity">Popularity: {popularity}%</p>
+          </div>
         </div>
-        <div>
-          <p className="card__price">Price: {price}</p>
-          <p className="card__author">
-            <NavLink className="card__author--link" to={`/${author}`}>
-              {author}
-            </NavLink>
-          </p>
+        <Button text="Buy now" onClick={() => alert('hi')} style="search" />
+        <Button text="Add to card" onClick={() => alert('hi')} style="clear" />
+        <div className="description">
+          <p className="description__label">Description: </p>
         </div>
       </div>
     </div>

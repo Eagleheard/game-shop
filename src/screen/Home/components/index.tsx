@@ -3,7 +3,7 @@ import { fetchGames } from 'api/fetchGames';
 import { fetchNewGames } from 'api/fetchNewGames';
 import { fetchPopularGames } from 'api/fetchPopularGames';
 
-import { Game } from 'screen';
+import { Card } from 'screen';
 import { usePagination } from 'hooks';
 import { Pagination, Select, Preview } from 'components';
 import { IGame } from 'types/interfaces';
@@ -79,7 +79,7 @@ export const Home = () => {
           <div>Loading</div>
         ) : (
           <Pagination
-            RenderComponent={Game}
+            RenderComponent={Card}
             goToNextPage={goToNextPage}
             goToPreviousPage={goToPreviousPage}
             currentPage={currentPage}
