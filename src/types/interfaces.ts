@@ -2,7 +2,7 @@ export interface IGame {
   id: number;
   name: string;
   genre: {
-    genreName: string;
+    name: string;
     id: number;
   };
   author: {

@@ -13,7 +13,7 @@ interface IForm {
 
 interface IGenre {
   id: number;
-  genreName: string;
+  name: string;
 }
 
 export const Form: React.FC<IForm> = ({ games }) => {
@@ -66,10 +66,10 @@ export const Form: React.FC<IForm> = ({ games }) => {
         render={({ field: { onChange } }) => (
           <Select
             placeholder="Genre"
-            options={genres.map(({ id, genreName }) => ({
+            options={genres.map(({ id, name }) => ({
               id,
-              value: genreName,
-              label: genreName,
+              value: name,
+              label: name,
             }))}
             style="form"
             handleSelect={onChange}
