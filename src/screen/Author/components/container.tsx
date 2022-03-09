@@ -13,13 +13,21 @@ export const AuthorContainer = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const searchAuthor = useCallback(async () => {
-    const data = await fetchAuthor(id);
-    setAuthorInfo(data);
+    try {
+      const data = await fetchAuthor(id);
+      setAuthorInfo(data);
+    } catch (e) {
+      console.log(e);
+    }
   }, [id]);
 
   const searchAuthorGames = useCallback(async () => {
-    const data = await fetchGameByAuthor(id);
-    setAuthorGames(data);
+    try {
+      const data = await fetchGameByAuthor(id);
+      setAuthorGames(data);
+    } catch (e) {
+      console.log(e);
+    }
   }, [id]);
 
   useEffect(() => {
