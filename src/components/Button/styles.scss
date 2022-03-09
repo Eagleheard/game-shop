@@ -83,6 +83,10 @@
         &__search, &__clear {
             width: 30%;
         }
+
+        &__buy {
+            width: 40%;
+        }
     }
 
     @include media-mobile-large {
@@ -97,6 +101,10 @@
 
         &__search, &__clear {
             width: 30%;
+        }
+
+        &__buy {
+            width: 50%;
         }
     }
 
@@ -115,6 +123,11 @@
             font-size: 12px;
             height: 25px;
             width: 30%;
+        }
+
+        &__buy {
+            width: 50%;
+            font-size: 12px;
         }
     }
 

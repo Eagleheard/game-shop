@@ -55,7 +55,7 @@
             color: $secondary;
         }
 
-        &__author {
+        &__author, &__genre {
             font-size: 16px;
             text-decoration: none;
             margin-top: 5px;
@@ -123,6 +123,47 @@
 
         &__games {
             width: 90%;
+        }
+    }
+
+    @include media-table-small {
+
+        &__price {
+            font-size: 14px;
+        }
+
+        .about {
+            &__author, &__genre, &__popularity {
+                font-size: 14px;
+            }
+        }
+    }
+
+    @include media-mobile-large {
+        
+        .about {
+            width: 40%;
+        }
+    }
+
+    @include media-mobile-small {
+
+        &__logo {
+            width: 50%;
+        }
+
+        &__price {
+            font-size: 12px;
+        }
+
+        .about {
+            &__name {
+                font-size: 16px;
+            }
+            
+            &__author, &__genre, &__popularity {
+                font-size: 12px;
+            }
         }
     }
 }
