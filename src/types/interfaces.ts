@@ -11,15 +11,9 @@ export interface IGame {
   };
   price: string;
   image: string;
-<<<<<<< HEAD
   preview?: string;
   isPreview?: boolean;
   new?: boolean;
-=======
-  preview: string;
-  isPreview: boolean;
-  new: boolean;
->>>>>>> master
   popularity: number;
   description?: string;
 }

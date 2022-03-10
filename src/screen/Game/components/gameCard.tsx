@@ -14,13 +14,13 @@ export const Card = ({ id, name, genre, author, price, image }: IGame) => {
           <NavLink className="card__name--link" to={`/game/${id}`}>
             <p className="card__name">{name}</p>
           </NavLink>
-          <p className="card__genre">{genre}</p>
+          <p className="card__genre">{genre.name}</p>
         </div>
         <div>
           <p className="card__price">Price: {price}</p>
           <p className="card__author">
-            <NavLink className="card__author--link" to={`/${author}`}>
-              {author}
+            <NavLink className="card__author--link" to={`/author/${author.id}`}>
+              {author.name}
             </NavLink>
           </p>
         </div>
