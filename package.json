@@ -75,5 +75,6 @@
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/Eagleheard/game-shop/issues"
-  }
+  },
+  "proxy": "http://localhost:7000/api"
 }

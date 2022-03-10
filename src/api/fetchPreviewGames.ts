@@ -4,8 +4,8 @@ import { IGame } from 'types/interfaces';
 
 export const fetchPreviewGames = async (): Promise<IGame[]> => {
   try {
-    const { data } = await axios.get('./store.json');
-    return data.filter((game: IGame) => game.isPreview);
+    const { data } = await axios.get('/game/?isPreview=true');
+    return data;
   } catch (err) {
     throw err;
   }

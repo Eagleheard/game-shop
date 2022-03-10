@@ -20,11 +20,16 @@ export const Preview = () => {
     setPreviewPage((prevValue) => prevValue + 1);
   };
 
-  useEffect(() => {
-    const fillPreviewGames = async () => {
+  const fillPreviewGames = async () => {
+    try {
       const data = await fetchPreviewGames();
       return setPreviewGames(data);
-    };
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  useEffect(() => {
     fillPreviewGames();
   }, []);
 
@@ -60,7 +65,7 @@ export const Preview = () => {
           ></img>
           <div className="preview__description">
             <h1 className="preview__name">{name}</h1>
-            <p className="preview__genre">Genre: {genre}</p>
+            <p className="preview__genre">Genre: {genre.name}</p>
             <h1 className="preview__price">Price: {price}</h1>
           </div>
         </div>

@@ -2,10 +2,10 @@ import axios from 'axios';
 
 import { IAuthor } from 'types/interfaces';
 
-export const fetchAuthor = async (name?: string): Promise<IAuthor[]> => {
+export const fetchAuthor = async (id?: string): Promise<IAuthor[]> => {
   try {
-    const { data } = await axios.get('./authorStore.json');
-    return data.filter((author: { name: string }) => author.name === name);
+    const { data } = await axios.get(`/author/${id}`);
+    return [data];
   } catch (err) {
     throw err;
   }

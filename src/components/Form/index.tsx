@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Controller, FieldValues, SubmitHandler, useForm } from 'react-hook-form';
+import { fetchGenres } from 'api/fetchGenres';
 
 import { Autocomplete, Checkbox, Select, Button } from 'components';
 import { IGame } from 'types/interfaces';
@@ -10,8 +11,14 @@ interface IForm {
   games: IGame[];
 }
 
+interface IGenre {
+  id: number;
+  name: string;
+}
+
 export const Form: React.FC<IForm> = ({ games }) => {
   const [isDiskChecked, setIsDiskChecked] = useState<boolean>(false);
+  const [genres, setGenres] = useState<IGenre[]>([]);
 
   const {
     register,
@@ -21,6 +28,15 @@ export const Form: React.FC<IForm> = ({ games }) => {
     reset,
     formState: { errors },
   } = useForm();
+
+  const fillGenres = async () => {
+    try {
+      const { data } = await fetchGenres();
+      setGenres(data);
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
   const submitForm: SubmitHandler<FieldValues> = (data) => {
     console.log(data);
@@ -32,6 +48,7 @@ export const Form: React.FC<IForm> = ({ games }) => {
 
   useEffect(() => {
     reset({ author: '', genre: '' });
+    fillGenres();
   }, [reset]);
 
   return (
@@ -53,12 +70,11 @@ export const Form: React.FC<IForm> = ({ games }) => {
         render={({ field: { onChange } }) => (
           <Select
             placeholder="Genre"
-            options={[
-              { id: 0, label: 'Action', value: 'Action' },
-              { id: 1, label: 'RPG', value: 'RPG' },
-              { id: 2, label: 'Racing', value: 'Racing' },
-              { id: 3, label: 'Adventure', value: 'Adventure' },
-            ]}
+            options={genres.map(({ id, name }) => ({
+              id,
+              value: name,
+              label: name,
+            }))}
             style="form"
             handleSelect={onChange}
           />

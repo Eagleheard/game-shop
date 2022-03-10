@@ -7,20 +7,28 @@ import { IAuthor, IGame } from 'types/interfaces';
 import { Author } from '.';
 
 export const AuthorContainer = () => {
-  const { author } = useParams<string>();
+  const { id } = useParams<string>();
   const [authorInfo, setAuthorInfo] = useState<IAuthor[]>([]);
   const [authorGames, setAuthorGames] = useState<IGame[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const searchAuthor = useCallback(async () => {
-    const data = await fetchAuthor(author);
-    setAuthorInfo(data);
-  }, [author]);
+    try {
+      const data = await fetchAuthor(id);
+      setAuthorInfo(data);
+    } catch (e) {
+      console.log(e);
+    }
+  }, [id]);
 
   const searchAuthorGames = useCallback(async () => {
-    const data = await fetchGameByAuthor(author);
-    setAuthorGames(data);
-  }, [author]);
+    try {
+      const data = await fetchGameByAuthor(id);
+      setAuthorGames(data);
+    } catch (e) {
+      console.log(e);
+    }
+  }, [id]);
 
   useEffect(() => {
     setIsLoading(true);
@@ -32,14 +40,14 @@ export const AuthorContainer = () => {
   return isLoading ? (
     <p>Loading...</p>
   ) : (
-    authorInfo.map(({ id, name, description, logo, location, popularity }) => (
+    authorInfo.map(({ id, name, description, image, location, popularity }) => (
       <Author
         key={id}
         name={name}
         description={description}
         location={location}
         popularity={popularity}
-        logo={logo}
+        logo={image}
         authorGames={authorGames}
       />
     ))
