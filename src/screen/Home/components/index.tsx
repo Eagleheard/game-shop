@@ -24,18 +24,30 @@ export const Home = () => {
     usePagination(games, DATA_LIMIT);
 
   const fillGames = async () => {
-    const data = await fetchGames();
-    setGames(data);
+    try {
+      const data = await fetchGames(currentPage, DATA_LIMIT);
+      setGames(data);
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   const setNewGames = async () => {
-    const newGames = await fetchNewGames();
-    setGames(newGames);
+    try {
+      const newGames = await fetchNewGames();
+      setGames(newGames);
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   const setPopularGames = async () => {
-    const popularGames = await fetchPopularGames();
-    setGames(popularGames);
+    try {
+      const popularGames = await fetchPopularGames();
+      setGames(popularGames);
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   const handleSelect = (value: string) => {

@@ -1,10 +1,16 @@
 export interface IGame {
   id: number;
   name: string;
-  genre: string;
-  author: string;
+  genre: {
+    name: string;
+    id: number;
+  };
+  author: {
+    name: string;
+    id: number;
+  };
   price: string;
-  logo: string;
+  image: string;
   preview: string;
   isPreview: boolean;
   new: boolean;
@@ -17,5 +23,5 @@ export interface IAuthor {
   location: string;
   popularity: number;
   description: string;
-  logo: string;
+  image: string;
 }
