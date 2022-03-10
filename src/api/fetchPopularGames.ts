@@ -4,7 +4,7 @@ import { IGame } from 'types/interfaces';
 
 export const fetchPopularGames = async (): Promise<IGame[]> => {
   try {
-    const { data } = await axios.get('/game?isOrder=popularity');
+    const { data } = await axios.get('/game?order=popularity');
     return data;
   } catch (err) {
     throw err;
