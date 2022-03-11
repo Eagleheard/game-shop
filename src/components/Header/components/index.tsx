@@ -3,6 +3,7 @@ import { NavLink } from 'react-router-dom';
 
 import { Search } from 'components/Search';
 import { ResponsiveHeader } from './responsive';
+import { Login } from 'components/Sign';
 
 import logo from 'assets/logo.png';
 import menu from 'assets/menu.png';
@@ -11,6 +12,7 @@ import './style.scss';
 
 export const Header = () => {
   const [isNavVisible, setNavVisibility] = useState<boolean>(false);
+  const [isSignVisible, setIsSignVisible] = useState<boolean>(false);
 
   return (
     <header className="header">
@@ -37,7 +39,12 @@ export const Header = () => {
       {isNavVisible && <ResponsiveHeader setNavVisibility={setNavVisibility} />}
       <Search />
       <div className="header__sign">
-        <button className="header__sign-in  link"> Sign in</button>
+        <button
+          className="header__sign-in  link"
+          onClick={() => setIsSignVisible((prevValue) => !prevValue)}
+        >
+          Sign in
+        </button>
         <button className="header__sign-up  link"> Sign up</button>
       </div>
       <img
@@ -46,6 +53,7 @@ export const Header = () => {
         onClick={() => setNavVisibility((prevCount) => !prevCount)}
         src={menu}
       ></img>
+      {isSignVisible && <Login handleClose={() => setIsSignVisible(false)} />}
     </header>
   );
 };
