@@ -10,7 +10,7 @@ export interface IGame {
     id: number;
   };
   price: string;
-  image: string;
+  image?: string;
   preview?: string;
   isPreview?: boolean;
   new?: boolean;

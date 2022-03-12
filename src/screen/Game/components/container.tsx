@@ -24,12 +24,12 @@ export const GamePageContainer = () => {
   return isLoading ? (
     <p>Loading...</p>
   ) : (
-    gameInfo.map(({ id, name, image, popularity, genre, author, price, description }) => (
+    gameInfo.map(({ id, name, preview, popularity, genre, author, price, description }) => (
       <GamePage
         key={id}
         name={name}
         popularity={popularity}
-        image={image}
+        preview={preview}
         genre={genre}
         author={author}
         price={price}

@@ -8,7 +8,7 @@ import './PageStyles.scss';
 
 export const GamePage: React.FC<IGame> = ({
   name,
-  image,
+  preview,
   popularity,
   price,
   genre,
@@ -19,9 +19,9 @@ export const GamePage: React.FC<IGame> = ({
     <div className="game">
       <div className="game__container">
         <div className="game__info">
-          <img src={image} className="game__logo" />
+          <img src={preview} className="game__logo" />
           <div className="about">
-            <div>
+            <div className="about__property">
               <p className="about__name">{name}</p>
               <p className="about__genre">Genre: {genre.name}</p>
               <p className="about__author">
