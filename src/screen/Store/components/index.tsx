@@ -27,9 +27,9 @@ export const Store = () => {
   const { goToNextPage, goToPreviousPage, changePage, currentPage, page, getPaginatedData } =
     usePagination(games, DATA_LIMIT);
 
-  const fillGames = async () => {
+  const fillGames = async (params?: object) => {
     try {
-      const data = await fetchGames(currentPage, DATA_LIMIT);
+      const data = await fetchGames(currentPage, DATA_LIMIT, { params });
       setGames(data);
     } catch (e) {
       console.log(e);
@@ -79,10 +79,10 @@ export const Store = () => {
     fillGames();
     setIsLoading(false);
   }, []);
-
+  console.log(games);
   return (
     <div className="store">
-      <Filter games={games} />
+      <Filter games={games} fillGames={fillGames} />
       {isFilterVisible && (
         <ResponsiveFilter games={games} handleClose={() => setIsFilterVisible(false)} />
       )}

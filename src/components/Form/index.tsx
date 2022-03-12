@@ -9,6 +9,7 @@ import './style.scss';
 
 interface IForm {
   games: IGame[];
+  fillGames: (params?: object) => void;
 }
 
 interface IGenre {
@@ -16,7 +17,7 @@ interface IGenre {
   name: string;
 }
 
-export const Form: React.FC<IForm> = ({ games }) => {
+export const Form: React.FC<IForm> = ({ games, fillGames }) => {
   const [isDiskChecked, setIsDiskChecked] = useState<boolean>(false);
   const [genres, setGenres] = useState<IGenre[]>([]);
 
@@ -38,23 +39,24 @@ export const Form: React.FC<IForm> = ({ games }) => {
     }
   };
 
-  const submitForm: SubmitHandler<FieldValues> = (data) => {
-    console.log(data);
+  const submitForm: SubmitHandler<FieldValues> = (params) => {
+    fillGames(params);
+    console.log(params);
   };
 
   const handleReset = () => {
     reset();
+    fillGames();
   };
 
   useEffect(() => {
-    reset({ author: '', genre: '' });
     fillGenres();
   }, [reset]);
 
   return (
     <form onSubmit={handleSubmit(submitForm)} className="form">
       <Controller
-        name="author"
+        name="author.name"
         control={control}
         render={({ field: { onChange } }) => (
           <Autocomplete
@@ -65,7 +67,7 @@ export const Form: React.FC<IForm> = ({ games }) => {
         )}
       />
       <Controller
-        name="genre"
+        name="genre.name"
         control={control}
         render={({ field: { onChange } }) => (
           <Select

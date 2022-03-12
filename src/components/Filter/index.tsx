@@ -7,12 +7,13 @@ import './style.scss';
 
 interface IFilter {
   games: IGame[];
+  fillGames: (params?: object) => void;
 }
 
-export const Filter: React.FC<IFilter> = ({ games }) => {
+export const Filter: React.FC<IFilter> = ({ games, fillGames }) => {
   return (
     <div className="filter">
-      <Form games={games} />
+      <Form games={games} fillGames={fillGames} />
     </div>
   );
 };
