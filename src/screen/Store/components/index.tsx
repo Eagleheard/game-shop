@@ -1,7 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { fetchGames } from 'api/fetchGames';
-import { fetchPopularGames } from 'api/fetchPopularGames';
-import { fetchNewGames } from 'api/fetchNewGames';
 
 import { Game } from 'screen';
 import { Pagination, Select, ResponsiveFilter } from 'components';
@@ -22,37 +20,24 @@ enum sortOptions {
 
 export const Store = () => {
   const [games, setGames] = useState<IGame[]>([]);
+  const [pageValue, setPageValue] = useState<number>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isFilterVisible, setIsFilterVisible] = useState<boolean>(false);
   const { goToNextPage, goToPreviousPage, changePage, currentPage, page, getPaginatedData } =
-    usePagination(games, DATA_LIMIT);
+    usePagination(games, DATA_LIMIT, pageValue);
 
-  const fillGames = async () => {
-    try {
-      const data = await fetchGames(currentPage, DATA_LIMIT);
-      setGames(data);
-    } catch (e) {
-      console.log(e);
-    }
-  };
-
-  const setNewGames = async () => {
-    try {
-      const newGames = await fetchNewGames();
-      setGames(newGames);
-    } catch (e) {
-      console.log(e);
-    }
-  };
-
-  const setPopularGames = async () => {
-    try {
-      const popularGames = await fetchPopularGames();
-      setGames(popularGames);
-    } catch (e) {
-      console.log(e);
-    }
-  };
+  const fillGames = useCallback(
+    async (params?: object) => {
+      try {
+        const { data } = await fetchGames(currentPage, DATA_LIMIT, { params });
+        setGames(data.rows);
+        setPageValue(data.count);
+      } catch (e) {
+        console.log(e);
+      }
+    },
+    [currentPage],
+  );
 
   const setFilter = () => {
     setIsFilterVisible((prevValue) => !prevValue);
@@ -64,21 +49,22 @@ export const Store = () => {
         fillGames();
         break;
       case sortOptions.NEW_GAMES:
-        setNewGames();
+        fillGames({ isNew: true });
         break;
       case sortOptions.POPULAR_GAMES:
-        setPopularGames();
+        fillGames({ order: 'popularity' });
         break;
       default:
         fillGames();
     }
+    changePage(1);
   };
 
   useEffect(() => {
     setIsLoading(true);
     fillGames();
     setIsLoading(false);
-  }, []);
+  }, [fillGames]);
 
   return (
     <div className="store">

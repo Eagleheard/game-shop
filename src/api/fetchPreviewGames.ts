@@ -5,7 +5,7 @@ import { IGame } from 'types/interfaces';
 export const fetchPreviewGames = async (): Promise<IGame[]> => {
   try {
     const { data } = await axios.get('/game/?isPreview=true');
-    return data;
+    return data.rows;
   } catch (err) {
     throw err;
   }
