@@ -5,11 +5,20 @@ import './responsive-style.scss';
 
 interface ResponsiveHeaderProps {
   setNavVisibility: (navVisible: boolean) => void;
+  setIsSignInVisible: () => void;
 }
 
-export const ResponsiveHeader = ({ setNavVisibility }: ResponsiveHeaderProps) => {
+export const ResponsiveHeader = ({
+  setNavVisibility,
+  setIsSignInVisible,
+}: ResponsiveHeaderProps) => {
   const handleClick = () => {
     setNavVisibility(false);
+  };
+
+  const handleLogin = () => {
+    setNavVisibility(false);
+    setIsSignInVisible();
   };
 
   return (
@@ -25,12 +34,9 @@ export const ResponsiveHeader = ({ setNavVisibility }: ResponsiveHeaderProps) =>
           About
         </NavLink>
         <div className="mobile-nav__split"></div>
-        <NavLink to="/sign-in" className="mobile-nav__item  link" onClick={handleClick}>
-          Sign In
-        </NavLink>
-        <NavLink to="/sign-up" className="mobile-nav__item  link" onClick={handleClick}>
-          Sign Up
-        </NavLink>
+        <button className="header__login  link" onClick={handleLogin}>
+          Login
+        </button>
       </nav>
     </div>
   );

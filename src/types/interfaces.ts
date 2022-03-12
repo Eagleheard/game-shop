@@ -25,3 +25,7 @@ export interface IAuthor {
   description: string;
   image: string;
 }
+
+export interface ISign {
+  handleSwitch: () => void;
+}

@@ -3,7 +3,7 @@ import { NavLink } from 'react-router-dom';
 
 import { Search } from 'components/Search';
 import { ResponsiveHeader } from './responsive';
-import { Login } from 'components/Sign';
+import { SignIn, SignUp, Portal } from 'components';
 
 import logo from 'assets/logo.png';
 import menu from 'assets/menu.png';
@@ -12,7 +12,18 @@ import './style.scss';
 
 export const Header = () => {
   const [isNavVisible, setNavVisibility] = useState<boolean>(false);
-  const [isSignVisible, setIsSignVisible] = useState<boolean>(false);
+  const [isSignInVisible, setIsSignInVisible] = useState<boolean>(false);
+  const [isSignUpVisible, setIsSignUpVisible] = useState<boolean>(false);
+
+  const handleSwitch = () => {
+    if (isSignInVisible) {
+      setIsSignInVisible(false);
+      setIsSignUpVisible(true);
+    } else if (isSignUpVisible) {
+      setIsSignInVisible(true);
+      setIsSignUpVisible(false);
+    }
+  };
 
   return (
     <header className="header">
@@ -36,16 +47,21 @@ export const Header = () => {
           </li>
         </ul>
       </nav>
-      {isNavVisible && <ResponsiveHeader setNavVisibility={setNavVisibility} />}
+      {isNavVisible && (
+        <ResponsiveHeader
+          setNavVisibility={setNavVisibility}
+          setIsSignInVisible={() => setIsSignInVisible((prevValue) => !prevValue)}
+        />
+      )}
       <Search />
       <div className="header__sign">
         <button
-          className="header__sign-in  link"
-          onClick={() => setIsSignVisible((prevValue) => !prevValue)}
+          className="header__login  link"
+          onClick={() => setIsSignInVisible((prevValue) => !prevValue)}
+          disabled={isSignUpVisible}
         >
-          Sign in
+          Login
         </button>
-        <button className="header__sign-up  link"> Sign up</button>
       </div>
       <img
         alt="burger"
@@ -53,7 +69,24 @@ export const Header = () => {
         onClick={() => setNavVisibility((prevCount) => !prevCount)}
         src={menu}
       ></img>
-      {isSignVisible && <Login handleClose={() => setIsSignVisible(false)} />}
+      {isSignInVisible && (
+        <Portal
+          Component={SignIn}
+          isOpen={isSignInVisible}
+          text="Sign In"
+          handleClose={() => setIsSignInVisible(false)}
+          handleSwitch={handleSwitch}
+        />
+      )}
+      {isSignUpVisible && (
+        <Portal
+          Component={SignUp}
+          isOpen={isSignUpVisible}
+          text="Sign Up"
+          handleClose={() => setIsSignUpVisible(false)}
+          handleSwitch={handleSwitch}
+        />
+      )}
     </header>
   );
 };
