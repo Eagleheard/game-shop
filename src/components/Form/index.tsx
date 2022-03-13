@@ -46,6 +46,7 @@ export const Form: React.FC<IForm> = ({ games, fillGames }) => {
 
   const handleReset = () => {
     reset();
+    setIsDiskChecked(false);
     fillGames();
   };
 
@@ -56,7 +57,7 @@ export const Form: React.FC<IForm> = ({ games, fillGames }) => {
   return (
     <form onSubmit={handleSubmit(submitForm)} className="form">
       <Controller
-        name="author.name"
+        name="authorName"
         control={control}
         render={({ field: { onChange } }) => (
           <Autocomplete
@@ -67,7 +68,7 @@ export const Form: React.FC<IForm> = ({ games, fillGames }) => {
         )}
       />
       <Controller
-        name="genre.name"
+        name="genreName"
         control={control}
         render={({ field: { onChange } }) => (
           <Select
@@ -102,7 +103,9 @@ export const Form: React.FC<IForm> = ({ games, fillGames }) => {
             validate: {
               matchesMaxPrice: (value) => {
                 const { minPrice } = getValues();
-                return value >= minPrice || 'Max price should be bigger then min price';
+                return value
+                  ? value >= minPrice || 'Max price should be bigger then min price'
+                  : undefined;
               },
             },
           })}
@@ -137,7 +140,7 @@ export const Form: React.FC<IForm> = ({ games, fillGames }) => {
             placeholder="Number of copies"
             className="form__copies"
             type="text"
-            {...register('copies')}
+            {...register('count')}
             onKeyPress={(e) => !/[0-9]/.test(e.key) && e.preventDefault()}
           />
         </div>
