@@ -25,8 +25,8 @@ export const Home = () => {
 
   const fillGames = async () => {
     try {
-      const data = await fetchGames(currentPage, DATA_LIMIT);
-      setGames(data);
+      const { data } = await fetchGames(currentPage, DATA_LIMIT);
+      setGames(data.rows);
     } catch (e) {
       console.log(e);
     }

@@ -29,8 +29,8 @@ export const Store = () => {
 
   const fillGames = async (params?: object) => {
     try {
-      const data = await fetchGames(currentPage, DATA_LIMIT, { params });
-      setGames(data);
+      const { data } = await fetchGames(currentPage, DATA_LIMIT, { params });
+      setGames(data.rows);
     } catch (e) {
       console.log(e);
     }

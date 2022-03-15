@@ -59,8 +59,9 @@ export const Form: React.FC<IForm> = ({ games, fillGames }) => {
       <Controller
         name="authorName"
         control={control}
-        render={({ field: { onChange } }) => (
+        render={({ field: { onChange, value } }) => (
           <Autocomplete
+            input={value}
             options={games.map(({ author }) => author.name)}
             name="Author"
             onChangeInput={onChange}
