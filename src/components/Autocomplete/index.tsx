@@ -12,7 +12,7 @@ interface IAutocomplete {
 export const Autocomplete: React.FC<IAutocomplete> = ({ options, name, onChangeInput, input }) => {
   const [isShow, setIsShow] = useState<boolean>(false);
   const [filtered, setFiltered] = useState<string[]>([]);
-  const [value, setValue] = useState<string>('');
+  const [value, setValue] = useState<string>(input);
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     input = e.currentTarget.value;
@@ -23,7 +23,7 @@ export const Autocomplete: React.FC<IAutocomplete> = ({ options, name, onChangeI
     );
     setFiltered(newFilteredSuggestions);
     setIsShow(true);
-    setValue(e.currentTarget.value);
+    setValue(input);
   };
 
   const onClick = useCallback(
@@ -35,6 +35,7 @@ export const Autocomplete: React.FC<IAutocomplete> = ({ options, name, onChangeI
     },
     [onChangeInput],
   );
+
   const renderAutocomplete = useMemo(() => {
     if (isShow && value) {
       if (filtered.length) {

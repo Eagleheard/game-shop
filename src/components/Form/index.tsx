@@ -71,9 +71,10 @@ export const Form: React.FC<IForm> = ({ games, fillGames }) => {
       <Controller
         name="genreName"
         control={control}
-        render={({ field: { onChange } }) => (
+        render={({ field: { onChange, value } }) => (
           <Select
             placeholder="Genre"
+            input={value}
             options={genres.map(({ id, name }) => ({
               id,
               value: name,

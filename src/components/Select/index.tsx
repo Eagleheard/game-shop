@@ -5,6 +5,7 @@ import './styles.scss';
 
 interface ISelect {
   placeholder: string;
+  input?: string;
   options: {
     id: number;
     value: string;
@@ -15,7 +16,7 @@ interface ISelect {
   handleSelect: (value: string) => void;
 }
 
-export const Select: React.FC<ISelect> = ({ placeholder, options, style, handleSelect }) => {
+export const Select: React.FC<ISelect> = ({ placeholder, options, style, handleSelect, input }) => {
   const [isListHidden, setIsListHidden] = useState<boolean>(true);
   const [value, setValue] = useState<string>('');
   const selectRef = useRef(null);
@@ -38,7 +39,7 @@ export const Select: React.FC<ISelect> = ({ placeholder, options, style, handleS
         ref={selectRef}
         onClick={() => setIsListHidden((prevValue) => !prevValue)}
       >
-        {!value ? (
+        {!input ? (
           <p className={`select__placeholder ${style}__placeholder`}>{placeholder}</p>
         ) : (
           value
