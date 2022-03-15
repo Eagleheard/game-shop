@@ -11,7 +11,7 @@ export const SignIn: React.FC<ISign> = ({ handleSwitch }) => {
 
   const signIn = async (params: object) => {
     try {
-      const { data } = await Authorization(params);
+      const data = await Authorization(params);
       console.log(data);
     } catch (e) {
       console.log(e);
