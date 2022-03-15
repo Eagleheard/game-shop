@@ -1,9 +1,9 @@
 import React from 'react';
-
-import './style.scss';
+import { NavLink } from 'react-router-dom';
 
 import { IGame } from 'types/interfaces';
-import { NavLink } from 'react-router-dom';
+
+import './style.scss';
 
 export const Card = ({ id, name, genre, author, price, image }: IGame) => {
   return (

@@ -1,12 +1,27 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 
-import { IGame } from 'types/interfaces';
 import { Button } from 'components';
 
 import './PageStyles.scss';
 
-export const GamePage: React.FC<IGame> = ({
+interface IGamePage {
+  name?: string;
+  preview?: string;
+  popularity?: number;
+  price?: string;
+  genre?: {
+    id: number;
+    name: string;
+  };
+  author?: {
+    id: number;
+    name: string;
+  };
+  description?: string;
+}
+
+export const GamePage: React.FC<IGamePage> = ({
   name,
   preview,
   popularity,
@@ -23,11 +38,11 @@ export const GamePage: React.FC<IGame> = ({
           <div className="about">
             <div className="about__property">
               <p className="about__name">{name}</p>
-              <p className="about__genre">Genre: {genre.name}</p>
+              <p className="about__genre">Genre: {genre?.name}</p>
               <p className="about__author">
                 {`Author: `}
-                <NavLink className="about__author--link" to={`/author/${author.id}`}>
-                  {author.name}
+                <NavLink className="about__author--link" to={`/author/${author?.id}`}>
+                  {author?.name}
                 </NavLink>
               </p>
               <p className="about__popularity">Popularity: {popularity}%</p>

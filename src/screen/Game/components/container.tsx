@@ -7,11 +7,11 @@ import { GamePage } from '.';
 
 export const GamePageContainer = () => {
   const { id } = useParams<string>();
-  const [gameInfo, setGameInfo] = useState<IGame[]>([]);
+  const [gameInfo, setGameInfo] = useState<IGame>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const searchGame = useCallback(async () => {
-    const data = await fetchGame(id);
+    const { data } = await fetchGame(id);
     setGameInfo(data);
   }, [id]);
 
@@ -20,21 +20,6 @@ export const GamePageContainer = () => {
     searchGame();
     setIsLoading(false);
   }, [searchGame]);
-
-  return isLoading ? (
-    <p>Loading...</p>
-  ) : (
-    gameInfo.map(({ id, name, preview, popularity, genre, author, price, description }) => (
-      <GamePage
-        key={id}
-        name={name}
-        popularity={popularity}
-        preview={preview}
-        genre={genre}
-        author={author}
-        price={price}
-        description={description}
-      />
-    ))
-  );
+  console.log(gameInfo);
+  return isLoading ? <p>Loading...</p> : <GamePage {...gameInfo} />;
 };
