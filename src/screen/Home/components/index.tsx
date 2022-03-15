@@ -18,17 +18,16 @@ enum sortOptions {
 
 export const Home = () => {
   const [games, setGames] = useState<IGame[]>([]);
-  const [pageValue, setPageValue] = useState<number>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [params, setParams] = useState<object>({});
   const { goToNextPage, goToPreviousPage, changePage, currentPage, page, getPaginatedData } =
-    usePagination(games, DATA_LIMIT, pageValue);
+    usePagination(games, DATA_LIMIT);
 
   const fillGames = useCallback(
     async (params?: object) => {
       try {
         const { data } = await fetchGames(currentPage, DATA_LIMIT, { params });
         setGames(data.rows);
-        setPageValue(data.count);
       } catch (e) {
         console.log(e);
       }
@@ -39,13 +38,16 @@ export const Home = () => {
   const handleSelect = (value: string) => {
     switch (value) {
       case sortOptions.OUR_GAMES:
+        setParams({});
         fillGames();
         break;
       case sortOptions.NEW_GAMES:
-        fillGames({ isNew: true });
+        setParams({ isNew: true });
+        fillGames(params);
         break;
       case sortOptions.POPULAR_GAMES:
-        fillGames({ order: 'popularity' });
+        setParams({ order: 'popularity' });
+        fillGames(params);
         break;
       default:
         fillGames();
@@ -55,9 +57,9 @@ export const Home = () => {
 
   useEffect(() => {
     setIsLoading(true);
-    fillGames();
+    fillGames(params);
     setIsLoading(false);
-  }, [currentPage]);
+  }, [currentPage, params]);
 
   return (
     <div className="home">

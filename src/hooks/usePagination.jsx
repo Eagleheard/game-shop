@@ -1,6 +1,8 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
+import { fetchGames } from 'api/fetchGames';
 
-export const usePagination = (gameData, dataLimit, pageValue) => {
+export const usePagination = (gameData, dataLimit) => {
+  const [pageValue, setPageValue] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const pageCount = Math.ceil(pageValue / dataLimit);
   const page = Array.from({ length: pageCount }, (v, i) => i + 1);
@@ -13,6 +15,15 @@ export const usePagination = (gameData, dataLimit, pageValue) => {
     setCurrentPage(page);
   };
 
+  const fetchPageValue = async () => {
+    try {
+      const { data } = await fetchGames();
+      setPageValue(data.count);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   const goToNextPage = () => {
     setCurrentPage((prevPage) => prevPage + 1);
   };
@@ -20,6 +31,10 @@ export const usePagination = (gameData, dataLimit, pageValue) => {
   const goToPreviousPage = () => {
     setCurrentPage((prevPage) => prevPage - 1);
   };
+
+  useEffect(() => {
+    fetchPageValue();
+  });
 
   return {
     goToNextPage,
