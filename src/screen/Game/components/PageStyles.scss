@@ -102,11 +102,6 @@
     }
 
     @include media-desktop {
-
-        &__logo {
-            width: 40%;
-            height: 40%;
-        }
     }
 
     @include media-table-large {
@@ -120,11 +115,18 @@
         }
 
         &__logo {
-            width: 40%;
+            width: 60%;
         }
+        
+        .about {
 
-        &__info {
-            font-size: 14px;
+            &__name {
+                font-size: 18px;
+            }
+
+            &__info {
+                font-size: 14px;
+            }
         }
 
         &__games {
@@ -146,6 +148,14 @@
     }
 
     @include media-mobile-large {
+
+        &__logo {
+            width: 55%;
+        }
+
+        &__buying {
+            margin-top: 10px;
+        }
         
         .about {
             width: 40%;

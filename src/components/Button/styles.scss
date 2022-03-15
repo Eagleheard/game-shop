@@ -89,6 +89,13 @@
         }
     }
 
+    @include media-table-small {
+
+        &__buy {
+            font-size: 12px;
+        }
+    }
+
     @include media-mobile-large {
         padding: 0;
         width: 30px;
@@ -104,7 +111,8 @@
         }
 
         &__buy {
-            width: 50%;
+            height: 30px;
+            width: 30%;
         }
     }
 
