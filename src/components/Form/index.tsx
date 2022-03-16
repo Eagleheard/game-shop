@@ -41,7 +41,6 @@ export const Form: React.FC<IForm> = ({ games, fillGames }) => {
 
   const submitForm: SubmitHandler<FieldValues> = (params) => {
     fillGames(params);
-    console.log(params);
   };
 
   const handleReset = () => {
@@ -61,7 +60,7 @@ export const Form: React.FC<IForm> = ({ games, fillGames }) => {
         control={control}
         render={({ field: { onChange, value } }) => (
           <Autocomplete
-            input={value}
+            reset={value}
             options={games.map(({ author }) => author.name)}
             name="Author"
             onChangeInput={onChange}
@@ -73,9 +72,9 @@ export const Form: React.FC<IForm> = ({ games, fillGames }) => {
         control={control}
         render={({ field: { onChange, value } }) => (
           <Select
+            reset={value}
             placeholder="Genre"
-            input={value}
-            options={genres.map(({ id, name }) => ({
+            options={genres.map(({ id, name }: IGenre) => ({
               id,
               value: name,
               label: name,
@@ -95,7 +94,7 @@ export const Form: React.FC<IForm> = ({ games, fillGames }) => {
               },
             },
           })}
-          onKeyPress={(e) => !/[0-9]/.test(e.key) && e.preventDefault()}
+          onKeyPress={(e) => !/[0-9\.]/g.test(e.key) && e.preventDefault()}
           placeholder="min price"
           type="text"
           className="form__price-min"
@@ -106,12 +105,12 @@ export const Form: React.FC<IForm> = ({ games, fillGames }) => {
               matchesMaxPrice: (value) => {
                 const { minPrice } = getValues();
                 return value
-                  ? value >= minPrice || 'Max price should be bigger then min price'
+                  ? value >= parseInt(minPrice) || 'Max price should be bigger then min price'
                   : undefined;
               },
             },
           })}
-          onKeyPress={(e) => !/[0-9]/.test(e.key) && e.preventDefault()}
+          onKeyPress={(e) => !/[0-9\.]/g.test(e.key) && e.preventDefault()}
           placeholder="max price"
           type="text"
           className="form__price-max"

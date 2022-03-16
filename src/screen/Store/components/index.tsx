@@ -38,8 +38,8 @@ export const Store = () => {
 
   const setNewGames = async () => {
     try {
-      const newGames = await fetchNewGames();
-      setGames(newGames);
+      const { data } = await fetchNewGames();
+      setGames(data.rows);
     } catch (e) {
       console.log(e);
     }
@@ -47,8 +47,8 @@ export const Store = () => {
 
   const setPopularGames = async () => {
     try {
-      const popularGames = await fetchPopularGames();
-      setGames(popularGames);
+      const { data } = await fetchPopularGames();
+      setGames(data.rows);
     } catch (e) {
       console.log(e);
     }
@@ -79,12 +79,16 @@ export const Store = () => {
     fillGames();
     setIsLoading(false);
   }, []);
-  console.log(games);
+
   return (
     <div className="store">
       <Filter games={games} fillGames={fillGames} />
       {isFilterVisible && (
-        <ResponsiveFilter games={games} handleClose={() => setIsFilterVisible(false)} />
+        <ResponsiveFilter
+          fillGames={fillGames}
+          games={games}
+          handleClose={() => setIsFilterVisible(false)}
+        />
       )}
       <div className="store__container">
         <div className="store__options">
@@ -100,8 +104,8 @@ export const Store = () => {
             handleSelect={handleSelect}
           />
         </div>
-        {isLoading ? (
-          <div>Loading</div>
+        {isLoading || !games.length ? (
+          <h1 className="store__error">Games not found</h1>
         ) : (
           <Pagination
             RenderComponent={Game}

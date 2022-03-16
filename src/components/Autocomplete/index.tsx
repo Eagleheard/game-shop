@@ -1,21 +1,21 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
 import './style.scss';
 
 interface IAutocomplete {
   options: string[];
   name: string;
-  input: string;
+  reset: string;
   onChangeInput: (input: string) => void;
 }
 
-export const Autocomplete: React.FC<IAutocomplete> = ({ options, name, onChangeInput, input }) => {
+export const Autocomplete: React.FC<IAutocomplete> = ({ options, name, onChangeInput, reset }) => {
   const [isShow, setIsShow] = useState<boolean>(false);
   const [filtered, setFiltered] = useState<string[]>([]);
-  const [value, setValue] = useState<string>(input);
+  const [value, setValue] = useState<string>('');
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    input = e.currentTarget.value;
+    const input = e.currentTarget.value;
     const newFilteredSuggestions = options.filter(
       (suggestion, index) =>
         suggestion.toLowerCase().indexOf(input.toLowerCase()) === 0 &&
@@ -23,7 +23,7 @@ export const Autocomplete: React.FC<IAutocomplete> = ({ options, name, onChangeI
     );
     setFiltered(newFilteredSuggestions);
     setIsShow(true);
-    setValue(input);
+    setValue(e.currentTarget.value);
   };
 
   const onClick = useCallback(
@@ -35,6 +35,10 @@ export const Autocomplete: React.FC<IAutocomplete> = ({ options, name, onChangeI
     },
     [onChangeInput],
   );
+
+  useEffect(() => {
+    setValue(reset || '');
+  }, [reset]);
 
   const renderAutocomplete = useMemo(() => {
     if (isShow && value) {
@@ -65,7 +69,7 @@ export const Autocomplete: React.FC<IAutocomplete> = ({ options, name, onChangeI
     <div className="autocomplete">
       <input
         type="text"
-        value={input}
+        value={value}
         className="autocomplete__input"
         placeholder={name}
         onChange={onChange}
