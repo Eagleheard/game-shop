@@ -20,6 +20,5 @@ export const GamePageContainer = () => {
     searchGame();
     setIsLoading(false);
   }, [searchGame]);
-  console.log(gameInfo);
   return isLoading ? <p>Loading...</p> : <GamePage {...gameInfo} />;
 };

@@ -29,8 +29,8 @@ export const Store = () => {
 
   const fillGames = async () => {
     try {
-      const data = await fetchGames(currentPage, DATA_LIMIT);
-      setGames(data);
+      const { data } = await fetchGames(currentPage, DATA_LIMIT);
+      setGames(data.rows);
     } catch (e) {
       console.log(e);
     }
@@ -38,8 +38,8 @@ export const Store = () => {
 
   const setNewGames = async () => {
     try {
-      const newGames = await fetchNewGames();
-      setGames(newGames);
+      const { data } = await fetchNewGames();
+      setGames(data.rows);
     } catch (e) {
       console.log(e);
     }
@@ -47,8 +47,8 @@ export const Store = () => {
 
   const setPopularGames = async () => {
     try {
-      const popularGames = await fetchPopularGames();
-      setGames(popularGames);
+      const { data } = await fetchPopularGames();
+      setGames(data.rows);
     } catch (e) {
       console.log(e);
     }

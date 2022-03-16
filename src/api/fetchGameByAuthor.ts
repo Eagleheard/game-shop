@@ -2,10 +2,9 @@ import axios from 'axios';
 
 import { IGame } from 'types/interfaces';
 
-export const fetchGameByAuthor = async (id?: string): Promise<IGame[]> => {
+export const fetchGameByAuthor = async (id?: string) => {
   try {
-    const { data } = await axios.get(`/game/?authorId=${id}`);
-    return data;
+    return await axios.get(`/game/?authorId=${id}`);
   } catch (err) {
     throw err;
   }

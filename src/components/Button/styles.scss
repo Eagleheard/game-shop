@@ -71,6 +71,15 @@
         cursor: pointer;
     }
 
+    &__back-btn {
+        background-color: $secondary;
+        border: 2px solid $search-primary;
+        border-radius: 5px;
+        align-self: flex-start;
+        margin-top: 20px;
+        margin-left: 0;
+    }
+
     @include media-table-large {
         width: 35px;
         height: 35px;

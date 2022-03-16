@@ -2,10 +2,9 @@ import axios from 'axios';
 
 import { IGame } from 'types/interfaces';
 
-export const fetchGames = async (page: number, limit: number): Promise<IGame[]> => {
+export const fetchGames = async (page: number, limit: number) => {
   try {
-    const { data } = await axios.get(`/game/?page=${page}&limit=${limit}`);
-    return data;
+    return await axios.get(`/game/?page=${page}&limit=${limit}`);
   } catch (err) {
     throw err;
   }

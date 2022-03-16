@@ -14,8 +14,8 @@ export const AuthorContainer = () => {
 
   const searchAuthor = useCallback(async () => {
     try {
-      const data = await fetchAuthor(id);
-      setAuthorInfo(data);
+      const { data } = await fetchAuthor(id);
+      setAuthorInfo(data.rows);
     } catch (e) {
       console.log(e);
     }
@@ -23,8 +23,8 @@ export const AuthorContainer = () => {
 
   const searchAuthorGames = useCallback(async () => {
     try {
-      const data = await fetchGameByAuthor(id);
-      setAuthorGames(data);
+      const { data } = await fetchGameByAuthor(id);
+      setAuthorGames(data.rows);
     } catch (e) {
       console.log(e);
     }
