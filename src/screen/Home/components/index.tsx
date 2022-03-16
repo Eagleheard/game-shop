@@ -75,8 +75,8 @@ export const Home = () => {
           style="home"
           handleSelect={handleSelect}
         />
-        {isLoading ? (
-          <div>Loading</div>
+        {isLoading || !games.length ? (
+          <h1>Games not found</h1>
         ) : (
           <Pagination
             RenderComponent={Game}
