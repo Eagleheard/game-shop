@@ -21,7 +21,7 @@ export const Home = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [params, setParams] = useState<object>({});
   const { goToNextPage, goToPreviousPage, changePage, currentPage, page, getPaginatedData } =
-    usePagination(games, DATA_LIMIT);
+    usePagination(games, DATA_LIMIT, params);
 
   const fillGames = useCallback(
     async (params?: object) => {
@@ -39,18 +39,15 @@ export const Home = () => {
     switch (value) {
       case sortOptions.OUR_GAMES:
         setParams({});
-        fillGames();
         break;
       case sortOptions.NEW_GAMES:
         setParams({ isNew: true });
-        fillGames(params);
         break;
       case sortOptions.POPULAR_GAMES:
         setParams({ order: 'popularity' });
-        fillGames(params);
         break;
       default:
-        fillGames();
+        setParams({});
     }
     changePage(1);
   };
