@@ -2,58 +2,57 @@
 @import 'constants/media-queries.scss';
 
 .header {
-    display: flex;
-    align-items: center;
-    flex-direction: row;
-    justify-content: space-evenly;
-    background-color: $secondary;
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  justify-content: space-evenly;
+  background-color: $secondary;
 
-    @include media-mobile-small {
-      justify-content: space-around;
+  @include media-mobile-small {
+    justify-content: space-around;
+  }
+
+  &__logo {
+    width: 70px;
+  }
+
+  &__btn {
+    width: 40px;
+    display: none;
+    padding: 0;
+    border: none;
+    background: none;
+    outline: none;
+    cursor: pointer;
+  }
+
+  &__login {
+    border: none;
+    background-color: inherit;
+    cursor: pointer;
+  }
+
+  .navbar {
+    &__item {
+      display: inline-block;
     }
+  }
 
-    &__logo {
-      width: 70px;
+  @include media-table-large {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+
+    &__sign {
+      display: none;
     }
 
     &__btn {
-      width: 40px;
-      display: none;
-      padding: 0;
-      border: none;
-      background: none;
-      outline: none;
-      cursor: pointer;
-    }
-
-    &__login {
-      border: none;
-      background-color: inherit;
-      cursor: pointer;
+      display: block;
     }
 
     .navbar {
-
-      &__item {
-        display: inline-block;
-      }
+      display: none;
     }
- 
-    @include media-table-large {
-      flex-direction: row;
-      align-items: center;
-      justify-content: space-around;
-
-      &__sign {
-        display: none;
-      }
-
-      &__btn {
-        display: block;
-      }
-    
-      .navbar {
-        display: none;
-      }
-    }
+  }
 }

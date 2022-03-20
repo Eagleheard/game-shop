@@ -4,6 +4,7 @@ import { NavLink } from 'react-router-dom';
 import { Search } from 'components/Search';
 import { ResponsiveHeader } from './responsive';
 import { SignIn, SignUp, Portal } from 'components';
+import { useAuth } from 'hooks/useAuth';
 
 import logo from 'assets/logo.png';
 import menu from 'assets/menu.png';
@@ -11,6 +12,7 @@ import menu from 'assets/menu.png';
 import './style.scss';
 
 export const Header = () => {
+  const { user } = useAuth();
   const [isNavVisible, setNavVisibility] = useState<boolean>(false);
   const [isSignInVisible, setIsSignInVisible] = useState<boolean>(false);
   const [isSignUpVisible, setIsSignUpVisible] = useState<boolean>(false);
@@ -55,13 +57,17 @@ export const Header = () => {
       )}
       <Search />
       <div className="header__sign">
-        <button
-          className="header__login  link"
-          onClick={() => setIsSignInVisible((prevValue) => !prevValue)}
-          disabled={isSignUpVisible}
-        >
-          Login
-        </button>
+        {user ? (
+          <button className="header__login  link"> Hi, {user.name} </button>
+        ) : (
+          <button
+            className="header__login  link"
+            onClick={() => setIsSignInVisible((prevValue) => !prevValue)}
+            disabled={isSignUpVisible}
+          >
+            Login
+          </button>
+        )}
       </div>
       <img
         alt="burger"
@@ -69,7 +75,7 @@ export const Header = () => {
         onClick={() => setNavVisibility((prevCount) => !prevCount)}
         src={menu}
       ></img>
-      {isSignInVisible && (
+      {isSignInVisible && !user && (
         <Portal
           Component={SignIn}
           isOpen={isSignInVisible}
