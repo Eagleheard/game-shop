@@ -1,8 +1,12 @@
-import axios from 'axios';
+import axios, { AxiosRequestConfig } from 'axios';
 
-import { IGame } from 'types/interfaces';
+import { IParams } from 'types/interfaces';
 
-export const fetchGames = async (page: number, limit: number, params?: object) => {
+export const fetchGames = async (
+  page: number,
+  limit: number,
+  params?: AxiosRequestConfig<IParams>,
+) => {
   try {
     return await axios.get(`/game/?page=${page}&limit=${limit}`, params);
   } catch (err) {

@@ -25,3 +25,13 @@ export interface IAuthor {
   description: string;
   image: string;
 }
+
+export interface IParams {
+  authorName: string;
+  genreName: string;
+  digital: boolean;
+  disk: boolean;
+  minPrice: string;
+  maxPrice: string;
+  count: number;
+}

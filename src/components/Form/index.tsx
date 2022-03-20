@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { Controller, FieldValues, SubmitHandler, useForm } from 'react-hook-form';
+import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { fetchGenres } from 'api/fetchGenres';
 
 import { Autocomplete, Checkbox, Select, Button } from 'components';
-import { IGame } from 'types/interfaces';
+import { IGame, IParams } from 'types/interfaces';
 
 import './style.scss';
 
 interface IForm {
   games: IGame[];
-  fillGames: (params?: object) => void;
+  fillGames: (params?: IParams) => void;
 }
 
 interface IGenre {
@@ -28,7 +28,7 @@ export const Form: React.FC<IForm> = ({ games, fillGames }) => {
     control,
     reset,
     formState: { errors },
-  } = useForm();
+  } = useForm<IParams>();
 
   const fillGenres = async () => {
     try {
@@ -39,7 +39,7 @@ export const Form: React.FC<IForm> = ({ games, fillGames }) => {
     }
   };
 
-  const submitForm: SubmitHandler<FieldValues> = (params) => {
+  const submitForm: SubmitHandler<IParams> = (params) => {
     fillGames(params);
   };
 
@@ -90,7 +90,7 @@ export const Form: React.FC<IForm> = ({ games, fillGames }) => {
           {...register('minPrice', {
             validate: {
               matchesMinPrice: (value) => {
-                return value >= 0 || 'Price should be bigger then 0';
+                return parseInt(value) >= 0 || 'Price should be bigger then 0';
               },
             },
           })}
@@ -105,7 +105,8 @@ export const Form: React.FC<IForm> = ({ games, fillGames }) => {
               matchesMaxPrice: (value) => {
                 const { minPrice } = getValues();
                 return value
-                  ? value >= parseInt(minPrice) || 'Max price should be bigger then min price'
+                  ? parseInt(value) >= parseInt(minPrice) ||
+                      'Max price should be bigger then min price'
                   : undefined;
               },
             },
