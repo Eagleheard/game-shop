@@ -20,8 +20,10 @@ export const Home = () => {
   const [games, setGames] = useState<IGame[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [params, setParams] = useState<object>({});
-  const { goToNextPage, goToPreviousPage, changePage, currentPage, page, getPaginatedData } =
-    usePagination(games, DATA_LIMIT, params);
+  const { goToNextPage, goToPreviousPage, changePage, currentPage, page } = usePagination(
+    DATA_LIMIT,
+    params,
+  );
 
   const fillGames = useCallback(
     async (params?: object) => {
@@ -81,7 +83,7 @@ export const Home = () => {
             goToPreviousPage={goToPreviousPage}
             currentPage={currentPage}
             page={page}
-            getPaginatedData={getPaginatedData}
+            getPaginatedData={games}
             changePage={changePage}
           />
         )}

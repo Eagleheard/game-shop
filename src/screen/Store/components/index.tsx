@@ -4,7 +4,7 @@ import { fetchGames } from 'api/fetchGames';
 import { Game } from 'screen';
 import { Pagination, Select, ResponsiveFilter } from 'components';
 import { Filter } from 'components/Filter';
-import { IGame } from 'types/interfaces';
+import { IGame, IParams } from 'types/interfaces';
 import { usePagination } from 'hooks';
 
 import filter from 'assets/filter.png';
@@ -21,13 +21,13 @@ enum sortOptions {
 export const Store = () => {
   const [games, setGames] = useState<IGame[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [params, setParams] = useState<object>({});
+  const [params, setParams] = useState<IParams>();
   const [isFilterVisible, setIsFilterVisible] = useState<boolean>(false);
-  const { goToNextPage, goToPreviousPage, changePage, currentPage, page, getPaginatedData } =
-    usePagination(games, DATA_LIMIT);
+  const { goToNextPage, goToPreviousPage, changePage, currentPage, page } =
+    usePagination(DATA_LIMIT);
 
   const fillGames = useCallback(
-    async (params?: object) => {
+    async (params?: IParams) => {
       try {
         const { data } = await fetchGames(currentPage, DATA_LIMIT, { params });
         setGames(data.rows);
@@ -97,7 +97,7 @@ export const Store = () => {
             goToPreviousPage={goToPreviousPage}
             currentPage={currentPage}
             page={page}
-            getPaginatedData={getPaginatedData}
+            getPaginatedData={games}
             changePage={changePage}
           />
         )}

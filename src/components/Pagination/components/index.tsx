@@ -28,7 +28,7 @@ export const Pagination: React.FC<PaginationProps> = ({
   return (
     <div className="pagination">
       <div className="component">
-        {getPaginatedData.map((data: IGame) => (
+        {getPaginatedData.map((data) => (
           <RenderComponent key={data.id} {...data} />
         ))}
       </div>
