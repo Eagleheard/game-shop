@@ -19,11 +19,11 @@ export interface IGame {
 
 export interface IAuthor {
   id: number;
-  name: string;
-  location: string;
-  popularity: number;
-  description: string;
-  image: string;
+  name?: string;
+  location?: string;
+  popularity?: number;
+  description?: string;
+  logo?: string;
 }
 
 export interface IParams {

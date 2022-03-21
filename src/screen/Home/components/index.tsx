@@ -20,8 +20,8 @@ enum sortOptions {
 export const Home = () => {
   const [games, setGames] = useState<IGame[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const { goToNextPage, goToPreviousPage, changePage, currentPage, page, getPaginatedData } =
-    usePagination(games, DATA_LIMIT);
+  const { goToNextPage, goToPreviousPage, changePage, currentPage, page } =
+    usePagination(DATA_LIMIT);
 
   const fillGames = async () => {
     try {
@@ -96,7 +96,7 @@ export const Home = () => {
             goToPreviousPage={goToPreviousPage}
             currentPage={currentPage}
             page={page}
-            getPaginatedData={getPaginatedData}
+            getPaginatedData={games}
             changePage={changePage}
           />
         )}

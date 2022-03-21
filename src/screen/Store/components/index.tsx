@@ -6,7 +6,7 @@ import { fetchNewGames } from 'api/fetchNewGames';
 import { Game } from 'screen';
 import { Pagination, Select, ResponsiveFilter } from 'components';
 import { Filter } from 'components/Filter';
-import { IGame } from 'types/interfaces';
+import { IGame, IParams } from 'types/interfaces';
 import { usePagination } from 'hooks';
 
 import filter from 'assets/filter.png';
@@ -24,10 +24,10 @@ export const Store = () => {
   const [games, setGames] = useState<IGame[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isFilterVisible, setIsFilterVisible] = useState<boolean>(false);
-  const { goToNextPage, goToPreviousPage, changePage, currentPage, page, getPaginatedData } =
-    usePagination(games, DATA_LIMIT);
+  const { goToNextPage, goToPreviousPage, changePage, currentPage, page } =
+    usePagination(DATA_LIMIT);
 
-  const fillGames = async (params?: object) => {
+  const fillGames = async (params?: IParams) => {
     try {
       const { data } = await fetchGames(currentPage, DATA_LIMIT, { params });
       setGames(data.rows);
@@ -113,7 +113,7 @@ export const Store = () => {
             goToPreviousPage={goToPreviousPage}
             currentPage={currentPage}
             page={page}
-            getPaginatedData={getPaginatedData}
+            getPaginatedData={games}
             changePage={changePage}
           />
         )}
