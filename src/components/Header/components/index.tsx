@@ -4,13 +4,13 @@ import { NavLink } from 'react-router-dom';
 import { Search } from 'components/Search';
 import { ResponsiveHeader } from './responsive';
 import { SignIn, SignUp, Portal } from 'components';
+import { CheckUser, Logout } from 'api/authorization';
 import { useAuth } from 'hooks/useAuth';
 
 import logo from 'assets/logo.png';
 import menu from 'assets/menu.png';
 
 import './style.scss';
-import { CheckUser, Logout } from 'api/authorization';
 
 export const Header = () => {
   const { user, setUser } = useAuth();
@@ -72,6 +72,7 @@ export const Header = () => {
         <ResponsiveHeader
           setNavVisibility={setNavVisibility}
           setIsSignInVisible={() => setIsSignInVisible((prevValue) => !prevValue)}
+          signOut={signOut}
         />
       )}
       <Search />
