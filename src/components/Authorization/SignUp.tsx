@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 
-import { Registration } from 'api/registration';
+import { Registration } from 'api/authorization';
 import { Button } from 'components/Button';
 import { ISign, IUser } from 'types/interfaces';
 

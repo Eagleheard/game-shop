@@ -17,25 +17,23 @@ export const SignIn: React.FC<ISign> = ({ handleSwitch }) => {
     formState: { errors },
   } = useForm();
 
-  const signIn = async (params: IUser) => {
+  const signIn = async (params?: IUser) => {
     try {
       const { data } = await Login(params);
       setUser(data);
-    } catch ({
-      response: {
-        data: { message },
-      },
-    }) {
-      setError(String(message));
+    } catch (error) {
+      setError(String(error));
     }
   };
 
   const submitForm: SubmitHandler<FieldValues> = (data) => {
     signIn(data);
   };
+
   return (
     <div className="login">
       <form onSubmit={handleSubmit(submitForm)} className="login__form">
+        {(error || errors.email) && <p className="login__error">Wrong password or email</p>}
         <div className="login__group">
           <input
             {...register('email', {
@@ -54,7 +52,6 @@ export const SignIn: React.FC<ISign> = ({ handleSwitch }) => {
           <label htmlFor="email" className="login__label">
             Email
           </label>
-          {errors.email && <p className="login__email--error">Check your email</p>}
         </div>
         <div className="login__group">
           <input
@@ -68,7 +65,6 @@ export const SignIn: React.FC<ISign> = ({ handleSwitch }) => {
           <label htmlFor="password" className="login__label">
             Password
           </label>
-          {error && <p className="login__password--error">{error}</p>}
         </div>
         <div className="login__submit">
           <h5 className="login__sign">

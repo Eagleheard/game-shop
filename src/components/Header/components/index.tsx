@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 
 import { Search } from 'components/Search';
@@ -10,9 +10,10 @@ import logo from 'assets/logo.png';
 import menu from 'assets/menu.png';
 
 import './style.scss';
+import { CheckUser, Logout } from 'api/authorization';
 
 export const Header = () => {
-  const { user } = useAuth();
+  const { user, setUser } = useAuth();
   const [isNavVisible, setNavVisibility] = useState<boolean>(false);
   const [isSignInVisible, setIsSignInVisible] = useState<boolean>(false);
   const [isSignUpVisible, setIsSignUpVisible] = useState<boolean>(false);
@@ -26,6 +27,24 @@ export const Header = () => {
       setIsSignUpVisible(false);
     }
   };
+
+  const checkUser = async () => {
+    try {
+      const { data } = await CheckUser();
+      setUser(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const signOut = async () => {
+    Logout();
+    location.reload();
+  };
+
+  useEffect(() => {
+    checkUser();
+  }, []);
 
   return (
     <header className="header">
@@ -58,7 +77,10 @@ export const Header = () => {
       <Search />
       <div className="header__sign">
         {user ? (
-          <button className="header__login  link"> Hi, {user.name} </button>
+          <button className="header__login  link" onClick={signOut}>
+            {' '}
+            Hi, {user.name}{' '}
+          </button>
         ) : (
           <button
             className="header__login  link"

@@ -2,10 +2,21 @@ import axios from 'axios';
 
 import { IUser } from './../types/interfaces';
 
-export const Login = async (params: IUser) => {
-  try {
-    return await axios.put(`/user/login`, params, { withCredentials: true });
-  } catch (error) {
-    throw error;
-  }
+export const Registration = async (params: IUser) => {
+  return axios.put(`/user/signup`, params, { withCredentials: true });
+};
+
+export const Login = async (params?: IUser) => {
+  return axios.put(`/user/login`, params, {
+    withCredentials: true,
+    headers: { 'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/json' },
+  });
+};
+
+export const CheckUser = () => {
+  return axios.get(`/user/auth`);
+};
+
+export const Logout = () => {
+  return axios.put('/user/logout');
 };

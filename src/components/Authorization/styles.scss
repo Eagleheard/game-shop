@@ -26,6 +26,13 @@
     color: $gray;
   }
 
+  &__error {
+    font-family: $lato;
+    color: $red;
+    text-align: center;
+    margin-bottom: 10px;
+  }
+
   &__email, &__password, &__name, &__lastname {
     height: 40px;
     width: 100%;
