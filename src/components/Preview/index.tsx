@@ -22,7 +22,7 @@ export const Preview = () => {
 
   const fillPreviewGames = async () => {
     try {
-      const data = await fetchPreviewGames();
+      const { data } = await fetchPreviewGames();
       return setPreviewGames(data);
     } catch (e) {
       console.log(e);

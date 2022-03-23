@@ -7,10 +7,6 @@ export const usePagination = (gameData, dataLimit) => {
   const pageCount = Math.ceil(gameData.length / dataLimit);
   const page = Array.from({ length: pageCount }, (v, i) => i + 1);
 
-  const getPaginatedData = useMemo(() => {
-    return gameData.slice(startIndex, endIndex);
-  }, [gameData, startIndex, endIndex]);
-
   const changePage = (page) => {
     setCurrentPage(page);
   };
@@ -27,7 +23,6 @@ export const usePagination = (gameData, dataLimit) => {
     goToNextPage,
     goToPreviousPage,
     changePage,
-    getPaginatedData,
     currentPage,
     startIndex,
     endIndex,

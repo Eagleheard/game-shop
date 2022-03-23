@@ -39,7 +39,7 @@ export const Header = () => {
 
   const signOut = async () => {
     Logout();
-    location.reload();
+    setUser(null);
   };
 
   useEffect(() => {

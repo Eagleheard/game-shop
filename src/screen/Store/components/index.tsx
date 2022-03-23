@@ -24,12 +24,14 @@ export const Store = () => {
   const [games, setGames] = useState<IGame[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isFilterVisible, setIsFilterVisible] = useState<boolean>(false);
-  const { goToNextPage, goToPreviousPage, changePage, currentPage, page, getPaginatedData } =
-    usePagination(games, DATA_LIMIT);
+  const { goToNextPage, goToPreviousPage, changePage, currentPage, page } = usePagination(
+    games,
+    DATA_LIMIT,
+  );
 
   const fillGames = async () => {
     try {
-      const data = await fetchGames(currentPage, DATA_LIMIT);
+      const { data } = await fetchGames(currentPage, DATA_LIMIT);
       setGames(data);
     } catch (e) {
       console.log(e);
@@ -109,7 +111,7 @@ export const Store = () => {
             goToPreviousPage={goToPreviousPage}
             currentPage={currentPage}
             page={page}
-            getPaginatedData={getPaginatedData}
+            getPaginatedData={games}
             changePage={changePage}
           />
         )}
