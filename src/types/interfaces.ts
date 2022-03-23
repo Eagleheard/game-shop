@@ -1,5 +1,5 @@
 export interface IGame {
-  id: number;
+  id?: number;
   name: string;
   genre: {
     name: string;
@@ -10,11 +10,12 @@ export interface IGame {
     id: number;
   };
   price: string;
-  image: string;
-  preview: string;
-  isPreview: boolean;
-  new: boolean;
+  image?: string;
+  preview?: string;
+  isPreview?: boolean;
+  new?: boolean;
   popularity: number;
+  description?: string;
 }
 
 export interface IAuthor {

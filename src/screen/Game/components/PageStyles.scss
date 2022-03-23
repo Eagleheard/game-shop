@@ -1,0 +1,186 @@
+@import 'constants/const-styles.scss';
+@import 'constants/media-queries.scss';
+
+.game {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    align-items: center;
+
+    &__container-btn {
+        width: 65%;
+    }
+
+    &__container {
+        width: 65%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 20px 0;
+        margin-top: 20px;
+        box-shadow: 0 0 10px $black;
+    }
+
+    &__logo {
+        width: 50%;
+    }
+
+    &__info {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        font-family: $lato;
+        width: 90%;
+    }
+
+    &__price {
+        font-family: $lato;
+        font-size: 18px;
+    }
+
+    &__buying {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+    }
+
+    .about {
+        align-items: center;
+        justify-content: space-between;
+        width: 30%;
+
+        &__property {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+        }
+
+        &__name {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            align-self: center;
+            color: $secondary;
+        }
+
+        &__author, &__genre {
+            font-size: 16px;
+            text-decoration: none;
+            margin-top: 5px;
+            color: $black;
+    
+            &--link {
+                text-decoration: none;
+                color: $black;
+                
+                &:hover {
+                    color: $hover-link;
+                }
+            }
+        }
+
+        &__popularity {
+            font-size: 16px;
+            margin-top: 5px;
+        }
+    }
+
+    .description {
+        text-align: left;
+        margin-top: 30px;
+        width: 90%;
+
+        &__label {
+            font-family: $lato;
+            font-size: 24px;
+            font-weight: bold;
+            align-self: flex-start;
+            margin-bottom: 20px;
+        }
+
+        &__text {
+            font-family: $lato;
+        }
+    }
+
+    @include media-table-large {
+
+        &__container, &__container-btn {
+            width: 90%;
+        }
+
+        &__description {
+            width: 90%;
+        }
+
+        &__logo {
+            width: 60%;
+        }
+        
+        .about {
+
+            &__name {
+                font-size: 18px;
+            }
+
+            &__info {
+                font-size: 14px;
+            }
+        }
+
+        &__games {
+            width: 90%;
+        }
+    }
+
+    @include media-table-small {
+
+        &__price {
+            font-size: 14px;
+        }
+
+        .about {
+            &__author, &__genre, &__popularity {
+                font-size: 14px;
+            }
+        }
+    }
+
+    @include media-mobile-large {
+
+        &__logo {
+            width: 55%;
+        }
+
+        &__buying {
+            margin-top: 10px;
+        }
+        
+        .about {
+            width: 40%;
+        }
+    }
+
+    @include media-mobile-small {
+
+        &__logo {
+            width: 50%;
+        }
+
+        &__price {
+            font-size: 12px;
+        }
+
+        .about {
+            &__name {
+                font-size: 16px;
+            }
+            
+            &__author, &__genre, &__popularity {
+                font-size: 12px;
+            }
+        }
+    }
+}

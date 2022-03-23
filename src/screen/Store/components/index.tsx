@@ -3,7 +3,7 @@ import { fetchGames } from 'api/fetchGames';
 import { fetchPopularGames } from 'api/fetchPopularGames';
 import { fetchNewGames } from 'api/fetchNewGames';
 
-import { Game } from 'screen';
+import { Card } from 'screen';
 import { Pagination, Select, ResponsiveFilter } from 'components';
 import { Filter } from 'components/Filter';
 import { IGame } from 'types/interfaces';
@@ -29,8 +29,8 @@ export const Store = () => {
 
   const fillGames = async () => {
     try {
-      const data = await fetchGames(currentPage, DATA_LIMIT);
-      setGames(data);
+      const { data } = await fetchGames(currentPage, DATA_LIMIT);
+      setGames(data.rows);
     } catch (e) {
       console.log(e);
     }
@@ -38,8 +38,8 @@ export const Store = () => {
 
   const setNewGames = async () => {
     try {
-      const newGames = await fetchNewGames();
-      setGames(newGames);
+      const { data } = await fetchNewGames();
+      setGames(data.rows);
     } catch (e) {
       console.log(e);
     }
@@ -47,8 +47,8 @@ export const Store = () => {
 
   const setPopularGames = async () => {
     try {
-      const popularGames = await fetchPopularGames();
-      setGames(popularGames);
+      const { data } = await fetchPopularGames();
+      setGames(data.rows);
     } catch (e) {
       console.log(e);
     }
@@ -104,7 +104,7 @@ export const Store = () => {
           <div>Loading</div>
         ) : (
           <Pagination
-            RenderComponent={Game}
+            RenderComponent={Card}
             goToNextPage={goToNextPage}
             goToPreviousPage={goToPreviousPage}
             currentPage={currentPage}

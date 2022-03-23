@@ -30,6 +30,15 @@
         font-weight: bold;
         font-size: 15px;
         padding: 0 10px;
+
+        &--link {
+            text-decoration: none;
+            color: $black;
+            
+            &:hover {
+                color: $hover-link;
+            }
+        }
     }
 
     &__genre {
