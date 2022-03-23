@@ -1,5 +1,4 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
 
 import { Button, Pagination } from 'components';
 import { usePagination } from 'hooks';
