@@ -4,7 +4,7 @@ import { fetchGames } from 'api/fetchGames';
 import { Game } from 'screen';
 import { usePagination } from 'hooks';
 import { Pagination, Select, Preview } from 'components';
-import { IGame } from 'types/interfaces';
+import { IGame, IParams } from 'types/interfaces';
 
 import './style.scss';
 
@@ -19,14 +19,14 @@ enum sortOptions {
 export const Home = () => {
   const [games, setGames] = useState<IGame[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [params, setParams] = useState<object>({});
+  const [params, setParams] = useState<IParams>({});
   const { goToNextPage, goToPreviousPage, changePage, currentPage, page } = usePagination(
     DATA_LIMIT,
     params,
   );
 
   const fillGames = useCallback(
-    async (params?: object) => {
+    async (params?: IParams) => {
       try {
         const { data } = await fetchGames(currentPage, DATA_LIMIT, { params });
         setGames(data.rows);
