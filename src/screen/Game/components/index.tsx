@@ -1,5 +1,5 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 
 import { Button } from 'components';
 
@@ -30,10 +30,11 @@ export const GamePage: React.FC<IGamePage> = ({
   author,
   description,
 }) => {
+  const history = useNavigate();
   return (
     <div className="game">
       <div className="game__container-btn">
-        <Button text="«" onClick={() => history.back()} style="back-btn" />
+        <Button text="«" onClick={() => history(-1)} style="back-btn" />
       </div>
       <div className="game__container">
         <div className="game__info">

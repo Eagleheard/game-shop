@@ -6,6 +6,7 @@ import { Card } from 'screen';
 import { IGame } from 'types/interfaces';
 
 import './style.scss';
+import { useNavigate } from 'react-router-dom';
 
 interface IAuthor {
   name?: string;
@@ -28,10 +29,11 @@ export const Author: React.FC<IAuthor> = ({
 }) => {
   const { goToNextPage, goToPreviousPage, changePage, currentPage, page, getPaginatedData } =
     usePagination(authorGames, DATA_LIMIT);
+  const history = useNavigate();
   return (
     <div className="author">
       <div className="author__container-btn">
-        <Button text="«" onClick={() => history.back()} style="back-btn" />
+        <Button text="«" onClick={() => history(-1)} style="back-btn" />
       </div>
       <div className="author__container">
         <div className="author__info">
