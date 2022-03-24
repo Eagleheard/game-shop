@@ -1,10 +1,11 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useClickOutside } from 'hooks';
 
 import './styles.scss';
 
 interface ISelect {
   placeholder: string;
+  reset?: string;
   options: {
     id: number;
     value: string;
@@ -15,7 +16,7 @@ interface ISelect {
   handleSelect: (value: string) => void;
 }
 
-export const Select: React.FC<ISelect> = ({ placeholder, options, style, handleSelect }) => {
+export const Select: React.FC<ISelect> = ({ placeholder, options, style, handleSelect, reset }) => {
   const [isListHidden, setIsListHidden] = useState<boolean>(true);
   const [value, setValue] = useState<string>('');
   const selectRef = useRef(null);
@@ -30,6 +31,10 @@ export const Select: React.FC<ISelect> = ({ placeholder, options, style, handleS
     handleSelect(label);
     setIsListHidden(true);
   };
+
+  useEffect(() => {
+    setValue(reset || '');
+  }, [reset]);
 
   return (
     <label className={`select ${style}__select`}>

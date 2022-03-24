@@ -10,6 +10,10 @@
         flex-direction: column;
         width: 70%;
     }
+    
+    &__error {
+        align-self: center;
+    }
 
     &__options {
         display: grid;

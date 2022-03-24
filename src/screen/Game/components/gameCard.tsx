@@ -17,7 +17,7 @@ export const Card = ({ id, name, genre, author, price, image }: IGame) => {
           <p className="card__genre">{genre.name}</p>
         </div>
         <div>
-          <p className="card__price">Price: {price}</p>
+          <p className="card__price">Price: {price}$</p>
           <p className="card__author">
             <NavLink className="card__author--link" to={`/author/${author.id}`}>
               {author.name}

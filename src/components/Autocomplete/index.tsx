@@ -1,14 +1,15 @@
-import React, { useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
 import './style.scss';
 
 interface IAutocomplete {
   options: string[];
   name: string;
+  reset?: string;
   onChangeInput: (input: string) => void;
 }
 
-export const Autocomplete: React.FC<IAutocomplete> = ({ options, name, onChangeInput }) => {
+export const Autocomplete: React.FC<IAutocomplete> = ({ options, name, onChangeInput, reset }) => {
   const [isShow, setIsShow] = useState<boolean>(false);
   const [filtered, setFiltered] = useState<string[]>([]);
   const [value, setValue] = useState<string>('');
@@ -25,12 +26,19 @@ export const Autocomplete: React.FC<IAutocomplete> = ({ options, name, onChangeI
     setValue(e.currentTarget.value);
   };
 
-  const onClick = (e: React.MouseEvent<HTMLElement>) => {
-    setFiltered([]);
-    setIsShow(false);
-    setValue(e.currentTarget.innerText);
-    onChangeInput(e.currentTarget.innerText);
-  };
+  const onClick = useCallback(
+    (e: React.MouseEvent<HTMLElement>) => {
+      setFiltered([]);
+      setIsShow(false);
+      setValue(e.currentTarget.innerText);
+      onChangeInput(e.currentTarget.innerText);
+    },
+    [onChangeInput],
+  );
+
+  useEffect(() => {
+    setValue(reset || '');
+  }, [reset]);
 
   const renderAutocomplete = useMemo(() => {
     if (isShow && value) {

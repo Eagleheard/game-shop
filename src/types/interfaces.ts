@@ -20,11 +20,11 @@ export interface IGame {
 
 export interface IAuthor {
   id: number;
-  name: string;
-  location: string;
-  popularity: number;
-  description: string;
-  image: string;
+  name?: string;
+  location?: string;
+  popularity?: number;
+  description?: string;
+  logo?: string;
 }
 
 export interface IParams {
@@ -32,8 +32,8 @@ export interface IParams {
   genreName?: string;
   digital?: boolean;
   disk?: boolean;
-  minPrice?: string;
-  maxPrice?: string;
+  minPrice: string;
+  maxPrice: string;
   count?: number;
   isNew?: boolean;
   order?: string;

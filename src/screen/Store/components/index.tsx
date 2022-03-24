@@ -4,7 +4,7 @@ import { fetchGames } from 'api/fetchGames';
 import { Card } from 'screen';
 import { Pagination, Select, ResponsiveFilter } from 'components';
 import { Filter } from 'components/Filter';
-import { IGame, IParams } from 'types/interfaces';
+import { IGame } from 'types/interfaces';
 import { usePagination } from 'hooks';
 
 import filter from 'assets/filter.png';
@@ -16,6 +16,11 @@ enum sortOptions {
   OUR_GAMES = 'Our games',
   NEW_GAMES = 'New games',
   POPULAR_GAMES = 'Popular games',
+}
+
+interface IParams {
+  isNew?: boolean;
+  order?: string;
 }
 
 export const Store = () => {
@@ -70,9 +75,13 @@ export const Store = () => {
 
   return (
     <div className="store">
-      <Filter games={games} />
+      <Filter games={games} fillGames={fillGames} />
       {isFilterVisible && (
-        <ResponsiveFilter games={games} handleClose={() => setIsFilterVisible(false)} />
+        <ResponsiveFilter
+          fillGames={fillGames}
+          games={games}
+          handleClose={() => setIsFilterVisible(false)}
+        />
       )}
       <div className="store__container">
         <div className="store__options">
@@ -88,8 +97,8 @@ export const Store = () => {
             handleSelect={handleSelect}
           />
         </div>
-        {isLoading ? (
-          <div>Loading</div>
+        {isLoading || !games.length ? (
+          <h1 className="store__error">Games not found</h1>
         ) : (
           <Pagination
             RenderComponent={Card}

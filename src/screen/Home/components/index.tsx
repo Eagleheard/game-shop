@@ -4,7 +4,7 @@ import { fetchGames } from 'api/fetchGames';
 import { Card } from 'screen';
 import { usePagination } from 'hooks';
 import { Pagination, Select, Preview } from 'components';
-import { IGame, IParams } from 'types/interfaces';
+import { IGame } from 'types/interfaces';
 
 import './style.scss';
 
@@ -16,10 +16,15 @@ enum sortOptions {
   POPULAR_GAMES = 'Popular games',
 }
 
+interface IParams {
+  isNew?: boolean;
+  order?: string;
+}
+
 export const Home = () => {
   const [games, setGames] = useState<IGame[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [params, setParams] = useState<IParams>({});
+  const [params, setParams] = useState<IParams>();
   const { goToNextPage, goToPreviousPage, changePage, currentPage, page } = usePagination(
     DATA_LIMIT,
     params,
