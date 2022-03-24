@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { fetchGames } from 'api/fetchGames';
 
-import { Game } from 'screen';
+import { Card } from 'screen';
 import { Pagination, Select, ResponsiveFilter } from 'components';
 import { Filter } from 'components/Filter';
 import { IGame, IParams } from 'types/interfaces';
@@ -92,7 +92,7 @@ export const Store = () => {
           <div>Loading</div>
         ) : (
           <Pagination
-            RenderComponent={Game}
+            RenderComponent={Card}
             goToNextPage={goToNextPage}
             goToPreviousPage={goToPreviousPage}
             currentPage={currentPage}

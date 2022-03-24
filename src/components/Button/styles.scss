@@ -58,6 +58,28 @@
         cursor: pointer;
     }
 
+    &__buy {
+        border: none;
+        font-family: $lato;
+        background: $search-primary;
+        color: $black;
+        border-radius: 5px;
+        padding: 3px;
+        margin: 0;
+        width: 50%;
+        height: 30px;
+        cursor: pointer;
+    }
+
+    &__back-btn {
+        background-color: $secondary;
+        border: 2px solid $search-primary;
+        border-radius: 5px;
+        align-self: flex-start;
+        margin-top: 20px;
+        margin-left: 0;
+    }
+
     @include media-table-large {
         width: 35px;
         height: 35px;
@@ -69,6 +91,17 @@
 
         &__search, &__clear {
             width: 30%;
+        }
+
+        &__buy {
+            width: 40%;
+        }
+    }
+
+    @include media-table-small {
+
+        &__buy {
+            font-size: 12px;
         }
     }
 
@@ -83,6 +116,11 @@
         }
 
         &__search, &__clear {
+            width: 30%;
+        }
+
+        &__buy {
+            height: 30px;
             width: 30%;
         }
     }
@@ -102,6 +140,11 @@
             font-size: 12px;
             height: 25px;
             width: 30%;
+        }
+
+        &__buy {
+            width: 50%;
+            font-size: 12px;
         }
     }
 

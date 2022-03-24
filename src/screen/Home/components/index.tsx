@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { fetchGames } from 'api/fetchGames';
 
-import { Game } from 'screen';
+import { Card } from 'screen';
 import { usePagination } from 'hooks';
 import { Pagination, Select, Preview } from 'components';
 import { IGame, IParams } from 'types/interfaces';
@@ -78,7 +78,7 @@ export const Home = () => {
           <h1>Games not found</h1>
         ) : (
           <Pagination
-            RenderComponent={Game}
+            RenderComponent={Card}
             goToNextPage={goToNextPage}
             goToPreviousPage={goToPreviousPage}
             currentPage={currentPage}
