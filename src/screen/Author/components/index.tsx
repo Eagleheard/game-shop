@@ -27,8 +27,8 @@ export const Author: React.FC<IAuthor> = ({
   location,
   popularity,
 }) => {
-  const { goToNextPage, goToPreviousPage, changePage, currentPage, page, getPaginatedData } =
-    usePagination(authorGames, DATA_LIMIT);
+  const { goToNextPage, goToPreviousPage, changePage, currentPage, page } =
+    usePagination(DATA_LIMIT);
   const history = useNavigate();
   return (
     <div className="author">
@@ -56,7 +56,7 @@ export const Author: React.FC<IAuthor> = ({
           goToPreviousPage={goToPreviousPage}
           currentPage={currentPage}
           page={page}
-          getPaginatedData={getPaginatedData}
+          getPaginatedData={authorGames}
           changePage={changePage}
         />
       </div>

@@ -1,16 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { fetchGames } from 'api/fetchGames';
-import { fetchNewGames } from 'api/fetchNewGames';
-import { fetchPopularGames } from 'api/fetchPopularGames';
 
 import { Card } from 'screen';
 import { usePagination } from 'hooks';
 import { Pagination, Select, Preview } from 'components';
-import { IGame } from 'types/interfaces';
+import { IGame, IParams } from 'types/interfaces';
 
 import './style.scss';
 
 const DATA_LIMIT = 4;
+
 enum sortOptions {
   OUR_GAMES = 'Our games',
   NEW_GAMES = 'New games',
@@ -20,58 +19,46 @@ enum sortOptions {
 export const Home = () => {
   const [games, setGames] = useState<IGame[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const { goToNextPage, goToPreviousPage, changePage, currentPage, page, getPaginatedData } =
-    usePagination(games, DATA_LIMIT);
+  const [params, setParams] = useState<IParams>({});
+  const { goToNextPage, goToPreviousPage, changePage, currentPage, page } = usePagination(
+    DATA_LIMIT,
+    params,
+  );
 
-  const fillGames = async () => {
-    try {
-      const { data } = await fetchGames(currentPage, DATA_LIMIT);
-      setGames(data.rows);
-    } catch (e) {
-      console.log(e);
-    }
-  };
-
-  const setNewGames = async () => {
-    try {
-      const { data } = await fetchNewGames();
-      setGames(data.rows);
-    } catch (e) {
-      console.log(e);
-    }
-  };
-
-  const setPopularGames = async () => {
-    try {
-      const { data } = await fetchPopularGames();
-      setGames(data.rows);
-    } catch (e) {
-      console.log(e);
-    }
-  };
+  const fillGames = useCallback(
+    async (params?: IParams) => {
+      try {
+        const { data } = await fetchGames(currentPage, DATA_LIMIT, { params });
+        setGames(data.rows);
+      } catch (e) {
+        console.log(e);
+      }
+    },
+    [currentPage],
+  );
 
   const handleSelect = (value: string) => {
     switch (value) {
       case sortOptions.OUR_GAMES:
-        fillGames();
+        setParams({});
         break;
       case sortOptions.NEW_GAMES:
-        setNewGames();
+        setParams({ isNew: true });
         break;
       case sortOptions.POPULAR_GAMES:
-        setPopularGames();
+        setParams({ order: 'popularity' });
         break;
       default:
-        fillGames();
+        setParams({});
     }
     changePage(1);
   };
 
   useEffect(() => {
     setIsLoading(true);
-    fillGames();
+    fillGames(params);
     setIsLoading(false);
-  }, []);
+  }, [currentPage, params]);
 
   return (
     <div className="home">
@@ -87,8 +74,8 @@ export const Home = () => {
           style="home"
           handleSelect={handleSelect}
         />
-        {isLoading ? (
-          <div>Loading</div>
+        {isLoading || !games.length ? (
+          <h1>Games not found</h1>
         ) : (
           <Pagination
             RenderComponent={Card}
@@ -96,7 +83,7 @@ export const Home = () => {
             goToPreviousPage={goToPreviousPage}
             currentPage={currentPage}
             page={page}
-            getPaginatedData={getPaginatedData}
+            getPaginatedData={games}
             changePage={changePage}
           />
         )}
