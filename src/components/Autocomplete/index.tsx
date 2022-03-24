@@ -5,7 +5,7 @@ import './style.scss';
 interface IAutocomplete {
   options: string[];
   name: string;
-  reset: string;
+  reset?: string;
   onChangeInput: (input: string) => void;
 }
 

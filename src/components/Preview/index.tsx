@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import classNames from 'classnames';
+import { NavLink } from 'react-router-dom';
 
 import { fetchPreviewGames } from 'api/fetchPreviewGames';
 
@@ -23,7 +24,7 @@ export const Preview = () => {
   const fillPreviewGames = async () => {
     try {
       const { data } = await fetchPreviewGames();
-      return setPreviewGames(data.rows);
+      setPreviewGames(data.rows);
     } catch (e) {
       console.log(e);
     }
@@ -64,7 +65,11 @@ export const Preview = () => {
             })}
           ></img>
           <div className="preview__description">
-            <h1 className="preview__name">{name}</h1>
+            <h1 className="preview__name">
+              <NavLink className="preview__name--link" to={`/game/${id}`}>
+                {name}
+              </NavLink>
+            </h1>
             <p className="preview__genre">Genre: {genre.name}</p>
             <h1 className="preview__price">Price: {price}</h1>
           </div>

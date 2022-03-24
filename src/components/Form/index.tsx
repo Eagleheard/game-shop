@@ -90,7 +90,7 @@ export const Form: React.FC<IForm> = ({ games, fillGames }) => {
           {...register('minPrice', {
             validate: {
               matchesMinPrice: (value) => {
-                return parseInt(value) >= 0 || 'Price should be bigger then 0';
+                return value ? parseInt(value) >= 0 || 'Price should be bigger then 0' : undefined;
               },
             },
           })}
