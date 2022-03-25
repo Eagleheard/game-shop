@@ -54,9 +54,26 @@
     }
   }
 
-  @include media-desktop-large {
-    margin: 10px 0;
-  }
+    &__description {
+        display: flex;
+        flex-direction: row;
+        font-family: $lato;
+    }
+
+    &__name, &__price {
+        font-weight: bold;
+        font-size: 15px;
+        padding: 0 10px;
+
+        &--link {
+            text-decoration: none;
+            color: $black;
+            
+            &:hover {
+                color: $hover-link;
+            }
+        }
+    }
 
   @include media-desktop {
     &__img {

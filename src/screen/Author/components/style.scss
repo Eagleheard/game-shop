@@ -18,29 +18,25 @@
     box-shadow: 0 0 10px $black;
   }
 
-  &__logo {
-    width: 25%;
-  }
-
-  &__info {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-    font-family: $lato;
-  }
-
-  .about {
-    align-self: center;
-    align-items: flex-start;
-
-    &__name {
-      font-size: 24px;
-      font-weight: bold;
-      margin-bottom: 20px;
-      align-self: center;
-      color: $secondary;
+    &__container-btn {
+        width: 65%;
     }
-  }
+
+    &__container {
+        width: 65%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        align-items: center;
+        padding: 20px 0;
+        margin-top: 20px;
+        box-shadow: 0 0 10px $black;
+    }
+
+    &__logo {
+        width: 20%;
+    }
+
 
   .description {
     text-align: left;

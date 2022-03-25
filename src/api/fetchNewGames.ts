@@ -1,7 +1,5 @@
 import axios from 'axios';
 
-import { IGame } from 'types/interfaces';
-
-export const fetchNewGames = (): Promise<IGame[]> => {
+export const fetchNewGames = () => {
   return axios.get('/game/?isNew=true');
 };

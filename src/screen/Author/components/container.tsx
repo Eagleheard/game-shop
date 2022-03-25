@@ -8,13 +8,12 @@ import { Author } from '.';
 
 export const AuthorContainer = () => {
   const { id } = useParams<string>();
-  const [authorInfo, setAuthorInfo] = useState<IAuthor[]>([]);
+  const [authorInfo, setAuthorInfo] = useState<IAuthor>();
   const [authorGames, setAuthorGames] = useState<IGame[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-
   const searchAuthor = useCallback(async () => {
     try {
-      const data = await fetchAuthor(id);
+      const { data } = await fetchAuthor(id);
       setAuthorInfo(data);
     } catch (e) {
       console.log(e);
@@ -23,8 +22,8 @@ export const AuthorContainer = () => {
 
   const searchAuthorGames = useCallback(async () => {
     try {
-      const data = await fetchGameByAuthor(id);
-      setAuthorGames(data);
+      const { data } = await fetchGameByAuthor(id);
+      setAuthorGames(data.rows);
     } catch (e) {
       console.log(e);
     }
@@ -37,19 +36,5 @@ export const AuthorContainer = () => {
     setIsLoading(false);
   }, [searchAuthor, searchAuthorGames]);
 
-  return isLoading ? (
-    <p>Loading...</p>
-  ) : (
-    authorInfo.map(({ id, name, description, image, location, popularity }) => (
-      <Author
-        key={id}
-        name={name}
-        description={description}
-        location={location}
-        popularity={popularity}
-        logo={image}
-        authorGames={authorGames}
-      />
-    ))
-  );
+  return isLoading ? <p>Loading...</p> : <Author {...authorInfo} authorGames={authorGames} />;
 };

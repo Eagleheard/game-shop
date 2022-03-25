@@ -39,6 +39,10 @@
     &__container {
       width: 90%;
     }
+    
+    &__error {
+        align-self: center;
+    }
 
     &__options {
       display: flex;

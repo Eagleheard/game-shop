@@ -1,7 +1,5 @@
 import axios from 'axios';
 
-import { IGame } from 'types/interfaces';
-
-export const fetchPopularGames = (): Promise<IGame[]> => {
+export const fetchPopularGames = () => {
   return axios.get('/game?order=popularity');
 };

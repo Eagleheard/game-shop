@@ -1,9 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { fetchGames } from 'api/fetchGames';
-import { fetchPopularGames } from 'api/fetchPopularGames';
-import { fetchNewGames } from 'api/fetchNewGames';
 
-import { Game } from 'screen';
+import { Card } from 'screen';
 import { Pagination, Select, ResponsiveFilter } from 'components';
 import { Filter } from 'components/Filter';
 import { IGame } from 'types/interfaces';
@@ -20,41 +18,30 @@ enum sortOptions {
   POPULAR_GAMES = 'Popular games',
 }
 
+interface IParams {
+  isNew?: boolean;
+  order?: string;
+}
+
 export const Store = () => {
   const [games, setGames] = useState<IGame[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [params, setParams] = useState<IParams>();
   const [isFilterVisible, setIsFilterVisible] = useState<boolean>(false);
-  const { goToNextPage, goToPreviousPage, changePage, currentPage, page } = usePagination(
-    games,
-    DATA_LIMIT,
+  const { goToNextPage, goToPreviousPage, changePage, currentPage, page } =
+    usePagination(DATA_LIMIT);
+
+  const fillGames = useCallback(
+    async (params?: IParams) => {
+      try {
+        const { data } = await fetchGames(currentPage, DATA_LIMIT, { params });
+        setGames(data.rows);
+      } catch (e) {
+        console.log(e);
+      }
+    },
+    [currentPage],
   );
-
-  const fillGames = async () => {
-    try {
-      const { data } = await fetchGames(currentPage, DATA_LIMIT);
-      setGames(data);
-    } catch (e) {
-      console.log(e);
-    }
-  };
-
-  const setNewGames = async () => {
-    try {
-      const newGames = await fetchNewGames();
-      setGames(newGames);
-    } catch (e) {
-      console.log(e);
-    }
-  };
-
-  const setPopularGames = async () => {
-    try {
-      const popularGames = await fetchPopularGames();
-      setGames(popularGames);
-    } catch (e) {
-      console.log(e);
-    }
-  };
 
   const setFilter = () => {
     setIsFilterVisible((prevValue) => !prevValue);
@@ -63,30 +50,38 @@ export const Store = () => {
   const handleSelect = (value: string) => {
     switch (value) {
       case sortOptions.OUR_GAMES:
+        setParams({});
         fillGames();
         break;
       case sortOptions.NEW_GAMES:
-        setNewGames();
+        setParams({ isNew: true });
+        fillGames(params);
         break;
       case sortOptions.POPULAR_GAMES:
-        setPopularGames();
+        setParams({ order: 'popularity' });
+        fillGames(params);
         break;
       default:
         fillGames();
     }
+    changePage(1);
   };
 
   useEffect(() => {
     setIsLoading(true);
-    fillGames();
+    fillGames(params);
     setIsLoading(false);
-  }, []);
+  }, [currentPage, params]);
 
   return (
     <div className="store">
-      <Filter games={games} />
+      <Filter games={games} fillGames={fillGames} />
       {isFilterVisible && (
-        <ResponsiveFilter games={games} handleClose={() => setIsFilterVisible(false)} />
+        <ResponsiveFilter
+          fillGames={fillGames}
+          games={games}
+          handleClose={() => setIsFilterVisible(false)}
+        />
       )}
       <div className="store__container">
         <div className="store__options">
@@ -102,11 +97,11 @@ export const Store = () => {
             handleSelect={handleSelect}
           />
         </div>
-        {isLoading ? (
-          <div>Loading</div>
+        {isLoading || !games.length ? (
+          <h1 className="store__error">Games not found</h1>
         ) : (
           <Pagination
-            RenderComponent={Game}
+            RenderComponent={Card}
             goToNextPage={goToNextPage}
             goToPreviousPage={goToPreviousPage}
             currentPage={currentPage}

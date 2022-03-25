@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { Controller, FieldValues, SubmitHandler, useForm } from 'react-hook-form';
+import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { fetchGenres } from 'api/fetchGenres';
 
 import { Autocomplete, Checkbox, Select, Button } from 'components';
-import { IGame } from 'types/interfaces';
+import { IGame, IParams } from 'types/interfaces';
 
 import './style.scss';
 
 interface IForm {
   games: IGame[];
+  fillGames: (params?: IParams) => void;
 }
 
 interface IGenre {
@@ -16,7 +17,7 @@ interface IGenre {
   name: string;
 }
 
-export const Form: React.FC<IForm> = ({ games }) => {
+export const Form: React.FC<IForm> = ({ games, fillGames }) => {
   const [isDiskChecked, setIsDiskChecked] = useState<boolean>(false);
   const [genres, setGenres] = useState<IGenre[]>([]);
 
@@ -27,7 +28,7 @@ export const Form: React.FC<IForm> = ({ games }) => {
     control,
     reset,
     formState: { errors },
-  } = useForm();
+  } = useForm<IParams>();
 
   const fillGenres = async () => {
     try {
@@ -38,26 +39,28 @@ export const Form: React.FC<IForm> = ({ games }) => {
     }
   };
 
-  const submitForm: SubmitHandler<FieldValues> = (data) => {
-    console.log(data);
+  const submitForm: SubmitHandler<IParams> = (params) => {
+    fillGames(params);
   };
 
   const handleReset = () => {
     reset();
+    setIsDiskChecked(false);
+    fillGames();
   };
 
   useEffect(() => {
-    reset({ author: '', genre: '' });
     fillGenres();
   }, [reset]);
 
   return (
     <form onSubmit={handleSubmit(submitForm)} className="form">
       <Controller
-        name="author"
+        name="authorName"
         control={control}
-        render={({ field: { onChange } }) => (
+        render={({ field: { onChange, value } }) => (
           <Autocomplete
+            reset={value}
             options={games.map(({ author }) => author.name)}
             name="Author"
             onChangeInput={onChange}
@@ -65,12 +68,13 @@ export const Form: React.FC<IForm> = ({ games }) => {
         )}
       />
       <Controller
-        name="genre"
+        name="genreName"
         control={control}
-        render={({ field: { onChange } }) => (
+        render={({ field: { onChange, value } }) => (
           <Select
+            reset={value}
             placeholder="Genre"
-            options={genres.map(({ id, name }) => ({
+            options={genres.map(({ id, name }: IGenre) => ({
               id,
               value: name,
               label: name,
@@ -86,11 +90,11 @@ export const Form: React.FC<IForm> = ({ games }) => {
           {...register('minPrice', {
             validate: {
               matchesMinPrice: (value) => {
-                return value >= 0 || 'Price should be bigger then 0';
+                return value ? parseInt(value) >= 0 || 'Price should be bigger then 0' : undefined;
               },
             },
           })}
-          onKeyPress={(e) => !/[0-9]/.test(e.key) && e.preventDefault()}
+          onKeyPress={(e) => !/[0-9\.]/g.test(e.key) && e.preventDefault()}
           placeholder="min price"
           type="text"
           className="form__price-min"
@@ -100,11 +104,14 @@ export const Form: React.FC<IForm> = ({ games }) => {
             validate: {
               matchesMaxPrice: (value) => {
                 const { minPrice } = getValues();
-                return value >= minPrice || 'Max price should be bigger then min price';
+                return value
+                  ? parseInt(value) >= parseInt(minPrice) ||
+                      'Max price should be bigger then min price'
+                  : undefined;
               },
             },
           })}
-          onKeyPress={(e) => !/[0-9]/.test(e.key) && e.preventDefault()}
+          onKeyPress={(e) => !/[0-9\.]/g.test(e.key) && e.preventDefault()}
           placeholder="max price"
           type="text"
           className="form__price-max"
@@ -135,7 +142,7 @@ export const Form: React.FC<IForm> = ({ games }) => {
             placeholder="Number of copies"
             className="form__copies"
             type="text"
-            {...register('copies')}
+            {...register('count')}
             onKeyPress={(e) => !/[0-9]/.test(e.key) && e.preventDefault()}
           />
         </div>
