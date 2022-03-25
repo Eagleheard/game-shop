@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate, useLinkClickHandler } from 'react-router-dom';
 
 import { Search } from 'components/Search';
 import { ResponsiveHeader } from './responsive';
-import { SignIn, SignUp, Portal } from 'components';
+import { SignIn, SignUp, Portal, Select } from 'components';
 import { CheckUser, Logout } from 'api/authorization';
 import { useAuth } from 'hooks/useAuth';
 
@@ -12,11 +12,18 @@ import menu from 'assets/menu.png';
 
 import './style.scss';
 
+enum sortOptions {
+  PROFILE = 'Profile',
+  LOGOUT = 'Logout',
+}
+
 export const Header = () => {
   const { user, setUser } = useAuth();
   const [isNavVisible, setNavVisibility] = useState<boolean>(false);
   const [isSignInVisible, setIsSignInVisible] = useState<boolean>(false);
   const [isSignUpVisible, setIsSignUpVisible] = useState<boolean>(false);
+
+  const navigate = useNavigate();
 
   const handleSwitch = () => {
     if (isSignInVisible) {
@@ -25,6 +32,17 @@ export const Header = () => {
     } else if (isSignUpVisible) {
       setIsSignInVisible(true);
       setIsSignUpVisible(false);
+    }
+  };
+
+  const handleSelect = (value: string) => {
+    switch (value) {
+      case sortOptions.PROFILE:
+        navigate(`/user/${user.id}`);
+        break;
+      case sortOptions.LOGOUT:
+        signOut();
+        break;
     }
   };
 
@@ -40,6 +58,7 @@ export const Header = () => {
   const signOut = async () => {
     Logout();
     setUser(null);
+    setIsSignInVisible(false);
   };
 
   useEffect(() => {
@@ -78,10 +97,15 @@ export const Header = () => {
       <Search />
       <div className="header__sign">
         {user ? (
-          <button className="header__login  link" onClick={signOut}>
-            {' '}
-            Hi, {user.name}{' '}
-          </button>
+          <Select
+            placeholder={`Hi, ${user.name}`}
+            options={[
+              { id: 0, label: 'Profile', value: 'Profile' },
+              { id: 1, label: 'Logout', value: 'Logout' },
+            ]}
+            style="header"
+            handleSelect={handleSelect}
+          />
         ) : (
           <button
             className="header__login  link"

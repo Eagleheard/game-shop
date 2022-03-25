@@ -26,6 +26,11 @@
     cursor: pointer;
   }
 
+  &__sign {
+    display: flex;
+    align-items: center;
+  }
+
   &__login {
     border: none;
     background-color: inherit;
@@ -36,6 +41,20 @@
     &__item {
       display: inline-block;
     }
+  }
+
+  &__select {
+    font-size: 18px;
+    color: $primary;
+  }
+
+  &__placeholder {
+    width: 100px
+  }
+  
+  &__select-menu {
+    color: $black;
+    width: 120px;
   }
 
   @include media-table-large {
