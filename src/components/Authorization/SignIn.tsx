@@ -1,16 +1,17 @@
 import React, { useState } from 'react';
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 
-import { Login } from 'api/authorization';
+import { login } from 'api/authorization';
 import { Button } from 'components/Button';
 import { useAuth } from 'hooks/useAuth';
 import { ISign, IUser } from 'types/interfaces';
+import { AuthorizationOptions } from 'types/enumerators';
 
 import './styles.scss';
 
 export const SignIn: React.FC<ISign> = ({ handleSwitch }) => {
   const { setUser } = useAuth();
-  const [error, setError] = useState<string>('');
+  const [error, setError] = useState<boolean>(false);
   const {
     handleSubmit,
     register,
@@ -19,10 +20,10 @@ export const SignIn: React.FC<ISign> = ({ handleSwitch }) => {
 
   const signIn = async (params?: IUser) => {
     try {
-      const { data } = await Login(params);
+      const { data } = await login(params);
       setUser(data);
     } catch (error) {
-      setError(String(error));
+      setError(true);
     }
   };
 
@@ -37,12 +38,8 @@ export const SignIn: React.FC<ISign> = ({ handleSwitch }) => {
         <div className="login__group">
           <input
             {...register('email', {
-              validate: (value) =>
-                value !==
-                ' /^(([^<>()[]\\.,;:s@"]+(.[^<>()[]\\.,;:s@"]+)*)|(".+"))@(([[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}])|(([a-zA-Z-0-9]+.)+[a-zA-Z]{2,}))$/',
+              validate: (value) => value !== AuthorizationOptions.EMAIL_VALIDATION,
               required: true,
-              pattern:
-                /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
             })}
             type="text"
             id="email"

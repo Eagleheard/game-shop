@@ -4,23 +4,15 @@ import ReactDOM from 'react-dom';
 import grey_cross from 'assets/grey-cross.png';
 
 import './styles.scss';
-import { ISign } from 'types/interfaces';
 
 interface IPortal {
-  Component: React.FC<ISign>;
+  Component: React.FC;
   isOpen: boolean;
   handleClose: () => void;
-  handleSwitch: () => void;
   text: string;
 }
 
-export const Portal: React.FC<IPortal> = ({
-  Component,
-  isOpen,
-  text,
-  handleClose,
-  handleSwitch,
-}) => {
+export const Portal: React.FC<IPortal> = ({ Component, isOpen, text, handleClose }) => {
   if (!isOpen) {
     return null;
   }
@@ -30,7 +22,7 @@ export const Portal: React.FC<IPortal> = ({
         <img src={grey_cross} />
       </button>
       <h2 className="portal__name">{text}</h2>
-      <Component handleSwitch={handleSwitch} />
+      <Component />
     </div>,
     document.body,
   );

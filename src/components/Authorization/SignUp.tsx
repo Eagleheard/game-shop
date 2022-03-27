@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 
-import { Registration } from 'api/authorization';
+import { registration } from 'api/authorization';
 import { Button } from 'components/Button';
 import { ISign, IUser } from 'types/interfaces';
 
 import './styles.scss';
+import { AuthorizationOptions } from 'types/enumerators';
 
 export const SignUp: React.FC<ISign> = ({ handleSwitch }) => {
   const [error, setError] = useState<string>('');
@@ -17,8 +18,7 @@ export const SignUp: React.FC<ISign> = ({ handleSwitch }) => {
 
   const signUp = async (params: IUser) => {
     try {
-      await Registration(params);
-      handleSwitch();
+      await registration(params);
     } catch ({
       response: {
         data: { message },
@@ -44,7 +44,7 @@ export const SignUp: React.FC<ISign> = ({ handleSwitch }) => {
             className="login__name"
             {...register('name', {
               required: true,
-              validate: (value) => value.length < 20,
+              validate: (value) => value.length < AuthorizationOptions.NAME_LENGTH,
             })}
           />
           <label htmlFor="name" className="login__label">
@@ -61,7 +61,7 @@ export const SignUp: React.FC<ISign> = ({ handleSwitch }) => {
             className="login__lastname"
             {...register('lastName', {
               required: true,
-              validate: (value) => value.length < 20,
+              validate: (value) => value.length < AuthorizationOptions.NAME_LENGTH,
             })}
           />
           <label htmlFor="lastname" className="login__label">
@@ -76,12 +76,8 @@ export const SignUp: React.FC<ISign> = ({ handleSwitch }) => {
             placeholder="email"
             className="login__email"
             {...register('email', {
-              validate: (value) =>
-                value !==
-                /^(([^<>()[]\\.,;:s@"]+(.[^<>()[]\\.,;:s@"]+)*)|(".+"))@(([[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}])|(([a-zA-Z-0-9]+.)+[a-zA-Z]{2,}))$/,
+              validate: (value) => value !== AuthorizationOptions.EMAIL_VALIDATION,
               required: true,
-              pattern:
-                /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
             })}
           />
           <label htmlFor="email" className="login__label">
@@ -99,7 +95,7 @@ export const SignUp: React.FC<ISign> = ({ handleSwitch }) => {
             placeholder="password"
             className="login__password"
             {...register('password', {
-              validate: (value) => value.length >= 8,
+              validate: (value) => value.length >= AuthorizationOptions.PASSWORD_LENGTH,
             })}
           />
           <label htmlFor="password" className="login__label">
@@ -108,9 +104,12 @@ export const SignUp: React.FC<ISign> = ({ handleSwitch }) => {
           {errors.password && <p className="login__password--error">Password too short</p>}
         </div>
         <div className="login__submit">
-          <h5 className="login__sign--link" onClick={handleSwitch}>
-            Or sign In
-          </h5>
+          <div className="login__sign-up">
+            <h5 className="login__sign">Or</h5>
+            <h5 className="login__sign--link" onClick={handleSwitch}>
+              sign In
+            </h5>
+          </div>
           <Button text="Sign Up" onClick={() => submitForm} style="sign-in" />
         </div>
       </form>

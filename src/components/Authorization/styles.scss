@@ -83,6 +83,7 @@
   &__sign {
     font-family: $lato;
     color: $secondary;
+    margin-right: 3px;
 
     &--link {
       font-family: $lato;
@@ -90,6 +91,11 @@
       text-decoration: underline;
       cursor: pointer;
     }
+  }
+
+  &__sign-up {
+    display: flex;
+    flex-direction: row;
   }
 
   &__submit {

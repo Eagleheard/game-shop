@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { NavLink, useNavigate, useLinkClickHandler } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 
 import { Search } from 'components/Search';
 import { ResponsiveHeader } from './responsive';
 import { SignIn, SignUp, Portal, Select } from 'components';
-import { CheckUser, Logout } from 'api/authorization';
+import { authorization, logout } from 'api/authorization';
 import { useAuth } from 'hooks/useAuth';
 
 import logo from 'assets/logo.png';
@@ -27,11 +27,10 @@ export const Header = () => {
 
   const handleSwitch = () => {
     if (isSignInVisible) {
-      setIsSignInVisible(false);
-      setIsSignUpVisible(true);
-    } else if (isSignUpVisible) {
-      setIsSignInVisible(true);
-      setIsSignUpVisible(false);
+      return setIsSignInVisible(false), setIsSignUpVisible(true);
+    }
+    if (isSignUpVisible) {
+      return setIsSignInVisible(true), setIsSignUpVisible(false);
     }
   };
 
@@ -48,7 +47,7 @@ export const Header = () => {
 
   const checkUser = async () => {
     try {
-      const { data } = await CheckUser();
+      const { data } = await authorization();
       setUser(data);
     } catch (error) {
       console.log(error);
@@ -56,7 +55,7 @@ export const Header = () => {
   };
 
   const signOut = async () => {
-    Logout();
+    logout();
     setUser(null);
     setIsSignInVisible(false);
   };
@@ -124,20 +123,18 @@ export const Header = () => {
       ></img>
       {isSignInVisible && !user && (
         <Portal
-          Component={SignIn}
+          Component={() => <SignIn handleSwitch={handleSwitch} />}
           isOpen={isSignInVisible}
           text="Sign In"
           handleClose={() => setIsSignInVisible(false)}
-          handleSwitch={handleSwitch}
         />
       )}
       {isSignUpVisible && (
         <Portal
-          Component={SignUp}
+          Component={() => <SignUp handleSwitch={handleSwitch} />}
           isOpen={isSignUpVisible}
           text="Sign Up"
           handleClose={() => setIsSignUpVisible(false)}
-          handleSwitch={handleSwitch}
         />
       )}
     </header>
