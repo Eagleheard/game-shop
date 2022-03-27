@@ -24,7 +24,7 @@ export const Preview = () => {
   const fillPreviewGames = async () => {
     try {
       const { data } = await fetchPreviewGames();
-      setPreviewGames(data);
+      setPreviewGames(data.rows);
     } catch (e) {
       console.log(e);
     }

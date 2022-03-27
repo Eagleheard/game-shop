@@ -13,7 +13,6 @@ class ErrorBoundary extends React.Component {
     this.logErrorToServices(error.toString(), info.componentStack);
   }
 
-  // A fake logging service.
   logErrorToServices = console.log;
 
   render() {
