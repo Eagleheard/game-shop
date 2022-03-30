@@ -9,7 +9,7 @@ export interface IGame {
     name: string;
     id: number;
   };
-  price: string;
+  price: number;
   image?: string;
   preview?: string;
   isPreview?: boolean;
@@ -37,4 +37,14 @@ export interface IParams {
   count?: number;
   isNew?: boolean;
   order?: string;
+}
+
+export interface ICart {
+  items: {
+    quantity: number;
+    game: IGame;
+  }[];
+  subtotal: number;
+  shipping: number;
+  total: number;
 }

@@ -9,7 +9,7 @@ interface IGamePage {
   name?: string;
   preview?: string;
   popularity?: number;
-  price?: string;
+  price?: number;
   genre?: {
     id: number;
     name: string;
