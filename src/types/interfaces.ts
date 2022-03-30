@@ -38,3 +38,14 @@ export interface IParams {
   isNew?: boolean;
   order?: string;
 }
+
+export interface ISign {
+  handleSwitch: () => void;
+}
+
+export interface IUser {
+  email?: string;
+  name?: string;
+  lastname?: string;
+  password?: string;
+}

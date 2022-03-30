@@ -2,20 +2,20 @@
 @import 'constants/media-queries.scss';
 
 .footer {
-    background-color: $secondary;
-  
-    &__copyright {
-      font-family: $lato;
-      font-style: normal;
-      font-weight: normal;
-      font-size: 18px;
-      line-height: 21px;
-      color: $primary;
-      text-align: center;
-      padding: 11px 0;
-    }
+  background-color: $secondary;
 
-    @include media-desktop {
-      display: none;
-    }
+  &__copyright {
+    font-family: $lato;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 18px;
+    line-height: 21px;
+    color: $primary;
+    text-align: center;
+    padding: 11px 0;
+  }
+
+  @include media-desktop {
+    display: none;
+  }
 }

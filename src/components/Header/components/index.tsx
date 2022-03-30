@@ -1,16 +1,72 @@
-import React, { useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { NavLink, useNavigate } from 'react-router-dom';
 
 import { Search } from 'components/Search';
 import { ResponsiveHeader } from './responsive';
+import { SignIn, SignUp, Portal, Select } from 'components';
+import { authorization, logout } from 'api/authorization';
+import { useAuth } from 'hooks/useAuth';
 
 import logo from 'assets/logo.png';
 import menu from 'assets/menu.png';
 
 import './style.scss';
 
+enum sortOptions {
+  PROFILE = 'Profile',
+  LOGOUT = 'Logout',
+}
+
 export const Header = () => {
+  const { user, setUser } = useAuth();
   const [isNavVisible, setNavVisibility] = useState<boolean>(false);
+  const [isSignInVisible, setIsSignInVisible] = useState<boolean>(false);
+  const [isSignUpVisible, setIsSignUpVisible] = useState<boolean>(false);
+
+  const navigate = useNavigate();
+
+  const handleSwitch = () => {
+    if (isSignInVisible) {
+      setIsSignInVisible(false);
+      setIsSignUpVisible(true);
+      return;
+    }
+    if (isSignUpVisible) {
+      setIsSignInVisible(true);
+      setIsSignUpVisible(false);
+      return;
+    }
+  };
+
+  const handleSelect = (value: string) => {
+    switch (value) {
+      case sortOptions.PROFILE:
+        navigate(`/user/${user.id}`);
+        break;
+      case sortOptions.LOGOUT:
+        signOut();
+        break;
+    }
+  };
+
+  const checkUser = async () => {
+    try {
+      const { data } = await authorization();
+      setUser(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const signOut = async () => {
+    logout();
+    setUser(null);
+    setIsSignInVisible(false);
+  };
+
+  useEffect(() => {
+    checkUser();
+  }, []);
 
   return (
     <header className="header">
@@ -34,11 +90,34 @@ export const Header = () => {
           </li>
         </ul>
       </nav>
-      {isNavVisible && <ResponsiveHeader setNavVisibility={setNavVisibility} />}
+      {isNavVisible && (
+        <ResponsiveHeader
+          setNavVisibility={setNavVisibility}
+          setIsSignInVisible={() => setIsSignInVisible((prevValue) => !prevValue)}
+          signOut={signOut}
+        />
+      )}
       <Search />
       <div className="header__sign">
-        <button className="header__sign-in  link"> Sign in</button>
-        <button className="header__sign-up  link"> Sign up</button>
+        {user ? (
+          <Select
+            placeholder={`Hi, ${user.name}`}
+            options={[
+              { id: 0, label: 'Profile', value: 'Profile' },
+              { id: 1, label: 'Logout', value: 'Logout' },
+            ]}
+            style="header"
+            handleSelect={handleSelect}
+          />
+        ) : (
+          <button
+            className="header__login  link"
+            onClick={() => setIsSignInVisible((prevValue) => !prevValue)}
+            disabled={isSignUpVisible}
+          >
+            Login
+          </button>
+        )}
       </div>
       <img
         alt="burger"
@@ -46,6 +125,22 @@ export const Header = () => {
         onClick={() => setNavVisibility((prevCount) => !prevCount)}
         src={menu}
       ></img>
+      {isSignInVisible && !user && (
+        <Portal
+          Component={() => <SignIn handleSwitch={handleSwitch} />}
+          isOpen={isSignInVisible}
+          text="Sign In"
+          handleClose={() => setIsSignInVisible(false)}
+        />
+      )}
+      {isSignUpVisible && (
+        <Portal
+          Component={() => <SignUp handleSwitch={handleSwitch} />}
+          isOpen={isSignUpVisible}
+          text="Sign Up"
+          handleClose={() => setIsSignUpVisible(false)}
+        />
+      )}
     </header>
   );
 };
