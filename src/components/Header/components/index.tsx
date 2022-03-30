@@ -27,10 +27,14 @@ export const Header = () => {
 
   const handleSwitch = () => {
     if (isSignInVisible) {
-      return setIsSignInVisible(false), setIsSignUpVisible(true);
+      setIsSignInVisible(false);
+      setIsSignUpVisible(true);
+      return;
     }
     if (isSignUpVisible) {
-      return setIsSignInVisible(true), setIsSignUpVisible(false);
+      setIsSignInVisible(true);
+      setIsSignUpVisible(false);
+      return;
     }
   };
 
