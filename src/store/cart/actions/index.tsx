@@ -5,6 +5,7 @@ import {
   CLEAR_CART,
   CartActionTypes,
   REMOVE_GAME,
+  DecrementGameAction,
 } from 'store/cart/types';
 
 export function addGame(payload: []): CartActionTypes {
@@ -14,10 +15,10 @@ export function addGame(payload: []): CartActionTypes {
   };
 }
 
-export function decrementGame(payload: []): CartActionTypes {
+export function decrementGame({payload: count}: DecrementGameAction): CartActionTypes {
   return {
     type: DECREMENT_GAME,
-    payload,
+    payload: count,
   };
 }
 

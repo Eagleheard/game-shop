@@ -1,4 +1,4 @@
-import { all, call, put, takeLatest } from 'redux-saga/effects';
+import { all, call, put, takeEvery } from 'redux-saga/effects';
 
 import {
   ADD_GAME,
@@ -65,9 +65,9 @@ function* clearStore() {
 }
 
 export default all([
-  takeLatest(ADD_GAME, addGameToStore),
-  takeLatest(DECREMENT_GAME, decrementGameFromStore),
-  takeLatest(GET_CART, getStore),
-  takeLatest(CLEAR_CART, clearStore),
-  takeLatest(REMOVE_GAME, removeGameFromStore),
+  takeEvery(ADD_GAME, addGameToStore),
+  takeEvery(DECREMENT_GAME, decrementGameFromStore),
+  takeEvery(GET_CART, getStore),
+  takeEvery(CLEAR_CART, clearStore),
+  takeEvery(REMOVE_GAME, removeGameFromStore),
 ]);

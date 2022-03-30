@@ -9,7 +9,6 @@ import {
 
 const initialState = {
   cart: [{ id: 0, gameId: 0, userId: 0, count: 0 }],
-  game: [{ id: 0, name: '', price: 0, count: 0 }],
 };
 
 export function cartReducer(state = initialState, { type, payload }: CartActionTypes) {
