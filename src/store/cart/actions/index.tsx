@@ -15,7 +15,7 @@ export function addGame(payload: []): CartActionTypes {
   };
 }
 
-export function decrementGame({payload: count}: DecrementGameAction): CartActionTypes {
+export function decrementGame({ payload: count }: DecrementGameAction): CartActionTypes {
   return {
     type: DECREMENT_GAME,
     payload: count,

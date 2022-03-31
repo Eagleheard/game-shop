@@ -44,9 +44,6 @@ export interface ICart {
     quantity: number;
     game: IGame;
   }[];
-  subtotal: number;
-  shipping: number;
-  total: number;
 }
 
 export interface ISign {
