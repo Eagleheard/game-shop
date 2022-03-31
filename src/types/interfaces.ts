@@ -48,3 +48,14 @@ export interface ICart {
   shipping: number;
   total: number;
 }
+
+export interface ISign {
+  handleSwitch: () => void;
+}
+
+export interface IUser {
+  email?: string;
+  name?: string;
+  lastname?: string;
+  password?: string;
+}

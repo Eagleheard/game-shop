@@ -14,7 +14,7 @@
     outline: none;
     background: $primary;
   }
-    
+
   &__btn {
     height: 40px;
     border: none;
@@ -26,7 +26,6 @@
   }
 
   @include media-mobile-large {
-
     &__field {
       width: 150px;
       height: 30px;
@@ -38,7 +37,6 @@
   }
 
   @include media-mobile-small {
-
     &__field {
       width: 120px;
     }
