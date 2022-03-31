@@ -1,6 +1,7 @@
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 
+import ErrorBoundary from 'components/ErrorBoundary';
 import { AuthProvider } from 'hooks/useAuth';
 import { About, Store, Home } from 'screen';
 import { Header, Footer } from 'components';
@@ -11,21 +12,24 @@ import './App.css';
 
 function App() {
   return (
-    <AuthProvider>
-      <div className="app">
-        <Header />
-        <div className="app__content">
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/store" element={<Store />} />
-            <Route path="/author/:id" element={<AuthorContainer />} />
-            <Route path="/user/:id" element={<div>hi</div>} />
-          </Routes>
-        </div>
-        <Footer />
-      </div>
-    </AuthProvider>
+    <div className="app">
+      <ErrorBoundary>
+        <AuthProvider>
+          <Header />
+          <div className="app__content">
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/about" element={<About />} />
+              <Route path="/store" element={<Store />} />
+              <Route path="/game/:id" element={<GamePageContainer />} />
+              <Route path="/author/:id" element={<AuthorContainer />} />
+              <Route path="/user/:id" element={<div>hi</div>} />
+            </Routes>
+          </div>
+          <Footer />
+        </AuthProvider>
+      </ErrorBoundary>
+    </div>
   );
 }
 
