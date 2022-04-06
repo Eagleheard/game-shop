@@ -1,6 +1,6 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { fetchGame } from 'api/fetchGame';
+import { socket } from 'config';
 
 import { IGame } from 'types/interfaces';
 import { GamePage } from '.';
@@ -10,16 +10,18 @@ export const GamePageContainer = () => {
   const [gameInfo, setGameInfo] = useState<IGame>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const searchGame = useCallback(async () => {
-    const { data } = await fetchGame(id);
-    setGameInfo(data);
-  }, [id]);
-
   useEffect(() => {
     setIsLoading(true);
-    searchGame();
+    socket.connect();
+    socket.on('selectedGame', (data) => {
+      setGameInfo(data);
+    });
+    socket.emit('game', id);
     setIsLoading(false);
-  }, [searchGame]);
+    return () => {
+      socket.disconnect();
+    };
+  }, [gameInfo]);
 
   return isLoading ? <p>Loading...</p> : <GamePage {...gameInfo} />;
 };

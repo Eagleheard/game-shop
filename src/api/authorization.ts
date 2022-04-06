@@ -9,7 +9,10 @@ export const registration = (params: IUser) => {
 export const login = (params?: IUser) => {
   return axios.put(`/user/login`, params, {
     withCredentials: true,
-    headers: { 'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/json' },
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Content-Type': 'application/json',
+    },
   });
 };
 

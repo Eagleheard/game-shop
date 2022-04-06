@@ -27,7 +27,9 @@
   }
 
   &__name,
-  &__price {
+  &__price,
+  &__quantity,
+  &__type {
     font-weight: bold;
     font-size: 15px;
     padding: 0 10px;
@@ -54,26 +56,27 @@
     }
   }
 
-    &__description {
-        display: flex;
-        flex-direction: row;
-        font-family: $lato;
-    }
+  &__description {
+    display: flex;
+    flex-direction: row;
+    font-family: $lato;
+  }
 
-    &__name, &__price {
-        font-weight: bold;
-        font-size: 15px;
-        padding: 0 10px;
+  &__name,
+  &__price {
+    font-weight: bold;
+    font-size: 15px;
+    padding: 0 10px;
 
-        &--link {
-            text-decoration: none;
-            color: $black;
-            
-            &:hover {
-                color: $hover-link;
-            }
-        }
+    &--link {
+      text-decoration: none;
+      color: $black;
+
+      &:hover {
+        color: $hover-link;
+      }
     }
+  }
 
   @include media-desktop {
     &__img {

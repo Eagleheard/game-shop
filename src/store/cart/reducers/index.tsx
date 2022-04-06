@@ -1,42 +1,56 @@
 import {
-  ADD_GAME,
   GET_CART,
-  DECREMENT_GAME,
   CLEAR_CART,
   CartActionTypes,
-  REMOVE_GAME,
+  INCREMENT_GAME_SUCCESS,
+  DECREMENT_GAME_SUCCESS,
+  REMOVE_GAME_SUCCESS,
 } from 'store/cart/types';
 
 const initialState = {
-  cart: [{ id: 0, gameId: 0, userId: 0, count: 0 }],
+  cart: [
+    {
+      id: 1,
+      userId: 0,
+      gameId: 0,
+      quantity: 0,
+      game: {
+        id: 0,
+        name: '',
+        price: 0,
+        image: 0,
+        disk: null,
+        digital: null,
+      },
+    },
+  ],
 };
-
 export function cartReducer(state = initialState, { type, payload }: CartActionTypes) {
   switch (type) {
-    case ADD_GAME:
+    case INCREMENT_GAME_SUCCESS:
       return {
         ...state,
-        cart: [...state.cart, ...payload],
+        cart: state.cart.map((game) => (game.gameId === payload.gameId ? payload : game)),
       };
-    case REMOVE_GAME:
+    case DECREMENT_GAME_SUCCESS:
       return {
         ...state,
-        cart: [...state.cart, ...payload],
+        cart: state.cart.map((game) => (game.gameId === payload.gameId ? payload : game)),
+      };
+    case REMOVE_GAME_SUCCESS:
+      return {
+        ...state,
+        cart: state.cart.filter(({ gameId }) => gameId !== payload.gameId),
       };
     case GET_CART:
       return {
         ...state,
-        cart: [...state.cart, ...payload],
-      };
-    case DECREMENT_GAME:
-      return {
-        ...state,
-        cart: [...state.cart, ...payload],
+        cart: payload,
       };
     case CLEAR_CART:
       return {
         ...state,
-        cart: [...state.cart, ...payload],
+        cart: [],
       };
     default:
       return state;

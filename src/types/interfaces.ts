@@ -1,5 +1,5 @@
 export interface IGame {
-  id?: number;
+  id: number;
   name: string;
   genre: {
     name: string;
@@ -16,6 +16,9 @@ export interface IGame {
   new?: boolean;
   popularity: number;
   description?: string;
+  quantity?: number;
+  disk?: boolean;
+  count: string;
 }
 
 export interface IAuthor {
@@ -40,10 +43,9 @@ export interface IParams {
 }
 
 export interface ICart {
-  items: {
-    quantity: number;
-    game: IGame;
-  }[];
+  cart: {};
+  game: IGame;
+  quantity: number;
 }
 
 export interface ISign {
