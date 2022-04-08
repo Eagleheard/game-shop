@@ -46,6 +46,18 @@ export interface ISign {
 export interface IUser {
   email?: string;
   name?: string;
-  lastname?: string;
+  lastName?: string;
   password?: string;
+  photo?: string;
+}
+
+export interface IAchievement {
+  id?: number;
+  isAchieved?: boolean;
+  achievement: {
+    id: number;
+    name: string;
+    description: string;
+    discount: number;
+  };
 }

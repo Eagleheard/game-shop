@@ -3,7 +3,7 @@ import { Route, Routes } from 'react-router-dom';
 
 import ErrorBoundary from 'components/ErrorBoundary';
 import { AuthProvider } from 'hooks/useAuth';
-import { About, Store, Home } from 'screen';
+import { About, Store, Home, Profile } from 'screen';
 import { Header, Footer } from 'components';
 import { AuthorContainer } from 'screen/Author/components/container';
 import { GamePageContainer } from 'screen/Game/components/container';
@@ -23,7 +23,7 @@ function App() {
               <Route path="/store" element={<Store />} />
               <Route path="/game/:id" element={<GamePageContainer />} />
               <Route path="/author/:id" element={<AuthorContainer />} />
-              <Route path="/user/:id" element={<div>hi</div>} />
+              <Route path="/user/:id" element={<Profile />} />
             </Routes>
           </div>
           <Footer />

@@ -1,0 +1,40 @@
+@import 'constants/const-styles.scss';
+@import 'constants/media-queries.scss';
+
+.achievement {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    width: 300px;
+    margin: 10px 0;
+    opacity: 0.5;
+
+    &--achieved {
+        opacity: 1;
+    }
+
+    &__logo {
+        width: 20%;
+    }
+
+    &__info {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        font-family: $lato;
+        height: 50px;
+    }
+
+    &__side-info {
+        display: flex;
+        flex-direction: row;
+    }
+
+    &__name {
+        font-weight: bold;
+    }
+
+    &__discount {
+        margin-left: 10px;
+    }
+}

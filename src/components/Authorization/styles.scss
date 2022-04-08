@@ -33,7 +33,10 @@
     margin-bottom: 10px;
   }
 
-  &__email, &__password, &__name, &__lastname {
+  &__email,
+  &__password,
+  &__name,
+  &__lastname {
     height: 40px;
     width: 100%;
     border: 2px solid $search-primary;
