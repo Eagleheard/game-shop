@@ -1,16 +1,15 @@
 import {
-  GET_CART,
+  GET_CART_SUCCESS,
   CLEAR_CART,
   CartActionTypes,
-  INCREMENT_GAME_SUCCESS,
-  DECREMENT_GAME_SUCCESS,
   REMOVE_GAME_SUCCESS,
+  CHANGE_QUANTITY_SUCCESS,
+  GET_CART_FAILURE,
 } from 'store/cart/types';
 
 const initialState = {
   cart: [
     {
-      id: 1,
       userId: 0,
       gameId: 0,
       quantity: 0,
@@ -24,15 +23,12 @@ const initialState = {
       },
     },
   ],
+  isLoading: false,
+  error: '',
 };
 export function cartReducer(state = initialState, { type, payload }: CartActionTypes) {
   switch (type) {
-    case INCREMENT_GAME_SUCCESS:
-      return {
-        ...state,
-        cart: state.cart.map((game) => (game.gameId === payload.gameId ? payload : game)),
-      };
-    case DECREMENT_GAME_SUCCESS:
+    case CHANGE_QUANTITY_SUCCESS:
       return {
         ...state,
         cart: state.cart.map((game) => (game.gameId === payload.gameId ? payload : game)),
@@ -42,10 +38,15 @@ export function cartReducer(state = initialState, { type, payload }: CartActionT
         ...state,
         cart: state.cart.filter(({ gameId }) => gameId !== payload.gameId),
       };
-    case GET_CART:
+    case GET_CART_SUCCESS:
       return {
         ...state,
         cart: payload,
+      };
+    case GET_CART_FAILURE:
+      return {
+        ...state,
+        error: payload,
       };
     case CLEAR_CART:
       return {

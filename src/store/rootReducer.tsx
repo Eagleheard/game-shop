@@ -4,11 +4,11 @@ import { cartReducer } from 'store/cart/reducers';
 import { CartState } from './cart/types';
 
 export interface RootState {
-  cart: CartState;
+  cartReducer: CartState;
 }
 
 const rootReducer = combineReducers({
-  cart: cartReducer,
+  cartReducer,
 });
 
 export default rootReducer;

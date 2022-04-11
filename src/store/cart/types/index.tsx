@@ -5,8 +5,11 @@ export const DECREMENT_GAME_REQUEST = 'DECREMENT_GAME_REQUEST';
 export const DECREMENT_GAME_SUCCESS = 'DECREMENT_GAME_SUCCESS';
 export const INCREMENT_GAME_REQUEST = 'INCREMENT_GAME_REQUEST';
 export const INCREMENT_GAME_SUCCESS = 'INCREMENT_GAME__SUCCESS';
+export const CHANGE_QUANTITY_SUCCESS = 'CHANGE_QUANTITY_SUCCESS';
 export const CLEAR_CART = 'CLEAR_CART';
-export const GET_CART = 'GET_CART';
+export const GET_CART_SUCCESS = 'GET_CART_SUCCESS';
+export const GET_CART_REQUEST = 'GET_CART_REQUEST';
+export const GET_CART_FAILURE = 'GET_CART_FAILURE';
 
 export interface AddGameAction {
   type: typeof ADD_GAME;
@@ -81,7 +84,7 @@ export interface DecrementGameRequestAction {
 }
 
 export interface DecrementGameSuccessAction {
-  type: typeof DECREMENT_GAME_SUCCESS;
+  type: typeof CHANGE_QUANTITY_SUCCESS;
   gameId: number;
   value: number;
   payload: {
@@ -92,13 +95,24 @@ export interface DecrementGameSuccessAction {
   };
 }
 
-export interface GetCartAction {
-  type: typeof GET_CART;
+export interface GetCartSuccessAction {
+  type: typeof GET_CART_SUCCESS;
   payload: {
     id?: number;
     userId?: number;
     gameId?: number;
     quantity?: number;
+  };
+}
+
+export interface GetCartFailureAction {
+  type: typeof GET_CART_FAILURE;
+  payload: {
+    id?: number;
+    userId?: number;
+    gameId?: number;
+    quantity?: number;
+    error?: string;
   };
 }
 
@@ -121,10 +135,11 @@ export type CartActionTypes =
   | DecrementGameRequestAction
   | DecrementGameSuccessAction
   | ClearCartAction
-  | GetCartAction;
+  | GetCartSuccessAction
+  | GetCartFailureAction;
 
 export interface CartState {
-  cart: {
+  cartReducer: {
     cart: {
       id: number;
       gameId: number;
@@ -139,5 +154,7 @@ export interface CartState {
         digital: boolean;
       };
     }[];
+    isLoading: boolean;
+    error: string;
   };
 }

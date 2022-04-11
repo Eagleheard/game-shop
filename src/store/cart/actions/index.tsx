@@ -1,18 +1,17 @@
 import {
-  ADD_GAME,
-  GET_CART,
-  CLEAR_CART,
-  GetCartAction,
-  ClearCartAction,
-  INCREMENT_GAME_SUCCESS,
   INCREMENT_GAME_REQUEST,
-  IncrementGameSuccessAction,
   DECREMENT_GAME_REQUEST,
-  DECREMENT_GAME_SUCCESS,
-  DecrementGameSuccessAction,
   REMOVE_GAME_REQUEST,
-  RemoveGameSuccessAction,
+  GET_CART_REQUEST,
+  CHANGE_QUANTITY_SUCCESS,
   REMOVE_GAME_SUCCESS,
+  GET_CART_SUCCESS,
+  ADD_GAME,
+  CLEAR_CART,
+  GetCartSuccessAction,
+  ClearCartAction,
+  DecrementGameSuccessAction,
+  RemoveGameSuccessAction,
 } from 'store/cart/types';
 
 export function addGame(gameId?: number, quantity?: number) {
@@ -34,9 +33,9 @@ export function decrementGameRequest(gameId?: number) {
   };
 }
 
-export function decrementGameSuccess(payload: DecrementGameSuccessAction) {
+export function changeQuantitySuccess(payload: DecrementGameSuccessAction) {
   return {
-    type: DECREMENT_GAME_SUCCESS,
+    type: CHANGE_QUANTITY_SUCCESS,
     payload,
   };
 }
@@ -50,17 +49,29 @@ export function incrementGameRequest(gameId?: number) {
   };
 }
 
-export function incrementGameSuccess(payload: IncrementGameSuccessAction) {
+export function getCartSuccess(payload?: GetCartSuccessAction) {
   return {
-    type: INCREMENT_GAME_SUCCESS,
+    type: GET_CART_SUCCESS,
     payload,
+    isLoading: false,
   };
 }
 
-export function getCart(payload?: GetCartAction) {
+export function getCartRequest() {
   return {
-    type: GET_CART,
-    payload,
+    type: GET_CART_REQUEST,
+    payload: {
+      isLoading: true,
+    },
+  };
+}
+
+export function getCartFailure(error: string) {
+  return {
+    type: GET_CART_REQUEST,
+    payload: {
+      error,
+    },
   };
 }
 
@@ -71,7 +82,7 @@ export function clearCart(payload?: ClearCartAction) {
   };
 }
 
-export function RemoveGameRequest(gameId: number) {
+export function removeGameRequest(gameId: number) {
   return {
     type: REMOVE_GAME_REQUEST,
     payload: {
@@ -80,7 +91,7 @@ export function RemoveGameRequest(gameId: number) {
   };
 }
 
-export function RemoveGameSuccess(payload: RemoveGameSuccessAction) {
+export function removeGameSuccess(payload: RemoveGameSuccessAction) {
   return {
     type: REMOVE_GAME_SUCCESS,
     payload,

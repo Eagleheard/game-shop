@@ -1,48 +1,38 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { socket } from 'config';
-import { CartState } from 'store/cart/types';
-import { clearCart, getCart } from 'store/cart/actions';
+import { clearCart, getCartRequest } from 'store/cart/actions';
 import { Button, Checkbox } from 'components';
 import { Card } from 'screen';
 
 import './styles.scss';
+import { cartSelector } from 'store/cart/selectors';
+import { CartState } from 'store/cart/types';
 
 export const Basket = () => {
-  const cart = useSelector((state: CartState) => state.cart.cart || []);
-  const [isLoading, setIsLoading] = useState(false);
+  const { cart, isLoading, error } = useSelector((state: CartState) => state.cartReducer || []);
+  const totalPrice = useSelector(cartSelector.cartPrice);
   const [isDelivery, setIsDelivery] = useState(false);
   const dispatch = useDispatch();
-
-  let totalPrice = cart.reduce(
-    (accumulator: number, { game, quantity }) => accumulator + game.price * quantity,
-    0,
-  );
+  const discountedPrice = useMemo(() => totalPrice - totalPrice * 0.15, [totalPrice]);
 
   useEffect(() => {
-    socket.emit(
-      'cart',
-      cart.map(({ id }) => id),
-    );
-    socket.on('clearedCart', (data) => {
-      dispatch(clearCart(data));
+    dispatch(getCartRequest());
+    socket.connect();
+    socket.on('clearedCart', () => {
+      dispatch(clearCart());
     });
-  }, []);
-
-  useEffect(() => {
-    setIsLoading(true);
-    dispatch(getCart());
-    setIsLoading(false);
-  }, []);
+  }, [dispatch]);
 
   return (
     <div className="basket">
       <div className="basket__container">
         <div className="basket__games">
+          {error && <p>Something wrong: {error}</p>}
           {!cart.length && <h1>Cart is empty</h1>}
           {cart && !isLoading ? (
-            cart.map(({ game, quantity }, id) => <Card key={id} {...game} quantity={quantity} />)
+            cart.map(({ game, quantity }) => <Card key={game.id} {...game} quantity={quantity} />)
           ) : (
             <p>Loading</p>
           )}
@@ -54,7 +44,7 @@ export const Basket = () => {
             <p>Personal discount: -15%</p>
           </div>
           <div className="basket__delivery">
-            <Checkbox label="Pickup" onClick={() => alert()} />
+            <Checkbox label="Pickup" onClick={() => null} />
             <Checkbox label="Delivery" onClick={() => setIsDelivery((prevValue) => !prevValue)} />
           </div>
           {isDelivery && (
@@ -71,11 +61,11 @@ export const Basket = () => {
           )}
           <div className="basket__order">
             <h3 className="basket__total-price">
-              You will pay: {(totalPrice = totalPrice - totalPrice * 0.15)}$
+              You will pay: {discountedPrice ? discountedPrice : 0}$
             </h3>
             <div className="basket__order-btn">
               <Button text="Clear cart" onClick={() => dispatch(clearCart())} style="clear" />
-              <Button text="Buy now" onClick={() => alert()} style="search" />
+              <Button text="Buy now" onClick={() => null} style="search" />
             </div>
           </div>
         </div>

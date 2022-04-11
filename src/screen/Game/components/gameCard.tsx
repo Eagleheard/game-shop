@@ -2,7 +2,7 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
-import { decrementGameRequest, incrementGameRequest, RemoveGameRequest } from 'store/cart/actions';
+import { decrementGameRequest, incrementGameRequest, removeGameRequest } from 'store/cart/actions';
 import { IGame } from 'types/interfaces';
 import { Button } from 'components';
 
@@ -42,7 +42,7 @@ export const Card = ({ id, name, genre, author, price, image, quantity, disk, co
         </div>
         <div className="card__additional-information">
           {quantity && (
-            <button className="card__remove-btn" onClick={() => dispatch(RemoveGameRequest(id))}>
+            <button className="card__remove-btn" onClick={() => dispatch(removeGameRequest(id))}>
               <img src={grey_cross} />
             </button>
           )}

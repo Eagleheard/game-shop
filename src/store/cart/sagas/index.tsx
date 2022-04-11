@@ -1,16 +1,17 @@
 import { call, put, takeEvery, takeLeading } from 'redux-saga/effects';
+import { socket } from 'config';
 
 import {
+  DECREMENT_GAME_REQUEST,
+  INCREMENT_GAME_REQUEST,
+  REMOVE_GAME_REQUEST,
+  GET_CART_REQUEST,
   ADD_GAME,
+  CLEAR_CART,
   AddGameAction,
   DecrementGameSuccessAction,
-  GET_CART,
-  CLEAR_CART,
-  INCREMENT_GAME_REQUEST,
   IncrementGameSuccessAction,
-  DECREMENT_GAME_REQUEST,
   RemoveGameSuccessAction,
-  REMOVE_GAME_REQUEST,
 } from 'store/cart/types';
 import {
   addGameToBasket,
@@ -23,18 +24,18 @@ import {
 import {
   addGame,
   clearCart,
-  decrementGameSuccess,
-  getCart,
-  incrementGameSuccess,
-  RemoveGameSuccess,
+  changeQuantitySuccess,
+  getCartSuccess,
+  removeGameSuccess,
+  getCartFailure,
 } from '../actions';
 
 function* getStore() {
   try {
     const { data } = yield call(getBasket);
-    yield put(getCart(data));
+    yield put(getCartSuccess(data));
   } catch (e) {
-    console.log(e);
+    yield put(getCartFailure(String(e)));
   }
 }
 
@@ -42,6 +43,7 @@ function* addGameToStore({ payload }: AddGameAction) {
   try {
     const { data } = yield call(addGameToBasket, { ...payload });
     yield put(addGame(data));
+    yield socket.emit('buyingGame', { id: payload.gameId });
   } catch (e) {
     console.log(e);
   }
@@ -50,7 +52,7 @@ function* addGameToStore({ payload }: AddGameAction) {
 function* decrementGameFromStore({ payload }: DecrementGameSuccessAction) {
   try {
     const { data } = yield call(decrementGameFromBasket, { ...payload });
-    yield put(decrementGameSuccess(data));
+    yield put(changeQuantitySuccess(data));
   } catch (e) {
     console.log(e);
   }
@@ -59,7 +61,7 @@ function* decrementGameFromStore({ payload }: DecrementGameSuccessAction) {
 function* incrementGameToStore({ payload }: IncrementGameSuccessAction) {
   try {
     const { data } = yield call(incrementGameToBasket, { ...payload });
-    yield put(incrementGameSuccess(data));
+    yield put(changeQuantitySuccess(data));
   } catch (e) {
     console.log(e);
   }
@@ -68,7 +70,7 @@ function* incrementGameToStore({ payload }: IncrementGameSuccessAction) {
 function* removeGameFromStore({ payload }: RemoveGameSuccessAction) {
   try {
     const { data } = yield call(removeGameFromBasket, { ...payload });
-    yield put(RemoveGameSuccess(data));
+    yield put(removeGameSuccess(data));
   } catch (e) {
     console.log(e);
   }
@@ -87,7 +89,7 @@ function* watcher() {
   yield takeLeading(ADD_GAME, addGameToStore);
   yield takeEvery(DECREMENT_GAME_REQUEST, decrementGameFromStore);
   yield takeEvery(INCREMENT_GAME_REQUEST, incrementGameToStore);
-  yield takeLeading(GET_CART, getStore);
+  yield takeLeading(GET_CART_REQUEST, getStore);
   yield takeLeading(CLEAR_CART, clearStore);
   yield takeEvery(REMOVE_GAME_REQUEST, removeGameFromStore);
 }
