@@ -95,6 +95,17 @@ export interface DecrementGameSuccessAction {
   };
 }
 
+export interface GetCartRequestAction {
+  type: typeof GET_CART_REQUEST;
+  payload: {
+    id: number;
+    userId: number;
+    gameId: number;
+    quantity: number;
+    isLoading?: boolean;
+  };
+}
+
 export interface GetCartSuccessAction {
   type: typeof GET_CART_SUCCESS;
   payload: {
@@ -136,7 +147,8 @@ export type CartActionTypes =
   | DecrementGameSuccessAction
   | ClearCartAction
   | GetCartSuccessAction
-  | GetCartFailureAction;
+  | GetCartFailureAction
+  | GetCartRequestAction;
 
 export interface CartState {
   cartReducer: {

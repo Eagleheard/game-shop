@@ -1,14 +1,14 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
+import { cartSelector } from 'store/cart/selectors';
+import { CartState } from 'store/cart/types';
 import { socket } from 'config';
 import { clearCart, getCartRequest } from 'store/cart/actions';
 import { Button, Checkbox } from 'components';
 import { Card } from 'screen';
 
 import './styles.scss';
-import { cartSelector } from 'store/cart/selectors';
-import { CartState } from 'store/cart/types';
 
 export const Basket = () => {
   const { cart, isLoading, error } = useSelector((state: CartState) => state.cartReducer || []);
@@ -60,9 +60,7 @@ export const Basket = () => {
             </div>
           )}
           <div className="basket__order">
-            <h3 className="basket__total-price">
-              You will pay: {discountedPrice ? discountedPrice : 0}$
-            </h3>
+            <h3 className="basket__total-price">You will pay: {discountedPrice ?? 0}$</h3>
             <div className="basket__order-btn">
               <Button text="Clear cart" onClick={() => dispatch(clearCart())} style="clear" />
               <Button text="Buy now" onClick={() => null} style="search" />

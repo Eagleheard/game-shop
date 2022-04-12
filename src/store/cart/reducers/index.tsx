@@ -5,6 +5,7 @@ import {
   REMOVE_GAME_SUCCESS,
   CHANGE_QUANTITY_SUCCESS,
   GET_CART_FAILURE,
+  GET_CART_REQUEST,
 } from 'store/cart/types';
 
 const initialState = {
@@ -42,11 +43,18 @@ export function cartReducer(state = initialState, { type, payload }: CartActionT
       return {
         ...state,
         cart: payload,
+        isLoading: false,
+      };
+    case GET_CART_REQUEST:
+      return {
+        ...state,
+        isLoading: true,
       };
     case GET_CART_FAILURE:
       return {
         ...state,
         error: payload,
+        isLoading: false,
       };
     case CLEAR_CART:
       return {

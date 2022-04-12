@@ -28,10 +28,12 @@ import {
   getCartSuccess,
   removeGameSuccess,
   getCartFailure,
+  getCartRequest,
 } from '../actions';
 
 function* getStore() {
   try {
+    yield put(getCartRequest());
     const { data } = yield call(getBasket);
     yield put(getCartSuccess(data));
   } catch (e) {
