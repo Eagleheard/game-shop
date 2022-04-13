@@ -15,6 +15,7 @@ import './style.scss';
 enum sortOptions {
   PROFILE = 'Profile',
   LOGOUT = 'Logout',
+  CART = 'Cart',
 }
 
 export const Header = () => {
@@ -42,6 +43,9 @@ export const Header = () => {
     switch (value) {
       case sortOptions.PROFILE:
         navigate(`/user/${user.id}`);
+        break;
+      case sortOptions.CART:
+        navigate(`/cart/${user.id}`);
         break;
       case sortOptions.LOGOUT:
         signOut();
@@ -104,7 +108,8 @@ export const Header = () => {
             placeholder={`Hi, ${user.name}`}
             options={[
               { id: 0, label: 'Profile', value: 'Profile' },
-              { id: 1, label: 'Logout', value: 'Logout' },
+              { id: 1, label: 'Cart', value: 'Cart' },
+              { id: 2, label: 'Logout', value: 'Logout' },
             ]}
             style="header"
             handleSelect={handleSelect}
