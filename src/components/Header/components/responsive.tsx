@@ -40,9 +40,25 @@ export const ResponsiveHeader = ({
         </NavLink>
         <div className="mobile-nav__split"></div>
         {user ? (
-          <button className="header__login  link" onClick={signOut}>
-            Hi, {user.name}
-          </button>
+          <>
+            <NavLink
+              to={`/user/${user.id}`}
+              className="mobile-nav__item  link"
+              onClick={handleClick}
+            >
+              Profile
+            </NavLink>
+            <NavLink
+              to={`/cart/${user.id}`}
+              className="mobile-nav__item  link"
+              onClick={handleClick}
+            >
+              Cart
+            </NavLink>
+            <button className="header__login  link" onClick={signOut}>
+              Logout
+            </button>
+          </>
         ) : (
           <button className="header__login  link" onClick={handleLogin}>
             Login

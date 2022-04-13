@@ -31,25 +31,24 @@
     }
 
     &::before {
-      content: "";
+      content: '';
       display: block;
       width: 100%;
-      height: 100%;    
-      position: absolute;   
+      height: 100%;
+      position: absolute;
       background: transparent;
-      background-image: linear-gradient(to right, transparent 0%, $secondary 80%);    
+      background-image: linear-gradient(to right, transparent 0%, $secondary 80%);
     }
   }
 
-    &__name {
+  &__name {
+    &--link {
+      text-decoration: none;
+      color: $primary;
 
-      &--link {
-        text-decoration: none;
-        color: $primary;
-          
-        &:hover {
-          color: $search-primary;
-        }
+      &:hover {
+        color: $search-primary;
+      }
     }
 
     &__description {
