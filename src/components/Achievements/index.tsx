@@ -8,7 +8,6 @@ import achievementImg from 'assets/achievement.png';
 import './style.scss';
 
 export const Achievements: React.FC<IAchievement> = ({ achievement, isAchieved }) => {
-  console.log(isAchieved);
   return (
     <div
       className={classNames('achievement', {

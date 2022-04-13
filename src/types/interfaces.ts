@@ -16,6 +16,8 @@ export interface IGame {
   new?: boolean;
   popularity: number;
   description?: string;
+  purchaseDate?: string;
+  quantity?: string;
 }
 
 export interface IAuthor {
@@ -60,4 +62,13 @@ export interface IAchievement {
     description: string;
     discount: number;
   };
+}
+
+export interface IOrder {
+  id?: number;
+  name?: string;
+  email?: string;
+  quantity: string;
+  game: IGame;
+  formatedCreatedAt: string;
 }

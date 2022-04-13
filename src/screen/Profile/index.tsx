@@ -2,8 +2,10 @@ import { fetchUserInfo } from 'api/fetchUser';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
+import { Card } from 'screen';
+import { fetchOrders } from 'api/fetchOrders';
 import { fetchAchievement } from 'api/fetchAchievements';
-import { IAchievement, IUser } from 'types/interfaces';
+import { IAchievement, IOrder, IUser } from 'types/interfaces';
 import { Achievements, Button } from 'components';
 
 import userImg from 'assets/userPhoto.png';
@@ -16,6 +18,7 @@ export const Profile = () => {
   const [userInfo, setUserInfo] = useState<IUser>({});
   const [isLoading, setIsLoading] = useState(false);
   const [achievements, setAchievements] = useState<IAchievement[]>([]);
+  const [orders, setOrders] = useState<IOrder[]>([]);
   const [isAchievementsVisible, setIsAchievementsVisible] = useState(true);
   const [isOrdersVisible, setOrdersVisible] = useState(false);
 
@@ -32,6 +35,15 @@ export const Profile = () => {
     try {
       const { data } = await fetchAchievement();
       setAchievements(data);
+    } catch (e) {
+      console.log(e);
+    }
+  }, []);
+
+  const getOrders = useCallback(async () => {
+    try {
+      const { data } = await fetchOrders();
+      setOrders(data);
     } catch (e) {
       console.log(e);
     }
@@ -54,8 +66,9 @@ export const Profile = () => {
     setIsLoading(true);
     fetchUser();
     getAchievements();
+    getOrders();
     setIsLoading(false);
-  }, [fetchUser, getAchievements]);
+  }, [fetchUser, getAchievements, getOrders]);
 
   return (
     <div className="profile">
@@ -97,10 +110,21 @@ export const Profile = () => {
               </>
             )}
             {isOrdersVisible && (
-              <>
+              <div className="profile__orders">
                 <h1>Orders</h1>
-                <div className="profile__order">orders</div>
-              </>
+                {orders && !isLoading ? (
+                  orders.map(({ game, formatedCreatedAt, quantity }) => (
+                    <Card
+                      key={game.id}
+                      purchaseDate={formatedCreatedAt}
+                      quantity={quantity}
+                      {...game}
+                    />
+                  ))
+                ) : (
+                  <p>Loading</p>
+                )}
+              </div>
             )}
           </div>
         </div>
