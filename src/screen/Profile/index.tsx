@@ -1,17 +1,37 @@
-import { fetchUserInfo } from 'api/fetchUser';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { ChangeEvent, useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
-import { Card } from 'screen';
+import { fetchUserInfo, uploadUserPhoto } from 'api/fetchUser';
 import { fetchOrders } from 'api/fetchOrders';
 import { fetchAchievement } from 'api/fetchAchievements';
+import { Card } from 'screen';
+import { Achievements, Button, Select } from 'components';
 import { IAchievement, IOrder, IUser } from 'types/interfaces';
-import { Achievements, Button } from 'components';
 
 import userImg from 'assets/userPhoto.png';
-import camera from 'assets/camera.png';
 
-import './style.scss';
+import {
+  ProfileComponent,
+  ProfileContainer,
+  ProfileContent,
+  ProfileEmail,
+  ProfileInfo,
+  ProfileLabel,
+  ProfileName,
+  ProfileNavigation,
+  ProfilePhoto,
+  ProfileUploadPhoto,
+  ProfileUploadPhotoButton,
+} from './styled-components';
+
+enum sortOptions {
+  NEWEST_ORDERS = 'Newest orders',
+  ELDEST_ORDERS = 'Eldest orders',
+}
+
+interface IParams {
+  order?: string;
+}
 
 export const Profile = () => {
   const { id } = useParams<string>();
@@ -19,6 +39,7 @@ export const Profile = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [achievements, setAchievements] = useState<IAchievement[]>([]);
   const [orders, setOrders] = useState<IOrder[]>([]);
+  const [params, setParams] = useState<IParams>({ order: 'Newest' });
   const [isAchievementsVisible, setIsAchievementsVisible] = useState(true);
   const [isOrdersVisible, setOrdersVisible] = useState(false);
 
@@ -31,18 +52,18 @@ export const Profile = () => {
     }
   }, [id]);
 
-  const getAchievements = useCallback(async () => {
+  const getAchievements = async () => {
     try {
       const { data } = await fetchAchievement();
       setAchievements(data);
     } catch (e) {
       console.log(e);
     }
-  }, []);
+  };
 
-  const getOrders = useCallback(async () => {
+  const getOrders = useCallback(async (params: IParams) => {
     try {
-      const { data } = await fetchOrders();
+      const { data } = await fetchOrders({ params });
       setOrders(data);
     } catch (e) {
       console.log(e);
@@ -62,17 +83,42 @@ export const Profile = () => {
     }
   };
 
+  const handleSelect = (value: string) => {
+    switch (value) {
+      case sortOptions.NEWEST_ORDERS:
+        setParams({ order: 'Newest' });
+        break;
+      case sortOptions.ELDEST_ORDERS:
+        setParams({ order: 'Eldest' });
+        break;
+      default:
+        setParams({});
+    }
+  };
+
+  const uploadPhoto = async (files: FileList | null) => {
+    try {
+      const formData = new FormData();
+      files ? formData.append('file', files[0]) : undefined;
+      formData.append('upload_preset', 'fabra5gx');
+      const { data } = await uploadUserPhoto(formData, id);
+      setUserInfo(data);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   useEffect(() => {
     setIsLoading(true);
     fetchUser();
     getAchievements();
-    getOrders();
+    getOrders(params);
     setIsLoading(false);
-  }, [fetchUser, getAchievements, getOrders]);
+  }, [getOrders, params, fetchUser]);
 
   return (
-    <div className="profile">
-      <div className="profile__navigation">
+    <ProfileComponent>
+      <ProfileNavigation>
         <Button
           text="Achievement"
           onClick={handleSwitch}
@@ -80,55 +126,55 @@ export const Profile = () => {
           disabled={isAchievementsVisible}
         />
         <Button text="Orders" onClick={handleSwitch} style="profile" disabled={isOrdersVisible} />
-      </div>
+      </ProfileNavigation>
       {!isLoading && (
-        <div className="profile__container">
-          <div className="profile__info">
-            <img
-              src={userInfo.photo ? userInfo.photo : userImg}
-              className="profile__photo"
-              alt="profile photo"
+        <ProfileContainer>
+          <ProfileInfo>
+            <ProfilePhoto src={userInfo.photo ? userInfo.photo : userImg} alt="profile photo" />
+            <ProfileUploadPhoto htmlFor="file-upload">Upload new photo</ProfileUploadPhoto>
+            <ProfileUploadPhotoButton
+              id="file-upload"
+              type="file"
+              onChange={(event: ChangeEvent<HTMLInputElement>) => uploadPhoto(event.target.files)}
             />
-            <img
-              src={camera}
-              className="profile__change-photo"
-              alt="profile photo"
-              onClick={() => alert()}
-            />
-            <p className="profile__name">
+            <ProfileName>
               {userInfo.name} {userInfo.lastName}
-            </p>
-            <p className="profile__email">Email : {userInfo.email}</p>
-          </div>
-          <div className="profile__content">
+            </ProfileName>
+            <ProfileEmail>Email : {userInfo.email}</ProfileEmail>
+          </ProfileInfo>
+          <ProfileContent>
             {isAchievementsVisible && (
               <>
-                <h1 className="profile__achievements">Achievements</h1>
+                <ProfileLabel>Achievements</ProfileLabel>
                 {achievements.map((achievement) => (
                   <Achievements key={achievement.id} {...achievement} />
                 ))}
               </>
             )}
             {isOrdersVisible && (
-              <div className="profile__orders">
-                <h1>Orders</h1>
+              <>
+                <ProfileLabel>Orders</ProfileLabel>
+                <Select
+                  placeholder="Newest orders"
+                  options={[
+                    { id: 0, label: 'Newest orders', value: 'Newest' },
+                    { id: 1, label: 'Eldest orders', value: 'Eldest' },
+                  ]}
+                  style="profile"
+                  handleSelect={handleSelect}
+                />
                 {orders && !isLoading ? (
-                  orders.map(({ game, formatedCreatedAt, quantity }) => (
-                    <Card
-                      key={game.id}
-                      purchaseDate={formatedCreatedAt}
-                      quantity={quantity}
-                      {...game}
-                    />
+                  orders.map(({ id, game, formatedCreatedAt, quantity }) => (
+                    <Card key={id} purchaseDate={formatedCreatedAt} quantity={quantity} {...game} />
                   ))
                 ) : (
                   <p>Loading</p>
                 )}
-              </div>
+              </>
             )}
-          </div>
-        </div>
+          </ProfileContent>
+        </ProfileContainer>
       )}
-    </div>
+    </ProfileComponent>
   );
 };

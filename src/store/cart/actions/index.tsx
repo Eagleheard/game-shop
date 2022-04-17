@@ -12,6 +12,10 @@ import {
   ClearCartAction,
   DecrementGameSuccessAction,
   RemoveGameSuccessAction,
+  GET_DISCOUNT_REQUEST,
+  GetDiscountSuccessAction,
+  GET_DISCOUNT_SUCCESS,
+  GET_DISCOUNT_FAILURE,
 } from 'store/cart/types';
 
 export function addGame(gameId?: number, quantity?: number) {
@@ -45,6 +49,32 @@ export function incrementGameRequest(gameId?: number) {
     type: INCREMENT_GAME_REQUEST,
     payload: {
       gameId,
+    },
+  };
+}
+
+export function getDiscountRequest() {
+  return {
+    type: GET_DISCOUNT_REQUEST,
+    payload: {
+      isLoading: true,
+    },
+  };
+}
+
+export function getDiscountSuccess(payload?: GetDiscountSuccessAction) {
+  return {
+    type: GET_DISCOUNT_SUCCESS,
+    payload,
+    isLoading: false,
+  };
+}
+
+export function getDiscountFailure(error: string) {
+  return {
+    type: GET_DISCOUNT_FAILURE,
+    payload: {
+      error,
     },
   };
 }

@@ -12,6 +12,7 @@ import {
   DecrementGameSuccessAction,
   IncrementGameSuccessAction,
   RemoveGameSuccessAction,
+  GET_DISCOUNT_REQUEST,
 } from 'store/cart/types';
 import {
   addGameToBasket,
@@ -29,13 +30,26 @@ import {
   removeGameSuccess,
   getCartFailure,
   getCartRequest,
+  getDiscountSuccess,
+  getDiscountRequest,
 } from '../actions';
+import { fetchAchievement } from 'api/fetchAchievements';
 
 function* getStore() {
   try {
     yield put(getCartRequest());
     const { data } = yield call(getBasket);
     yield put(getCartSuccess(data));
+  } catch (e) {
+    yield put(getCartFailure(String(e)));
+  }
+}
+
+function* getDiscount() {
+  try {
+    yield put(getDiscountRequest());
+    const { data } = yield call(fetchAchievement);
+    yield put(getDiscountSuccess(data));
   } catch (e) {
     yield put(getCartFailure(String(e)));
   }
@@ -92,6 +106,7 @@ function* watcher() {
   yield takeEvery(DECREMENT_GAME_REQUEST, decrementGameFromStore);
   yield takeEvery(INCREMENT_GAME_REQUEST, incrementGameToStore);
   yield takeLeading(GET_CART_REQUEST, getStore);
+  yield takeLeading(GET_DISCOUNT_REQUEST, getDiscount);
   yield takeLeading(CLEAR_CART, clearStore);
   yield takeEvery(REMOVE_GAME_REQUEST, removeGameFromStore);
 }

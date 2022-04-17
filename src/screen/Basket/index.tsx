@@ -1,11 +1,14 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { useForm } from 'react-hook-form';
 
+import { createOrder } from 'api/fetchOrders';
 import { cartSelector } from 'store/cart/selectors';
 import { CartState } from 'store/cart/types';
 import { socket } from 'config';
-import { clearCart, getCartRequest } from 'store/cart/actions';
-import { Button, Checkbox } from 'components';
+import { IOrder } from 'types/interfaces';
+import { clearCart, getCartRequest, getDiscountRequest } from 'store/cart/actions';
+import { Button } from 'components';
 import { Card } from 'screen';
 
 import './styles.scss';
@@ -13,12 +16,34 @@ import './styles.scss';
 export const Basket = () => {
   const { cart, isLoading, error } = useSelector((state: CartState) => state.cartReducer || []);
   const totalPrice = useSelector(cartSelector.cartPrice);
-  const [isDelivery, setIsDelivery] = useState(false);
+  const discount = useSelector(cartSelector.cartDiscount);
   const dispatch = useDispatch();
-  const discountedPrice = useMemo(() => totalPrice - totalPrice * 0.15, [totalPrice]);
+  const discountedPrice = useMemo(() => totalPrice - totalPrice * discount, [totalPrice, discount]);
+
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm();
+
+  const fillOrder = async (params: IOrder) => {
+    try {
+      await createOrder(params);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const submitForm = (params: IOrder) => {
+    fillOrder(params);
+    reset();
+    dispatch(clearCart());
+  };
 
   useEffect(() => {
     dispatch(getCartRequest());
+    dispatch(getDiscountRequest());
     socket.connect();
     socket.on('clearedCart', () => {
       dispatch(clearCart());
@@ -37,36 +62,76 @@ export const Basket = () => {
             <p>Loading</p>
           )}
         </div>
-        <div className="basket__info">
+        <form onSubmit={handleSubmit(submitForm)} className="basket__info">
           <div className="basket__payment">
             <h1>Payment</h1>
             <p className="basket__payment-price">Total price: {totalPrice}$</p>
-            <p>Personal discount: -15%</p>
+            <p>Your personal discount: {discount * 100 ?? 0}%</p>
           </div>
-          <div className="basket__delivery">
-            <Checkbox label="Pickup" onClick={() => null} />
-            <Checkbox label="Delivery" onClick={() => setIsDelivery((prevValue) => !prevValue)} />
-          </div>
-          {isDelivery && (
-            <div className="basket__delivery-info">
-              <label htmlFor="zip" className="basket__label">
-                ZIP-code
-              </label>
-              <input placeholder="ZIP-code" className="basket__delivery-input" id="zip" />
-              <label htmlFor="address" className="basket__label">
-                Address
-              </label>
-              <input placeholder="Address" className="basket__delivery-input" id="address" />
-            </div>
+          <div className="basket__delivery"></div>
+          {cart.find(({ game }) => game.disk === true) && (
+            <>
+              <h2>Delivery information</h2>
+              <div className="basket__delivery-info">
+                <label htmlFor="zip" className="basket__label">
+                  ZIP-code
+                </label>
+                <input
+                  {...register('zipCode', {
+                    required: true,
+                  })}
+                  placeholder="ZIP-code"
+                  className="basket__delivery-input"
+                  id="zip"
+                />
+                {errors.zipCode && (
+                  <p className="basket__delivery-input--error">ZIP-code cannot be empty</p>
+                )}
+                <label htmlFor="address" className="basket__label">
+                  Address
+                </label>
+                <input
+                  {...register('address', {
+                    required: 'Address cannot be empty',
+                  })}
+                  placeholder="Address"
+                  className="basket__delivery-input"
+                  id="address"
+                />
+                {errors.address && (
+                  <p className="basket__delivery-input--error">Address cannot be empty</p>
+                )}
+                <label htmlFor="phone" className="basket__label">
+                  Phone
+                </label>
+                <input
+                  {...register('phone', {
+                    required: 'Phone number cannot be empty',
+                  })}
+                  type="tel"
+                  placeholder="Phone"
+                  className="basket__delivery-input"
+                  id="phone"
+                />
+                {errors.phone && (
+                  <p className="basket__delivery-input--error">Phone number cannot be empty</p>
+                )}
+              </div>
+            </>
           )}
           <div className="basket__order">
             <h3 className="basket__total-price">You will pay: {discountedPrice ?? 0}$</h3>
             <div className="basket__order-btn">
-              <Button text="Clear cart" onClick={() => dispatch(clearCart())} style="clear" />
-              <Button text="Buy now" onClick={() => null} style="search" />
+              <Button
+                text="Clear cart"
+                type="reset"
+                onClick={() => dispatch(clearCart())}
+                style="clear"
+              />
+              <Button text="Buy now" type="submit" onClick={() => submitForm} style="search" />
             </div>
           </div>
-        </div>
+        </form>
       </div>
     </div>
   );

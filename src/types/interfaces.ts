@@ -40,7 +40,6 @@ export interface IParams {
   maxPrice: string;
   count?: number;
   isNew?: boolean;
-  order?: string;
 }
 
 export interface ICart {
@@ -76,7 +75,7 @@ export interface IOrder {
   id?: number;
   name?: string;
   email?: string;
-  quantity: string;
-  game: IGame;
-  formatedCreatedAt: string;
+  quantity?: string;
+  game?: IGame;
+  formatedCreatedAt?: string;
 }

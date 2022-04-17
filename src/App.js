@@ -3,7 +3,7 @@ import { Route, Routes } from 'react-router-dom';
 
 import ErrorBoundary from 'components/ErrorBoundary';
 import { AuthProvider } from 'hooks/useAuth';
-import { About, Store, Home, Profile, Basket  } from 'screen';
+import { About, Store, Home, Profile, Basket } from 'screen';
 import { Header, Footer } from 'components';
 import { AuthorContainer } from 'screen/Author/components/container';
 import { GamePageContainer } from 'screen/Game/components/container';

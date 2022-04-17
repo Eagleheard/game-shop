@@ -63,7 +63,7 @@ export const Home = () => {
     setIsLoading(true);
     fillGames(params);
     setIsLoading(false);
-  }, [currentPage, params]);
+  }, [currentPage, params, fillGames]);
 
   return (
     <div className="home">

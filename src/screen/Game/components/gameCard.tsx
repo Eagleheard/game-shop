@@ -10,7 +10,18 @@ import grey_cross from 'assets/grey-cross.png';
 
 import './style.scss';
 
-export const Card = ({ id, name, genre, author, price, image, quantity, purchaseDate, disk, count }: IGame) => {
+export const Card = ({
+  id,
+  name,
+  genre,
+  author,
+  price,
+  image,
+  quantity,
+  purchaseDate,
+  disk,
+  count,
+}: IGame) => {
   const dispatch = useDispatch();
   return (
     <div className="card">
@@ -22,14 +33,11 @@ export const Card = ({ id, name, genre, author, price, image, quantity, purchase
           </NavLink>
           {genre && <p className="card__genre">{genre.name}</p>}
           {purchaseDate && <p className="card__purchase-date">Date of purchase: {purchaseDate}</p>}
-          {quantity && <p className="card__order-quantity">Quantity: {quantity}</p>}
-        </div>
-        <div>
-          <p className="card__price">
-            Price: {quantity ? price * quantity : price}$
-          </p>
-          {quantity && <p className="card__type">Type: {disk ? 'disk' : 'digital'}</p>}
-          {quantity && disk && (
+          {quantity && purchaseDate && <p className="card__order-quantity">Quantity: {quantity}</p>}
+          {quantity && !purchaseDate && (
+            <p className="card__type">Type: {disk ? 'disk' : 'digital'}</p>
+          )}
+          {quantity && disk && !purchaseDate && (
             <div className="card__quantity-value">
               <Button
                 text="-"
@@ -47,13 +55,18 @@ export const Card = ({ id, name, genre, author, price, image, quantity, purchase
             </div>
           )}
         </div>
+        <div>
+          {purchaseDate && (
+            <p className="card__price">Price: {quantity ? price * quantity : price}$</p>
+          )}
+        </div>
         <div className="card__additional-information">
-          {quantity && (
+          {quantity && !purchaseDate && (
             <button className="card__remove-btn" onClick={() => dispatch(removeGameRequest(id))}>
               <img src={grey_cross} />
             </button>
           )}
-          <p className="card__price">Price: {price}$</p>
+          {!purchaseDate && <p className="card__price">Price: {price}$</p>}
           {author && (
             <p className="card__author">
               <NavLink className="card__author--link" to={`/author/${author.id}`}>
