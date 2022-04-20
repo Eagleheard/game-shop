@@ -1,5 +1,4 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
 import { decrementGameRequest, incrementGameRequest, removeGameRequest } from 'store/cart/actions';
@@ -8,7 +7,21 @@ import { Button } from 'components';
 
 import grey_cross from 'assets/grey-cross.png';
 
-import './style.scss';
+import {
+  CardAdditionalInformation,
+  CardAuthor,
+  CardComponent,
+  CardDescription,
+  CardGenre,
+  CardImg,
+  CardLabel,
+  CardMainInformation,
+  CardNavLink,
+  CardParagraph,
+  CardQuantity,
+  CardQuantityValue,
+  OrderTotalPrice,
+} from './styled-components';
 
 export const Card = ({
   id,
@@ -21,61 +34,67 @@ export const Card = ({
   purchaseDate,
   disk,
   count,
+  cart,
+  order,
 }: IGame) => {
   const dispatch = useDispatch();
   return (
-    <div className="card">
-      <img className="card__img" src={image} alt="logo"></img>
-      <div className="card__description">
-        <div className="card__main-information">
-          <NavLink className="card__name--link" to={`/game/${id}`}>
-            <p className="card__name">{name}</p>
-          </NavLink>
-          {genre && <p className="card__genre">{genre.name}</p>}
-          {purchaseDate && <p className="card__purchase-date">Date of purchase: {purchaseDate}</p>}
-          {quantity && purchaseDate && <p className="card__order-quantity">Quantity: {quantity}</p>}
+    <CardComponent cart={cart} order={order}>
+      <CardImg order={order} cart={cart} src={image} alt="logo"></CardImg>
+      <CardDescription order={order} cart={cart}>
+        <CardMainInformation order={order} cart={cart}>
+          <CardLabel order={order} cart={cart}>
+            <CardNavLink to={`/game/${id}`}>{name}</CardNavLink>
+          </CardLabel>
+          {genre && <CardGenre>{genre.name}</CardGenre>}
+          {purchaseDate && (
+            <CardParagraph order={order} cart={cart}>
+              Date of purchase: {purchaseDate}
+            </CardParagraph>
+          )}
+          {quantity && purchaseDate && (
+            <CardParagraph order={order} cart={cart}>
+              Quantity: {quantity}
+            </CardParagraph>
+          )}
           {quantity && !purchaseDate && (
             <p className="card__type">Type: {disk ? 'disk' : 'digital'}</p>
           )}
           {quantity && disk && !purchaseDate && (
-            <div className="card__quantity-value">
+            <CardQuantityValue>
               <Button
                 text="-"
                 onClick={() => dispatch(decrementGameRequest(id))}
                 style="cart-btn"
                 disabled={quantity === 1}
               />
-              <p className="card__quantity">{quantity}</p>
+              <CardQuantity>{quantity}</CardQuantity>
               <Button
                 text="+"
                 onClick={() => dispatch(incrementGameRequest(id))}
                 style="cart-btn"
                 disabled={parseInt(count) === 0}
               />
-            </div>
+            </CardQuantityValue>
           )}
-        </div>
-        <div>
-          {purchaseDate && (
-            <p className="card__price">Price: {quantity ? price * quantity : price}$</p>
-          )}
-        </div>
-        <div className="card__additional-information">
+        </CardMainInformation>
+        {purchaseDate && (
+          <OrderTotalPrice>Price: {quantity ? price * quantity : price}$</OrderTotalPrice>
+        )}
+        <CardAdditionalInformation order={order} cart={cart}>
           {quantity && !purchaseDate && (
             <button className="card__remove-btn" onClick={() => dispatch(removeGameRequest(id))}>
               <img src={grey_cross} />
             </button>
           )}
-          {!purchaseDate && <p className="card__price">Price: {price}$</p>}
+          {!purchaseDate && <CardLabel cart={cart}>Price: {price}$</CardLabel>}
           {author && (
-            <p className="card__author">
-              <NavLink className="card__author--link" to={`/author/${author.id}`}>
-                {author.name}
-              </NavLink>
-            </p>
+            <CardAuthor>
+              <CardNavLink to={`/author/${author.id}`}>{author.name}</CardNavLink>
+            </CardAuthor>
           )}
-        </div>
-      </div>
-    </div>
+        </CardAdditionalInformation>
+      </CardDescription>
+    </CardComponent>
   );
 };

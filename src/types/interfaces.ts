@@ -20,6 +20,8 @@ export interface IGame {
   quantity?: number;
   disk?: boolean;
   count: string;
+  cart?: boolean;
+  order?: boolean;
 }
 
 export interface IAuthor {
@@ -63,6 +65,10 @@ export interface IUser {
 export interface IAchievement {
   id?: number;
   isAchieved?: boolean;
+  name: string;
+  description: string;
+  discount: number;
+  achievementId: number;
   achievement: {
     id: number;
     name: string;

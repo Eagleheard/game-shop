@@ -24,9 +24,9 @@ import {
   ProfileUploadPhotoButton,
 } from './styled-components';
 
-enum sortOptions {
+enum orderOptions {
   NEWEST_ORDERS = 'Newest orders',
-  ELDEST_ORDERS = 'Eldest orders',
+  OLDEST_ORDERS = 'Oldest orders',
 }
 
 interface IParams {
@@ -85,11 +85,11 @@ export const Profile = () => {
 
   const handleSelect = (value: string) => {
     switch (value) {
-      case sortOptions.NEWEST_ORDERS:
+      case orderOptions.NEWEST_ORDERS:
         setParams({ order: 'Newest' });
         break;
-      case sortOptions.ELDEST_ORDERS:
-        setParams({ order: 'Eldest' });
+      case orderOptions.OLDEST_ORDERS:
+        setParams({ order: 'Oldest' });
         break;
       default:
         setParams({});
@@ -147,7 +147,10 @@ export const Profile = () => {
               <>
                 <ProfileLabel>Achievements</ProfileLabel>
                 {achievements.map((achievement) => (
-                  <Achievements key={achievement.id} {...achievement} />
+                  <Achievements
+                    key={achievement.achievementId ?? achievement.id}
+                    {...achievement}
+                  />
                 ))}
               </>
             )}
@@ -158,14 +161,20 @@ export const Profile = () => {
                   placeholder="Newest orders"
                   options={[
                     { id: 0, label: 'Newest orders', value: 'Newest' },
-                    { id: 1, label: 'Eldest orders', value: 'Eldest' },
+                    { id: 1, label: 'Oldest orders', value: 'Oldest' },
                   ]}
                   style="profile"
                   handleSelect={handleSelect}
                 />
                 {orders && !isLoading ? (
                   orders.map(({ id, game, formatedCreatedAt, quantity }) => (
-                    <Card key={id} purchaseDate={formatedCreatedAt} quantity={quantity} {...game} />
+                    <Card
+                      order
+                      key={id}
+                      purchaseDate={formatedCreatedAt}
+                      quantity={quantity}
+                      {...game}
+                    />
                   ))
                 ) : (
                   <p>Loading</p>

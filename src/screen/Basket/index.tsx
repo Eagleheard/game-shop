@@ -57,7 +57,9 @@ export const Basket = () => {
           {error && <p>Something wrong: {error}</p>}
           {!cart.length && <h1>Cart is empty</h1>}
           {cart && !isLoading ? (
-            cart.map(({ game, quantity }) => <Card key={game.id} {...game} quantity={quantity} />)
+            cart.map(({ game, quantity }) => (
+              <Card cart key={game.id} {...game} quantity={quantity} />
+            ))
           ) : (
             <p>Loading</p>
           )}
@@ -101,21 +103,15 @@ export const Basket = () => {
                 {errors.address && (
                   <p className="basket__delivery-input--error">Address cannot be empty</p>
                 )}
-                <label htmlFor="phone" className="basket__label">
-                  Phone
+                <label htmlFor="comment" className="basket__label">
+                  Comment
                 </label>
                 <input
-                  {...register('phone', {
-                    required: 'Phone number cannot be empty',
-                  })}
-                  type="tel"
-                  placeholder="Phone"
+                  {...register('comment')}
+                  placeholder="Comment"
                   className="basket__delivery-input"
-                  id="phone"
+                  id="comment"
                 />
-                {errors.phone && (
-                  <p className="basket__delivery-input--error">Phone number cannot be empty</p>
-                )}
               </div>
             </>
           )}
