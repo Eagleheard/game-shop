@@ -5,18 +5,27 @@ import { fetchAuthor } from 'api/fetchAuthor';
 
 import { IAuthor, IGame } from 'types/interfaces';
 import { Author } from '.';
+import useToast from 'components/Toast';
 
 export const AuthorContainer = () => {
   const { id } = useParams<string>();
   const [authorInfo, setAuthorInfo] = useState<IAuthor>();
   const [authorGames, setAuthorGames] = useState<IGame[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState<string>();
+  const { openToast, ToastComponent } = useToast(errorMessage, 'error');
+
   const searchAuthor = useCallback(async () => {
     try {
       const { data } = await fetchAuthor(id);
       setAuthorInfo(data);
-    } catch (e) {
-      console.log(e);
+    } catch ({
+      response: {
+        data: { message },
+      },
+    }) {
+      setErrorMessage(String(message));
+      openToast();
     }
   }, [id]);
 
@@ -36,5 +45,5 @@ export const AuthorContainer = () => {
     setIsLoading(false);
   }, [searchAuthor, searchAuthorGames]);
 
-  return isLoading ? <p>Loading...</p> : <Author {...authorInfo} authorGames={authorGames} />;
+  return errorMessage ? <ToastComponent /> : <Author {...authorInfo} authorGames={authorGames} />;
 };
