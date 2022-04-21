@@ -6,6 +6,9 @@ import {
   CHANGE_QUANTITY_SUCCESS,
   GET_CART_FAILURE,
   GET_CART_REQUEST,
+  GET_DISCOUNT_REQUEST,
+  GET_DISCOUNT_SUCCESS,
+  GET_DISCOUNT_FAILURE,
 } from 'store/cart/types';
 
 const initialState = {
@@ -24,6 +27,7 @@ const initialState = {
       },
     },
   ],
+  achievements: [],
   isLoading: false,
   error: '',
 };
@@ -38,6 +42,23 @@ export function cartReducer(state = initialState, { type, payload }: CartActionT
       return {
         ...state,
         cart: state.cart.filter(({ gameId }) => gameId !== payload.gameId),
+      };
+    case GET_DISCOUNT_REQUEST:
+      return {
+        ...state,
+        isLoading: true,
+      };
+    case GET_DISCOUNT_SUCCESS:
+      return {
+        ...state,
+        achievements: payload,
+        isLoading: false,
+      };
+    case GET_DISCOUNT_FAILURE:
+      return {
+        ...state,
+        error: payload,
+        isLoading: false,
       };
     case GET_CART_SUCCESS:
       return {

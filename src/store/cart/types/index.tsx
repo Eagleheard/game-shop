@@ -10,6 +10,9 @@ export const CLEAR_CART = 'CLEAR_CART';
 export const GET_CART_SUCCESS = 'GET_CART_SUCCESS';
 export const GET_CART_REQUEST = 'GET_CART_REQUEST';
 export const GET_CART_FAILURE = 'GET_CART_FAILURE';
+export const GET_DISCOUNT_SUCCESS = 'GET_DISCOUNT_SUCCESS';
+export const GET_DISCOUNT_REQUEST = 'GET_DISCOUNT_REQUEST';
+export const GET_DISCOUNT_FAILURE = 'GET_DISCOUNT_FAILURE';
 
 export interface AddGameAction {
   type: typeof ADD_GAME;
@@ -95,6 +98,39 @@ export interface DecrementGameSuccessAction {
   };
 }
 
+export interface GetDiscountRequestAction {
+  type: typeof GET_DISCOUNT_REQUEST;
+  payload: {
+    id: number;
+    userId: number;
+    gameId: number;
+    quantity: number;
+    isLoading?: boolean;
+  };
+}
+
+export interface GetDiscountSuccessAction {
+  type: typeof GET_DISCOUNT_SUCCESS;
+  payload: {
+    id: number;
+    userId: number;
+    gameId: number;
+    quantity: number;
+    isLoading?: boolean;
+  };
+}
+
+export interface GetDiscountFailureAction {
+  type: typeof GET_DISCOUNT_FAILURE;
+  payload: {
+    id: number;
+    userId: number;
+    gameId: number;
+    quantity: number;
+    isLoading?: boolean;
+  };
+}
+
 export interface GetCartRequestAction {
   type: typeof GET_CART_REQUEST;
   payload: {
@@ -148,7 +184,10 @@ export type CartActionTypes =
   | ClearCartAction
   | GetCartSuccessAction
   | GetCartFailureAction
-  | GetCartRequestAction;
+  | GetCartRequestAction
+  | GetDiscountSuccessAction
+  | GetDiscountRequestAction
+  | GetDiscountFailureAction;
 
 export interface CartState {
   cartReducer: {
@@ -168,5 +207,14 @@ export interface CartState {
     }[];
     isLoading: boolean;
     error: string;
+    achievements: {
+      id: number;
+      isAchieved: boolean;
+      achievement: {
+        name: string;
+        description: string;
+        discount: number;
+      };
+    }[];
   };
 }

@@ -71,7 +71,7 @@ export const Store = () => {
     setIsLoading(true);
     fillGames(params);
     setIsLoading(false);
-  }, [currentPage, params]);
+  }, [currentPage, params, fillGames]);
 
   return (
     <div className="store">

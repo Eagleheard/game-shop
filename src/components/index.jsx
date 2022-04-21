@@ -12,3 +12,4 @@ export { Checkbox } from 'components/Checkbox';
 export { SignIn } from 'components/Authorization';
 export { SignUp } from 'components/Authorization';
 export { Portal } from 'components/Portal';
+export { Achievements } from 'components/Achievements';
