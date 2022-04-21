@@ -28,6 +28,20 @@
     height: 30px;
   }
 
+  &__profile {
+    position: relative;
+    height: 5%;
+    width: 20%;
+    font-family: $lato;
+    background: $primary;
+    color: $black;
+    border-radius: 5px 5px 0 0;
+    border: 2px solid $search-primary;
+    padding: 5px;
+    margin: 0 5px;
+    cursor: pointer;
+  }
+
   &__cart-btn {
     width: 20px;
     height: 20px;
@@ -124,6 +138,10 @@
     &__buy {
       width: 40%;
     }
+
+    &__profile {
+      width: 45%;
+    }
   }
 
   @include media-table-small {
@@ -135,22 +153,6 @@
   &__search,
   &__clear {
     width: 30%;
-  }
-
-  @include media-mobile-small {
-    width: 20px;
-    height: 20px;
-    font-size: 8px;
-
-    &__search,
-    &__clear {
-      width: 30%;
-    }
-
-    &__buy {
-      height: 30px;
-      width: 30%;
-    }
   }
 
   @include media-mobile-small {
@@ -174,6 +176,12 @@
     &__buy {
       width: 50%;
       font-size: 12px;
+    }
+
+    &__profile {
+      width: 40%;
+      font-size: 12px;
+      padding: 0;
     }
   }
 }

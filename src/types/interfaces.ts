@@ -16,9 +16,12 @@ export interface IGame {
   new?: boolean;
   popularity: number;
   description?: string;
+  purchaseDate?: string;
   quantity?: number;
   disk?: boolean;
   count: string;
+  cart?: boolean;
+  order?: boolean;
 }
 
 export interface IAuthor {
@@ -39,7 +42,6 @@ export interface IParams {
   maxPrice: string;
   count?: number;
   isNew?: boolean;
-  order?: string;
 }
 
 export interface ICart {
@@ -55,6 +57,31 @@ export interface ISign {
 export interface IUser {
   email?: string;
   name?: string;
-  lastname?: string;
+  lastName?: string;
   password?: string;
+  photo?: string;
+}
+
+export interface IAchievement {
+  id?: number;
+  isAchieved?: boolean;
+  name: string;
+  description: string;
+  discount: number;
+  achievementId: number;
+  achievement: {
+    id: number;
+    name: string;
+    description: string;
+    discount: number;
+  };
+}
+
+export interface IOrder {
+  id?: number;
+  name?: string;
+  email?: string;
+  quantity?: string;
+  game?: IGame;
+  formatedCreatedAt?: string;
 }

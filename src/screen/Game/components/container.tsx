@@ -38,7 +38,7 @@ export const GamePageContainer = () => {
     return () => {
       socket.disconnect();
     };
-  }, [gameInfo]);
+  }, [gameInfo, fetchGameInfo]);
 
   return errorMessage ? <ToastComponent /> : <GamePage {...gameInfo} />;
 };
