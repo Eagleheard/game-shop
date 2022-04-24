@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
+import useToast from 'components/Toast';
 import { Button } from 'components';
 import { addGame } from 'store/cart/actions';
 
@@ -39,6 +40,12 @@ export const GamePage: React.FC<IGamePage> = ({
   const history = useNavigate();
   const dispatch = useDispatch();
   const [buyingCount, setBuyingCount] = useState(1);
+  const { openToast, ToastComponent } = useToast('Successfully added', 'success');
+
+  const handleBuy = () => {
+    openToast();
+    dispatch(addGame(id, buyingCount));
+  };
 
   return (
     <div className="game">
@@ -79,11 +86,7 @@ export const GamePage: React.FC<IGamePage> = ({
               )}
             </div>
             <div className="game__buying">
-              <Button
-                text="Buy now"
-                onClick={() => dispatch(addGame(id, buyingCount))}
-                style="buy"
-              />
+              <Button text="Buy now" onClick={handleBuy} style="buy" />
               <p className="game__price">Price: {price}$</p>
             </div>
           </div>
@@ -93,6 +96,7 @@ export const GamePage: React.FC<IGamePage> = ({
           <p className="description__text">{description}</p>
         </div>
       </div>
+      <ToastComponent />
     </div>
   );
 };

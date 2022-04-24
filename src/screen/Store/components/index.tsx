@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { fetchGames } from 'api/fetchGames';
 
+import useToast from 'components/Toast';
 import { Card } from 'screen';
 import { Pagination, Select, ResponsiveFilter } from 'components';
 import { Filter } from 'components/Filter';
@@ -27,17 +28,20 @@ export const Store = () => {
   const [games, setGames] = useState<IGame[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [params, setParams] = useState<IParams>();
+  const [errorMessage, setErrorMessage] = useState<string>('');
   const [isFilterVisible, setIsFilterVisible] = useState<boolean>(false);
   const { goToNextPage, goToPreviousPage, changePage, currentPage, page } =
     usePagination(DATA_LIMIT);
+  const { openToast, ToastComponent } = useToast(errorMessage, 'error');
 
   const fillGames = useCallback(
     async (params?: IParams) => {
       try {
         const { data } = await fetchGames(currentPage, DATA_LIMIT, { params });
         setGames(data.rows);
-      } catch (e) {
-        console.log(e);
+      } catch ({ response: { data } }) {
+        setErrorMessage(String(data));
+        openToast();
       }
     },
     [currentPage],
@@ -111,6 +115,7 @@ export const Store = () => {
           />
         )}
       </div>
+      <ToastComponent />
     </div>
   );
 };

@@ -7,6 +7,7 @@ import { SignIn, SignUp, Portal, Select, Autocomplete } from 'components';
 import { authorization, logout } from 'api/authorization';
 import { useAuth } from 'hooks/useAuth';
 import { IGame } from 'types/interfaces';
+import useToast from 'components/Toast';
 
 import logo from 'assets/logo.png';
 import menu from 'assets/menu.png';
@@ -24,7 +25,9 @@ export const Header = () => {
   const [isNavVisible, setNavVisibility] = useState<boolean>(false);
   const [isSignInVisible, setIsSignInVisible] = useState<boolean>(false);
   const [isSignUpVisible, setIsSignUpVisible] = useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState<string>('');
   const [games, setGames] = useState<IGame[]>([]);
+  const { openToast, ToastComponent } = useToast(errorMessage, 'error');
 
   const navigate = useNavigate();
 
@@ -45,8 +48,13 @@ export const Header = () => {
     try {
       const { data } = await fetchGames();
       setGames(data.rows);
-    } catch (e) {
-      console.log(e);
+    } catch ({
+      response: {
+        data: { message },
+      },
+    }) {
+      setErrorMessage(String(message));
+      openToast();
     }
   }, []);
 
@@ -74,8 +82,13 @@ export const Header = () => {
     try {
       const { data } = await authorization();
       setUser(data);
-    } catch (error) {
-      console.log(error);
+    } catch ({
+      response: {
+        data: { message },
+      },
+    }) {
+      setErrorMessage(String(message));
+      openToast();
     }
   };
 
@@ -169,6 +182,7 @@ export const Header = () => {
           handleClose={() => setIsSignUpVisible(false)}
         />
       )}
+      <ToastComponent />
     </header>
   );
 };

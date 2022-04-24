@@ -21,6 +21,16 @@
         width: 25px;
         margin-right: 10px;
     }
+
+    &__error {
+        background-color: $error;
+        border-top: 5px solid $red;
+    }
+
+    &__success {
+        background-color: $success;
+        border-top: 5px solid $green;
+    }
     
     &__content {
         display: flex;

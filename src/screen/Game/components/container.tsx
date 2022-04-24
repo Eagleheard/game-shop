@@ -26,19 +26,29 @@ export const GamePageContainer = () => {
       setErrorMessage(String(message));
       openToast();
     }
-  }, [id]);
+  }, [id, openToast]);
+
   useEffect(() => {
-    setIsLoading(true);
-    fetchGameInfo();
     socket.connect();
     socket.on('newGameInfo', (data) => {
       setGameInfo(data);
+      return () => {
+        socket.disconnect();
+      };
     });
-    setIsLoading(false);
-    return () => {
-      socket.disconnect();
-    };
-  }, [gameInfo, fetchGameInfo]);
+  });
 
-  return errorMessage ? <ToastComponent /> : <GamePage {...gameInfo} />;
+  useEffect(() => {
+    setIsLoading(true);
+    fetchGameInfo();
+    setIsLoading(false);
+  }, [fetchGameInfo]);
+
+  return errorMessage ? (
+    <ToastComponent />
+  ) : !gameInfo ? (
+    <p>loading</p>
+  ) : (
+    <GamePage {...gameInfo} />
+  );
 };

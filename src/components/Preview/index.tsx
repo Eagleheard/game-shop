@@ -4,6 +4,7 @@ import { NavLink } from 'react-router-dom';
 
 import { fetchPreviewGames } from 'api/fetchPreviewGames';
 
+import useToast from 'components/Toast';
 import { Button } from 'components/Button';
 import { IGame } from 'types/interfaces';
 
@@ -12,6 +13,8 @@ import './styles.scss';
 export const Preview = () => {
   const [previewPage, setPreviewPage] = useState(0);
   const [previewGames, setPreviewGames] = useState<IGame[]>([]);
+  const [errorMessage, setErrorMessage] = useState<string>('');
+  const { openToast, ToastComponent } = useToast(errorMessage, 'error');
 
   const setPreviousPreviewPage = () => {
     setPreviewPage((prevValue) => prevValue - 1);
@@ -25,8 +28,13 @@ export const Preview = () => {
     try {
       const { data } = await fetchPreviewGames();
       setPreviewGames(data.rows);
-    } catch (e) {
-      console.log(e);
+    } catch ({
+      response: {
+        data: { message },
+      },
+    }) {
+      setErrorMessage(String(message));
+      openToast();
     }
   };
 
@@ -87,6 +95,7 @@ export const Preview = () => {
         style="next-btn"
         disabled={previewPage === previewGames.length - 1}
       />
+      <ToastComponent />
     </div>
   );
 };

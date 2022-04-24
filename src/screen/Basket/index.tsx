@@ -1,7 +1,8 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useForm } from 'react-hook-form';
 
+import useToast from 'components/Toast';
 import { createOrder } from 'api/fetchOrders';
 import { cartSelector } from 'store/cart/selectors';
 import { CartState } from 'store/cart/types';
@@ -18,7 +19,10 @@ export const Basket = () => {
   const totalPrice = useSelector(cartSelector.cartPrice);
   const discount = useSelector(cartSelector.cartDiscount);
   const dispatch = useDispatch();
+  const [message, setMessage] = useState<string>('');
+  const [toastType, setToastType] = useState<string>('');
   const discountedPrice = useMemo(() => totalPrice - totalPrice * discount, [totalPrice, discount]);
+  const { openToast, ToastComponent } = useToast(message, toastType);
 
   const {
     register,
@@ -30,8 +34,17 @@ export const Basket = () => {
   const fillOrder = async (params: IOrder) => {
     try {
       await createOrder(params);
-    } catch (e) {
-      console.log(e);
+      setMessage('Successfully buyed');
+      setToastType('success');
+      openToast();
+    } catch ({
+      response: {
+        data: { message },
+      },
+    }) {
+      setMessage(String(message));
+      setToastType('error');
+      openToast();
     }
   };
 
@@ -129,6 +142,7 @@ export const Basket = () => {
           </div>
         </form>
       </div>
+      <ToastComponent />
     </div>
   );
 };

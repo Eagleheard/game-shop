@@ -7,6 +7,7 @@ import { fetchAchievement } from 'api/fetchAchievements';
 import { Card } from 'screen';
 import { Achievements, Button, Select } from 'components';
 import { IAchievement, IOrder, IUser } from 'types/interfaces';
+import useToast from 'components/Toast';
 
 import userImg from 'assets/userPhoto.png';
 
@@ -42,13 +43,20 @@ export const Profile = () => {
   const [params, setParams] = useState<IParams>({ order: 'Newest' });
   const [isAchievementsVisible, setIsAchievementsVisible] = useState(true);
   const [isOrdersVisible, setOrdersVisible] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string>('');
+  const { openToast, ToastComponent } = useToast(errorMessage, 'error');
 
   const fetchUser = useCallback(async () => {
     try {
       const { data } = await fetchUserInfo(id);
       setUserInfo(data);
-    } catch (e) {
-      console.log(e);
+    } catch ({
+      response: {
+        data: { message },
+      },
+    }) {
+      setErrorMessage(String(message));
+      openToast();
     }
   }, [id]);
 
@@ -56,8 +64,13 @@ export const Profile = () => {
     try {
       const { data } = await fetchAchievement();
       setAchievements(data);
-    } catch (e) {
-      console.log(e);
+    } catch ({
+      response: {
+        data: { message },
+      },
+    }) {
+      setErrorMessage(String(message));
+      openToast();
     }
   };
 
@@ -65,8 +78,13 @@ export const Profile = () => {
     try {
       const { data } = await fetchOrders({ params });
       setOrders(data);
-    } catch (e) {
-      console.log(e);
+    } catch ({
+      response: {
+        data: { message },
+      },
+    }) {
+      setErrorMessage(String(message));
+      openToast();
     }
   }, []);
 
@@ -103,8 +121,13 @@ export const Profile = () => {
       formData.append('upload_preset', 'fabra5gx');
       const { data } = await uploadUserPhoto(formData, id);
       setUserInfo(data);
-    } catch (e) {
-      console.log(e);
+    } catch ({
+      response: {
+        data: { message },
+      },
+    }) {
+      setErrorMessage(String(message));
+      openToast();
     }
   };
 
@@ -184,6 +207,7 @@ export const Profile = () => {
           </ProfileContent>
         </ProfileContainer>
       )}
+      <ToastComponent />
     </ProfileComponent>
   );
 };

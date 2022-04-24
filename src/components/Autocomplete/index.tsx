@@ -73,7 +73,7 @@ export const Autocomplete: React.FC<IAutocomplete> = ({
                       key={game.id}
                       onClick={() => onGameClick(game.name)}
                     >
-                      <Card {...game} />
+                      <Card search {...game} />
                     </div>
                   ))
               ) : (
