@@ -11,8 +11,7 @@ export const GamePageContainer = () => {
   const { id } = useParams<string>();
   const [gameInfo, setGameInfo] = useState<IGame>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [errorMessage, setErrorMessage] = useState<string>();
-  const { openToast, ToastComponent } = useToast(errorMessage, 'error');
+  const { openToast, ToastComponent, setMessage } = useToast('error');
 
   const fetchGameInfo = useCallback(async () => {
     try {
@@ -23,7 +22,7 @@ export const GamePageContainer = () => {
         data: { message },
       },
     }) {
-      setErrorMessage(String(message));
+      setMessage(String(message));
       openToast();
     }
   }, [id, openToast]);
@@ -31,24 +30,19 @@ export const GamePageContainer = () => {
   useEffect(() => {
     socket.connect();
     socket.on('newGameInfo', (data) => {
+      console.log(data);
       setGameInfo(data);
-      return () => {
-        socket.disconnect();
-      };
     });
+    return () => {
+      socket.disconnect();
+    };
   });
 
   useEffect(() => {
     setIsLoading(true);
     fetchGameInfo();
     setIsLoading(false);
-  }, [fetchGameInfo]);
+  }, []);
 
-  return errorMessage ? (
-    <ToastComponent />
-  ) : !gameInfo ? (
-    <p>loading</p>
-  ) : (
-    <GamePage {...gameInfo} />
-  );
+  return !isLoading && gameInfo ? <GamePage {...gameInfo} /> : <ToastComponent />;
 };

@@ -19,10 +19,9 @@ export const Basket = () => {
   const totalPrice = useSelector(cartSelector.cartPrice);
   const discount = useSelector(cartSelector.cartDiscount);
   const dispatch = useDispatch();
-  const [message, setMessage] = useState<string>('');
   const [toastType, setToastType] = useState<string>('');
   const discountedPrice = useMemo(() => totalPrice - totalPrice * discount, [totalPrice, discount]);
-  const { openToast, ToastComponent } = useToast(message, toastType);
+  const { openToast, ToastComponent, setMessage } = useToast(toastType);
 
   const {
     register,

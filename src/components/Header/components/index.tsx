@@ -25,9 +25,8 @@ export const Header = () => {
   const [isNavVisible, setNavVisibility] = useState<boolean>(false);
   const [isSignInVisible, setIsSignInVisible] = useState<boolean>(false);
   const [isSignUpVisible, setIsSignUpVisible] = useState<boolean>(false);
-  const [errorMessage, setErrorMessage] = useState<string>('');
   const [games, setGames] = useState<IGame[]>([]);
-  const { openToast, ToastComponent } = useToast(errorMessage, 'error');
+  const { openToast, ToastComponent, setMessage } = useToast('error');
 
   const navigate = useNavigate();
 
@@ -53,7 +52,7 @@ export const Header = () => {
         data: { message },
       },
     }) {
-      setErrorMessage(String(message));
+      setMessage(String(message));
       openToast();
     }
   }, []);
@@ -82,14 +81,7 @@ export const Header = () => {
     try {
       const { data } = await authorization();
       setUser(data);
-    } catch ({
-      response: {
-        data: { message },
-      },
-    }) {
-      setErrorMessage(String(message));
-      openToast();
-    }
+    } catch (e) {}
   };
 
   const signOut = async () => {

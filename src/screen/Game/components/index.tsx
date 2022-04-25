@@ -40,11 +40,12 @@ export const GamePage: React.FC<IGamePage> = ({
   const history = useNavigate();
   const dispatch = useDispatch();
   const [buyingCount, setBuyingCount] = useState(1);
-  const { openToast, ToastComponent } = useToast('Successfully added', 'success');
+  const { openToast, ToastComponent, setMessage } = useToast('success');
 
   const handleBuy = () => {
-    openToast();
+    setMessage('Successfully added');
     dispatch(addGame(id, buyingCount));
+    openToast();
   };
 
   return (

@@ -12,8 +12,7 @@ export const AuthorContainer = () => {
   const [authorInfo, setAuthorInfo] = useState<IAuthor>();
   const [authorGames, setAuthorGames] = useState<IGame[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [errorMessage, setErrorMessage] = useState<string>();
-  const { openToast, ToastComponent } = useToast(errorMessage, 'error');
+  const { openToast, ToastComponent, setMessage } = useToast('error');
 
   const searchAuthor = useCallback(async () => {
     try {
@@ -24,7 +23,7 @@ export const AuthorContainer = () => {
         data: { message },
       },
     }) {
-      setErrorMessage(String(message));
+      setMessage(String(message));
       openToast();
     }
   }, [id]);
@@ -33,8 +32,13 @@ export const AuthorContainer = () => {
     try {
       const { data } = await fetchGameByAuthor(id);
       setAuthorGames(data.rows);
-    } catch (e) {
-      console.log(e);
+    } catch ({
+      response: {
+        data: { message },
+      },
+    }) {
+      setMessage(String(message));
+      openToast();
     }
   }, [id]);
 
@@ -45,5 +49,9 @@ export const AuthorContainer = () => {
     setIsLoading(false);
   }, [searchAuthor, searchAuthorGames]);
 
-  return errorMessage ? <ToastComponent /> : <Author {...authorInfo} authorGames={authorGames} />;
+  return !isLoading && authorInfo ? (
+    <Author {...authorInfo} authorGames={authorGames} {...ToastComponent} />
+  ) : (
+    <p>Loading</p>
+  );
 };

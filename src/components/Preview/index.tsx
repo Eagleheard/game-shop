@@ -13,8 +13,7 @@ import './styles.scss';
 export const Preview = () => {
   const [previewPage, setPreviewPage] = useState(0);
   const [previewGames, setPreviewGames] = useState<IGame[]>([]);
-  const [errorMessage, setErrorMessage] = useState<string>('');
-  const { openToast, ToastComponent } = useToast(errorMessage, 'error');
+  const { openToast, ToastComponent, setMessage } = useToast('error');
 
   const setPreviousPreviewPage = () => {
     setPreviewPage((prevValue) => prevValue - 1);
@@ -33,7 +32,7 @@ export const Preview = () => {
         data: { message },
       },
     }) {
-      setErrorMessage(String(message));
+      setMessage(String(message));
       openToast();
     }
   };

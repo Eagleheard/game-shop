@@ -26,12 +26,11 @@ export const Home = () => {
   const [games, setGames] = useState<IGame[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [params, setParams] = useState<IParams>();
-  const [errorMessage, setErrorMessage] = useState<string>('');
   const { goToNextPage, goToPreviousPage, changePage, currentPage, page } = usePagination(
     DATA_LIMIT,
     params,
   );
-  const { openToast, ToastComponent } = useToast(errorMessage, 'error');
+  const { openToast, ToastComponent, setMessage } = useToast('error');
 
   const fillGames = useCallback(
     async (params?: IParams) => {
@@ -39,7 +38,7 @@ export const Home = () => {
         const { data } = await fetchGames(currentPage, DATA_LIMIT, { params });
         setGames(data.rows);
       } catch ({ response: { data } }) {
-        setErrorMessage(String(data));
+        setMessage(String(data));
         openToast();
       }
     },

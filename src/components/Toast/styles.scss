@@ -2,7 +2,7 @@
 @import 'constants/media-queries';
 
 .snackbar {
-    visibility: hidden;
+    display: none;
     width: 20%;
     color: $black;
     border-radius: 2px;
@@ -12,8 +12,18 @@
     bottom: 30px;
 
     &__show {
-        visibility: visible;
+        display: block;
         animation: fadein 0.5s, fadeout 0.5s 2.5s;
+
+        &--error {
+            background-color: $error;
+            border-top: 5px solid $red;
+        }
+    
+        &--success {
+            background-color: $success;
+            border-top: 5px solid $green;
+        }
     }
 
     &__icon {
@@ -21,22 +31,12 @@
         width: 25px;
         margin-right: 10px;
     }
-
-    &__error {
-        background-color: $error;
-        border-top: 5px solid $red;
-    }
-
-    &__success {
-        background-color: $success;
-        border-top: 5px solid $green;
-    }
     
     &__content {
         display: flex;
         flex-direction: row;
         align-items: center;
-        justify-content: center;
+        justify-content: space-between;
         font-size: 16px;
         font-family: $lato;
         font-weight: bold;
