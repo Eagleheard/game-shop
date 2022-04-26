@@ -30,7 +30,6 @@ export const GamePageContainer = () => {
   useEffect(() => {
     socket.connect();
     socket.on('newGameInfo', (data) => {
-      console.log(data);
       setGameInfo(data);
     });
     return () => {

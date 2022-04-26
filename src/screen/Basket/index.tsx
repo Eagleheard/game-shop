@@ -60,7 +60,7 @@ export const Basket = () => {
     socket.on('clearedCart', () => {
       dispatch(clearCart());
     });
-  }, [dispatch]);
+  }, []);
 
   return (
     <div className="basket">

@@ -39,6 +39,7 @@ export const Card = ({
   search,
 }: IGame) => {
   const dispatch = useDispatch();
+
   return (
     <CardComponent search={search} cart={cart} order={order}>
       <CardImg search={search} order={order} cart={cart} src={image} alt="logo"></CardImg>
