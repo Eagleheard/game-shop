@@ -5,6 +5,7 @@ import { fetchAuthor } from 'api/fetchAuthor';
 
 import { IAuthor, IGame } from 'types/interfaces';
 import { Author } from '.';
+import { Loader } from 'components';
 
 export const AuthorContainer = () => {
   const { id } = useParams<string>();
@@ -36,5 +37,9 @@ export const AuthorContainer = () => {
     setIsLoading(false);
   }, [searchAuthor, searchAuthorGames]);
 
-  return isLoading ? <p>Loading...</p> : <Author {...authorInfo} authorGames={authorGames} />;
+  return isLoading || !authorInfo || !authorGames ? (
+    <Loader />
+  ) : (
+    <Author {...authorInfo} authorGames={authorGames} />
+  );
 };

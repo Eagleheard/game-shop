@@ -23,6 +23,18 @@
     font-size: 20px;
   }
 
+  &__error {
+    font-size: 30px;
+    margin-top: 200px;
+    font-family: $lato;
+    align-self: center;
+  }
+
+  .loader {
+    width: 70vw;
+    height: 70vh;
+  }
+
   .card {
     margin-top: 20px;
   }

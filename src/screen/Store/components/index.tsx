@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { fetchGames } from 'api/fetchGames';
 
 import { Card } from 'screen';
-import { Pagination, Select, ResponsiveFilter } from 'components';
+import { Pagination, Select, ResponsiveFilter, Loader } from 'components';
 import { Filter } from 'components/Filter';
 import { IGame } from 'types/interfaces';
 import { usePagination } from 'hooks';
@@ -27,6 +27,7 @@ export const Store = () => {
   const [games, setGames] = useState<IGame[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [params, setParams] = useState<IParams>();
+  const [errorMessage, setErrorMessage] = useState('');
   const [isFilterVisible, setIsFilterVisible] = useState<boolean>(false);
   const { goToNextPage, goToPreviousPage, changePage, currentPage, page } =
     usePagination(DATA_LIMIT);
@@ -35,7 +36,13 @@ export const Store = () => {
     async (params?: IParams) => {
       try {
         const { data } = await fetchGames(currentPage, DATA_LIMIT, { params });
-        setGames(data.rows);
+        if (data.count !== 0) {
+          setGames(data.rows);
+          setErrorMessage('');
+        }
+        if (data.count === 0) {
+          setErrorMessage('Games not found');
+        }
       } catch (e) {
         console.log(e);
       }
@@ -97,8 +104,10 @@ export const Store = () => {
             handleSelect={handleSelect}
           />
         </div>
-        {isLoading || !games.length ? (
-          <h1 className="store__error">Games not found</h1>
+        {errorMessage ? (
+          <p className="store__error">{errorMessage}</p>
+        ) : isLoading || !games.length ? (
+          <Loader />
         ) : (
           <Pagination
             RenderComponent={Card}

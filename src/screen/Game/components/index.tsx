@@ -68,12 +68,12 @@ export const GamePage: React.FC<IGamePage> = ({
                     style="cart-btn"
                     disabled={buyingCount === 1}
                   />
-                  <p className="card__quantity">{buyingCount}</p>
+                  <p className="about__buying-value">{buyingCount}</p>
                   <Button
                     text="+"
                     onClick={() => setBuyingCount((prevValue) => prevValue + 1)}
                     style="cart-btn"
-                    disabled={buyingCount === parseInt(count)}
+                    disabled={buyingCount === parseInt(count) || buyingCount === 10}
                   />
                 </div>
               )}

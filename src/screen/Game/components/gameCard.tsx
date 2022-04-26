@@ -73,7 +73,7 @@ export const Card = ({
                 text="+"
                 onClick={() => dispatch(incrementGameRequest(id))}
                 style="cart-btn"
-                disabled={parseInt(count) === 0}
+                disabled={parseInt(count) === 0 || quantity === 10}
               />
             </CardQuantityValue>
           )}

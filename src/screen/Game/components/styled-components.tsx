@@ -17,6 +17,7 @@ export const CardComponent = styled.div<ICard>`
   align-items: center;
   justify-self: center;
   border-radius: 10px;
+  margin: 10px 0;
   width: ${({ cart, order }) => (cart || order ? '90%' : '100%')};
   box-shadow: 0 0 10px ${black};
   background: ${primary};
