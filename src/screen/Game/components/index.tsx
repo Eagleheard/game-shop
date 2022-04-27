@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
-import { Button } from 'components';
+import { useAuth } from 'hooks/useAuth';
+import { Button, Portal, SignIn } from 'components';
 import { addGame } from 'store/cart/actions';
 
 import './PageStyles.scss';
@@ -39,6 +40,28 @@ export const GamePage: React.FC<IGamePage> = ({
   const history = useNavigate();
   const dispatch = useDispatch();
   const [buyingCount, setBuyingCount] = useState(1);
+  const [isSignInVisible, setIsSignInVisible] = useState<boolean>(false);
+  const [isSignUpVisible, setIsSignUpVisible] = useState<boolean>(false);
+  const [isGameBuyed, setIsGameBuyed] = useState<boolean>(false);
+  const { user } = useAuth();
+
+  const handleSwitch = () => {
+    if (isSignInVisible) {
+      setIsSignInVisible(false);
+      setIsSignUpVisible(true);
+      return;
+    }
+    if (isSignUpVisible) {
+      setIsSignInVisible(true);
+      setIsSignUpVisible(false);
+      return;
+    }
+  };
+
+  const buyGame = () => {
+    dispatch(addGame(id, buyingCount));
+    setIsGameBuyed(true);
+  };
 
   return (
     <div className="game">
@@ -79,11 +102,19 @@ export const GamePage: React.FC<IGamePage> = ({
               )}
             </div>
             <div className="game__buying">
-              <Button
-                text="Buy now"
-                onClick={() => dispatch(addGame(id, buyingCount))}
-                style="buy"
-              />
+              {user ? (
+                !isGameBuyed ? (
+                  <Button text="Buy now" onClick={buyGame} style="buy" />
+                ) : (
+                  <Button
+                    text="Go to cart"
+                    onClick={() => history(`/cart/${user.id}`)}
+                    style="buy"
+                  />
+                )
+              ) : (
+                <Button text="Sign In" onClick={() => setIsSignInVisible(true)} style="buy" />
+              )}
               <p className="game__price">Price: {price}$</p>
             </div>
           </div>
@@ -93,6 +124,12 @@ export const GamePage: React.FC<IGamePage> = ({
           <p className="description__text">{description}</p>
         </div>
       </div>
+      <Portal
+        Component={() => <SignIn handleSwitch={handleSwitch} />}
+        isOpen={isSignInVisible}
+        text="Sign In"
+        handleClose={() => setIsSignInVisible(false)}
+      />
     </div>
   );
 };

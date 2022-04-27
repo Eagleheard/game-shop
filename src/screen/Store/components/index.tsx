@@ -16,11 +16,14 @@ enum sortOptions {
   OUR_GAMES = 'Our games',
   NEW_GAMES = 'New games',
   POPULAR_GAMES = 'Popular games',
+  LOW_PRICE = 'Low to high',
+  HIGH_PRICE = 'High to low',
 }
 
 interface IParams {
   isNew?: boolean;
   order?: string;
+  price?: string;
 }
 
 export const Store = () => {
@@ -68,6 +71,14 @@ export const Store = () => {
         setParams({ order: 'popularity' });
         fillGames(params);
         break;
+      case sortOptions.LOW_PRICE:
+        setParams({ price: 'lowPrice' });
+        fillGames(params);
+        break;
+      case sortOptions.HIGH_PRICE:
+        setParams({ price: 'highPrice' });
+        fillGames(params);
+        break;
       default:
         fillGames();
     }
@@ -93,16 +104,27 @@ export const Store = () => {
       <div className="store__container">
         <div className="store__options">
           <img src={filter} className="store__filter-icon" onClick={() => setFilter()} />
-          <Select
-            placeholder="Our games"
-            options={[
-              { id: 0, label: 'Our games', value: 'Our games' },
-              { id: 1, label: 'New games', value: 'New games' },
-              { id: 2, label: 'Popular games', value: 'Popular games' },
-            ]}
-            style="store"
-            handleSelect={handleSelect}
-          />
+          <div className="store__filters">
+            <Select
+              placeholder="Our games"
+              options={[
+                { id: 0, label: 'Our games', value: 'Our games' },
+                { id: 1, label: 'New games', value: 'New games' },
+                { id: 2, label: 'Popular games', value: 'Popular games' },
+              ]}
+              style="store"
+              handleSelect={handleSelect}
+            />
+            <Select
+              placeholder="Price"
+              options={[
+                { id: 0, label: 'Low to high', value: 'Low to high' },
+                { id: 1, label: 'High to low', value: 'High to low' },
+              ]}
+              style="store"
+              handleSelect={handleSelect}
+            />
+          </div>
         </div>
         {errorMessage ? (
           <p className="store__error">{errorMessage}</p>

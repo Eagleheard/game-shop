@@ -9,25 +9,28 @@ import { AuthorContainer } from 'screen/Author/components/container';
 import { GamePageContainer } from 'screen/Game/components/container';
 
 import './App.css';
+import { TimerProvider } from 'hooks/useTimer';
 
 function App() {
   return (
     <div className="app">
       <ErrorBoundary>
         <AuthProvider>
-          <Header />
-          <div className="app__content">
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/about" element={<About />} />
-              <Route path="/store" element={<Store />} />
-              <Route path="/game/:id" element={<GamePageContainer />} />
-              <Route path="/author/:id" element={<AuthorContainer />} />
-              <Route path="/user/:id" element={<Profile />} />
-              <Route path="/cart/:id" element={<Basket />} />
-            </Routes>
-          </div>
-          <Footer />
+          <TimerProvider>
+            <Header />
+            <div className="app__content">
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/about" element={<About />} />
+                <Route path="/store" element={<Store />} />
+                <Route path="/game/:id" element={<GamePageContainer />} />
+                <Route path="/author/:id" element={<AuthorContainer />} />
+                <Route path="/user/:id" element={<Profile />} />
+                <Route path="/cart/:id" element={<Basket />} />
+              </Routes>
+            </div>
+            <Footer />
+          </TimerProvider>
         </AuthProvider>
       </ErrorBoundary>
     </div>

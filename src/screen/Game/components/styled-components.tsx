@@ -11,6 +11,16 @@ interface ICard {
   order?: boolean;
 }
 
+export const CardBuyButton = styled.div`
+  display: flex;
+  align-self: flex-end;
+  justify-content: flex-end;
+  width: 10%;
+  position: absolute;
+  opacity: 0;
+  transition: opacity 0.3s;
+`;
+
 export const CardComponent = styled.div<ICard>`
   display: flex;
   flex-direction: ${({ cart, order }) => (cart || order ? 'row' : 'column')};
@@ -38,6 +48,11 @@ export const CardComponent = styled.div<ICard>`
 
   @media (max-width: 500px) {
     width: 100%;
+  }
+
+  &:hover > ${CardBuyButton} {
+    opacity: 1;
+    transition: opacity 0.3s;
   }
 `;
 

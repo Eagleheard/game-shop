@@ -19,6 +19,7 @@ export const SignUp: React.FC<ISign> = ({ handleSwitch }) => {
   const signUp = async (params: IUser) => {
     try {
       await registration(params);
+      handleSwitch();
     } catch ({
       response: {
         data: { message },
@@ -39,35 +40,37 @@ export const SignUp: React.FC<ISign> = ({ handleSwitch }) => {
           <input
             type="text"
             id="name"
+            maxLength={20}
             placeholder="name"
             onKeyPress={(e) => /[0-9]/.test(e.key) && e.preventDefault()}
             className="login__name"
             {...register('name', {
               required: true,
-              validate: (value) => value.length < AuthorizationOptions.NAME_LENGTH,
+              validate: (value) => value.length !== 0,
             })}
           />
           <label htmlFor="name" className="login__label">
             First Name
           </label>
-          {errors.name && <p className="login__name--error">Your name is too long</p>}
+          {errors.name && <p className="login__name--error">Name cannot be empty</p>}
         </div>
         <div className="login__group">
           <input
             type="text"
             id="lastname"
             placeholder="lastname"
+            maxLength={20}
             onKeyPress={(e) => /[0-9]/.test(e.key) && e.preventDefault()}
             className="login__lastname"
             {...register('lastName', {
               required: true,
-              validate: (value) => value.length < AuthorizationOptions.NAME_LENGTH,
+              validate: (value) => value.length !== 0,
             })}
           />
           <label htmlFor="lastname" className="login__label">
             Last Name
           </label>
-          {errors.lastName && <p className="login__lastname--error">Your last name is too long</p>}
+          {errors.lastName && <p className="login__lastname--error">Last name cannot be empty</p>}
         </div>
         <div className="login__group">
           <input

@@ -5,7 +5,7 @@ import { fetchUserInfo, uploadUserPhoto } from 'api/fetchUser';
 import { fetchOrders } from 'api/fetchOrders';
 import { fetchAchievement } from 'api/fetchAchievements';
 import { Card } from 'screen';
-import { Achievements, Button, Select } from 'components';
+import { Achievements, Button, Loader, Select } from 'components';
 import { IAchievement, IOrder, IUser } from 'types/interfaces';
 
 import userImg from 'assets/userPhoto.png';
@@ -19,6 +19,7 @@ import {
   ProfileLabel,
   ProfileName,
   ProfileNavigation,
+  ProfileOrders,
   ProfilePhoto,
   ProfileUploadPhoto,
   ProfileUploadPhotoButton,
@@ -37,6 +38,7 @@ export const Profile = () => {
   const { id } = useParams<string>();
   const [userInfo, setUserInfo] = useState<IUser>({});
   const [isLoading, setIsLoading] = useState(false);
+  const [isPhotoLoading, setIsPhotoLoading] = useState(false);
   const [achievements, setAchievements] = useState<IAchievement[]>([]);
   const [orders, setOrders] = useState<IOrder[]>([]);
   const [params, setParams] = useState<IParams>({ order: 'Newest' });
@@ -101,8 +103,10 @@ export const Profile = () => {
       const formData = new FormData();
       files ? formData.append('file', files[0]) : undefined;
       formData.append('upload_preset', 'fabra5gx');
+      setIsPhotoLoading(true);
       const { data } = await uploadUserPhoto(formData, id);
       setUserInfo(data);
+      setIsPhotoLoading(false);
     } catch (e) {
       console.log(e);
     }
@@ -130,7 +134,11 @@ export const Profile = () => {
       {!isLoading && (
         <ProfileContainer>
           <ProfileInfo>
-            <ProfilePhoto src={userInfo.photo ? userInfo.photo : userImg} alt="profile photo" />
+            {isPhotoLoading ? (
+              <Loader />
+            ) : (
+              <ProfilePhoto src={userInfo.photo ? userInfo.photo : userImg} alt="profile photo" />
+            )}
             <ProfileUploadPhoto htmlFor="file-upload">Upload new photo</ProfileUploadPhoto>
             <ProfileUploadPhotoButton
               id="file-upload"
@@ -156,28 +164,36 @@ export const Profile = () => {
             )}
             {isOrdersVisible && (
               <>
-                <ProfileLabel>Orders</ProfileLabel>
-                <Select
-                  placeholder="Newest orders"
-                  options={[
-                    { id: 0, label: 'Newest orders', value: 'Newest' },
-                    { id: 1, label: 'Oldest orders', value: 'Oldest' },
-                  ]}
-                  style="profile"
-                  handleSelect={handleSelect}
-                />
-                {orders && !isLoading ? (
-                  orders.map(({ id, game, formatedCreatedAt, quantity }) => (
-                    <Card
-                      order
-                      key={id}
-                      purchaseDate={formatedCreatedAt}
-                      quantity={quantity}
-                      {...game}
-                    />
-                  ))
+                {orders.length === 0 ? (
+                  <ProfileLabel>You don&apos;t have orders yet</ProfileLabel>
                 ) : (
-                  <p>Loading</p>
+                  <>
+                    <ProfileLabel>Orders</ProfileLabel>
+                    <Select
+                      placeholder="Newest orders"
+                      options={[
+                        { id: 0, label: 'Newest orders', value: 'Newest' },
+                        { id: 1, label: 'Oldest orders', value: 'Oldest' },
+                      ]}
+                      style="profile"
+                      handleSelect={handleSelect}
+                    />
+                    <ProfileOrders>
+                      {orders && !isLoading ? (
+                        orders.map(({ id, game, formatedCreatedAt, quantity }) => (
+                          <Card
+                            order
+                            key={id}
+                            purchaseDate={formatedCreatedAt}
+                            quantity={quantity}
+                            {...game}
+                          />
+                        ))
+                      ) : (
+                        <p>Loading</p>
+                      )}
+                    </ProfileOrders>
+                  </>
                 )}
               </>
             )}

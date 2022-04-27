@@ -1,15 +1,22 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
 
-import { decrementGameRequest, incrementGameRequest, removeGameRequest } from 'store/cart/actions';
+import {
+  addGame,
+  decrementGameRequest,
+  incrementGameRequest,
+  removeGameRequest,
+} from 'store/cart/actions';
 import { IGame } from 'types/interfaces';
 import { Button } from 'components';
+import { useAuth } from 'hooks/useAuth';
 
 import grey_cross from 'assets/grey-cross.png';
 
 import {
   CardAdditionalInformation,
   CardAuthor,
+  CardBuyButton,
   CardComponent,
   CardDescription,
   CardGenre,
@@ -38,8 +45,14 @@ export const Card = ({
   order,
 }: IGame) => {
   const dispatch = useDispatch();
+  const { user } = useAuth();
   return (
     <CardComponent cart={cart} order={order}>
+      {user && !purchaseDate && !quantity && (
+        <CardBuyButton>
+          <Button text="Buy now" onClick={() => dispatch(addGame(id, 1))} style="card-buy" />
+        </CardBuyButton>
+      )}
       <CardImg order={order} cart={cart} src={image} alt="logo"></CardImg>
       <CardDescription order={order} cart={cart}>
         <CardMainInformation order={order} cart={cart}>

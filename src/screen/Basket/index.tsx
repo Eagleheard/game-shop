@@ -2,13 +2,14 @@ import React, { useEffect, useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useForm } from 'react-hook-form';
 
+import { useTimer } from 'hooks/useTimer';
 import { createOrder } from 'api/fetchOrders';
 import { cartSelector } from 'store/cart/selectors';
 import { CartState } from 'store/cart/types';
 import { socket } from 'config';
 import { IOrder } from 'types/interfaces';
 import { clearCart, getCartRequest, getDiscountRequest } from 'store/cart/actions';
-import { Button } from 'components';
+import { Button, Loader, Timer } from 'components';
 import { Card } from 'screen';
 
 import './styles.scss';
@@ -19,6 +20,7 @@ export const Basket = () => {
   const discount = useSelector(cartSelector.cartDiscount);
   const dispatch = useDispatch();
   const discountedPrice = useMemo(() => totalPrice - totalPrice * discount, [totalPrice, discount]);
+  const { setIsActive } = useTimer();
 
   const {
     register,
@@ -39,36 +41,46 @@ export const Basket = () => {
     fillOrder(params);
     reset();
     dispatch(clearCart());
+    setIsActive(false);
+  };
+
+  const resetCart = () => {
+    dispatch(clearCart());
+    setIsActive(false);
   };
 
   useEffect(() => {
     dispatch(getCartRequest());
     dispatch(getDiscountRequest());
+    if (cart.length !== 0) {
+      setIsActive(true);
+    }
     socket.connect();
     socket.on('clearedCart', () => {
       dispatch(clearCart());
     });
-  }, [dispatch]);
+  }, [cart.length, setIsActive]);
 
   return (
     <div className="basket">
       <div className="basket__container">
         <div className="basket__games">
+          {cart.length !== 0 && <Timer />}
           {error && <p>Something wrong: {error}</p>}
-          {!cart.length && <h1>Cart is empty</h1>}
+          {!isLoading && !cart.length && <h1>Cart is empty</h1>}
           {cart && !isLoading ? (
             cart.map(({ game, quantity }) => (
               <Card cart key={game.id} {...game} quantity={quantity} />
             ))
           ) : (
-            <p>Loading</p>
+            <Loader />
           )}
         </div>
         <form onSubmit={handleSubmit(submitForm)} className="basket__info">
           <div className="basket__payment">
             <h1>Payment</h1>
             <p className="basket__payment-price">Total price: {totalPrice}$</p>
-            <p>Your personal discount: {discount * 100 ?? 0}%</p>
+            <p>Your personal discount: {Math.floor(discount * 100 ?? 0)}%</p>
           </div>
           <div className="basket__delivery"></div>
           {cart.find(({ game }) => game.disk === true) && (
@@ -118,12 +130,7 @@ export const Basket = () => {
           <div className="basket__order">
             <h3 className="basket__total-price">You will pay: {discountedPrice ?? 0}$</h3>
             <div className="basket__order-btn">
-              <Button
-                text="Clear cart"
-                type="reset"
-                onClick={() => dispatch(clearCart())}
-                style="clear"
-              />
+              <Button text="Clear cart" type="reset" onClick={resetCart} style="clear" />
               <Button text="Buy now" type="submit" onClick={() => submitForm} style="search" />
             </div>
           </div>

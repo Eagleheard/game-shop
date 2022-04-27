@@ -79,6 +79,16 @@
     cursor: pointer;
   }
 
+  &__card-buy {
+    font-family: $lato;
+    width: 50%;
+    border-radius: 5px;
+    margin: 0;
+    background-color: $search-primary;
+    border: 2px solid $search-primary;
+  }
+
+
   @include media-table-large {
     width: 35px;
     height: 35px;
@@ -86,6 +96,10 @@
     &__pagination-btn {
       width: 25px;
       height: 25px;
+    }
+
+    &__card-buy {
+      font-size: 10px;
     }
 
     &__search,
@@ -164,6 +178,12 @@
       width: 15px;
       height: 15px;
       font-size: 8px;
+    }
+
+    &__card-buy {
+      font-size: 10px;
+      height: 35px;
+      width: 35px;
     }
 
     &__search,

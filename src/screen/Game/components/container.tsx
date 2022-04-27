@@ -31,7 +31,7 @@ export const GamePageContainer = () => {
     return () => {
       socket.disconnect();
     };
-  }, [gameInfo, fetchGameInfo]);
+  }, []);
 
   return isLoading ? <p>Loading...</p> : <GamePage {...gameInfo} />;
 };

@@ -56,7 +56,6 @@ export const ProfileContent = styled.div`
   font-family: lato;
   align-self: flex-start;
   display: flex;
-  overflow: auto;
   flex-direction: column;
 
   .select {
@@ -81,6 +80,14 @@ export const ProfileContent = styled.div`
     width: 90%;
     align-self: center;
   }
+`;
+
+export const ProfileOrders = styled.div`
+  display: flex;
+  flex-direction: column;
+  height: 70vh;
+  overflow: auto;
+  align-items: center;
 `;
 
 export const ProfilePhoto = styled.img`
