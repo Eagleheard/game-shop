@@ -6,32 +6,37 @@ import success from 'assets/success.png';
 
 import './styles.scss';
 
-const useToast = (variant) => {
+const toastTimeout = 3000;
+
+const useToast = () => {
   const [message, setMessage] = useState('Something wrong');
   const [isToastVisible, setIsToastVisible] = useState(false);
+  const [toastType, setToastType] = useState('success');
 
-  const openToast = useCallback(() => {
+  const openToast = useCallback((message, toastType) => {
+    setMessage(message);
+    setToastType(toastType);
     setIsToastVisible(true);
     setTimeout(() => {
       setIsToastVisible(false);
-    }, 3000);
-  }, [!isToastVisible]);
+    }, toastTimeout);
+  }, []);
 
   const ToastComponent = () => (
     <div
       className={classNames('snackbar', {
         snackbar__show: isToastVisible,
-        'snackbar__show--success': variant === 'success',
-        'snackbar__show--error': variant === 'error',
+        'snackbar__show--success': toastType === 'success',
+        'snackbar__show--error': toastType === 'error',
       })}
     >
       <div className="snackbar__content">
-        <img className="snackbar__icon" src={variant == 'success' ? success : error} />
+        <img className="snackbar__icon" src={toastType === 'success' ? success : error} />
         <p className="snackbar__message">{message}</p>
       </div>
     </div>
   );
-  return { openToast, ToastComponent, setMessage };
+  return { openToast, ToastComponent };
 };
 
 export default useToast;

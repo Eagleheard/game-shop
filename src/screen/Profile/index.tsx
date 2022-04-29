@@ -43,7 +43,7 @@ export const Profile = () => {
   const [params, setParams] = useState<IParams>({ order: 'Newest' });
   const [isAchievementsVisible, setIsAchievementsVisible] = useState(true);
   const [isOrdersVisible, setOrdersVisible] = useState(false);
-  const { openToast, ToastComponent, setMessage } = useToast('error');
+  const { openToast, ToastComponent } = useToast();
 
   const fetchUser = useCallback(async () => {
     try {
@@ -54,8 +54,7 @@ export const Profile = () => {
         data: { message },
       },
     }) {
-      setMessage(String(message));
-      openToast();
+      openToast(String(message), 'error');
     }
   }, [id]);
 
@@ -68,8 +67,7 @@ export const Profile = () => {
         data: { message },
       },
     }) {
-      setMessage(String(message));
-      openToast();
+      openToast(String(message), 'error');
     }
   };
 
@@ -82,8 +80,7 @@ export const Profile = () => {
         data: { message },
       },
     }) {
-      setMessage(String(message));
-      openToast();
+      openToast(String(message), 'error');
     }
   }, []);
 
@@ -125,8 +122,7 @@ export const Profile = () => {
         data: { message },
       },
     }) {
-      setMessage(String(message));
-      openToast();
+      openToast(String(message), 'error');
     }
   };
 

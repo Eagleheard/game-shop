@@ -30,7 +30,7 @@ export const Home = () => {
     DATA_LIMIT,
     params,
   );
-  const { openToast, ToastComponent, setMessage } = useToast('error');
+  const { openToast, ToastComponent } = useToast();
 
   const fillGames = useCallback(
     async (params?: IParams) => {
@@ -38,8 +38,7 @@ export const Home = () => {
         const { data } = await fetchGames(currentPage, DATA_LIMIT, { params });
         setGames(data.rows);
       } catch ({ response: { data } }) {
-        setMessage(String(data));
-        openToast();
+        openToast(String(data), 'error');
       }
     },
     [currentPage],

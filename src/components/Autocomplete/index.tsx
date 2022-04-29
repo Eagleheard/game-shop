@@ -58,6 +58,7 @@ export const Autocomplete: React.FC<IAutocomplete> = ({
   useEffect(() => {
     setValue(reset || '');
   }, [reset]);
+
   const renderAutocomplete = useMemo(() => {
     if (isShow && value) {
       if (filtered.length) {

@@ -5,7 +5,6 @@ export { Footer } from 'components/Footer/components';
 export { Header } from 'components/Header/components';
 export { Filter } from 'components/Filter';
 export { ResponsiveFilter } from 'components/Filter/responsive';
-export { Search } from 'components/Search';
 export { Select } from 'components/Select';
 export { Autocomplete } from 'components/Autocomplete';
 export { Checkbox } from 'components/Checkbox';

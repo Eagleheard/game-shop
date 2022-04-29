@@ -10,8 +10,7 @@ import useToast from 'components/Toast';
 export const GamePageContainer = () => {
   const { id } = useParams<string>();
   const [gameInfo, setGameInfo] = useState<IGame>();
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const { openToast, ToastComponent, setMessage } = useToast('error');
+  const { openToast, ToastComponent } = useToast();
 
   const fetchGameInfo = useCallback(async () => {
     try {
@@ -22,12 +21,12 @@ export const GamePageContainer = () => {
         data: { message },
       },
     }) {
-      setMessage(String(message));
-      openToast();
+      openToast(String(message), 'error');
     }
   }, [id, openToast]);
 
   useEffect(() => {
+    fetchGameInfo();
     socket.connect();
     socket.on('newGameInfo', (data) => {
       setGameInfo(data);
@@ -35,13 +34,7 @@ export const GamePageContainer = () => {
     return () => {
       socket.disconnect();
     };
-  });
-
-  useEffect(() => {
-    setIsLoading(true);
-    fetchGameInfo();
-    setIsLoading(false);
   }, []);
 
-  return !isLoading && gameInfo ? <GamePage {...gameInfo} /> : <ToastComponent />;
+  return gameInfo ? <GamePage {...gameInfo} /> : <ToastComponent />;
 };

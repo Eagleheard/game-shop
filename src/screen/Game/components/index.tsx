@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
+import { CartState } from 'store/cart/types';
 import useToast from 'components/Toast';
 import { Button } from 'components';
-import { addGame } from 'store/cart/actions';
+import { addGameRequest } from 'store/cart/actions';
 
 import './PageStyles.scss';
 
@@ -40,13 +41,21 @@ export const GamePage: React.FC<IGamePage> = ({
   const history = useNavigate();
   const dispatch = useDispatch();
   const [buyingCount, setBuyingCount] = useState(1);
-  const { openToast, ToastComponent, setMessage } = useToast('success');
+  const { openToast, ToastComponent } = useToast();
+  const { gameError, isLoading, cart } = useSelector((state: CartState) => state.cartReducer || []);
 
   const handleBuy = () => {
-    setMessage('Successfully added');
-    dispatch(addGame(id, buyingCount));
-    openToast();
+    dispatch(addGameRequest(id, buyingCount));
   };
+
+  useEffect(() => {
+    if (!gameError && !isLoading && cart.find(({ gameId }) => id === gameId)) {
+      return openToast('Successfully added to cart', 'success');
+    }
+    if (gameError && !isLoading) {
+      return openToast('Game already in cart', 'error');
+    }
+  }, [gameError, isLoading]);
 
   return (
     <div className="game">

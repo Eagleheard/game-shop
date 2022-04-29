@@ -31,7 +31,7 @@ export const Store = () => {
   const [isFilterVisible, setIsFilterVisible] = useState<boolean>(false);
   const { goToNextPage, goToPreviousPage, changePage, currentPage, page } =
     usePagination(DATA_LIMIT);
-  const { openToast, ToastComponent, setMessage } = useToast('error');
+  const { openToast, ToastComponent } = useToast();
 
   const fillGames = useCallback(
     async (params?: IParams) => {
@@ -39,8 +39,7 @@ export const Store = () => {
         const { data } = await fetchGames(currentPage, DATA_LIMIT, { params });
         setGames(data.rows);
       } catch ({ response: { data } }) {
-        setMessage(String(data));
-        openToast();
+        openToast(String(data), 'error');
       }
     },
     [currentPage],

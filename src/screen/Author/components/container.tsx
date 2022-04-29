@@ -12,7 +12,7 @@ export const AuthorContainer = () => {
   const [authorInfo, setAuthorInfo] = useState<IAuthor>();
   const [authorGames, setAuthorGames] = useState<IGame[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const { openToast, ToastComponent, setMessage } = useToast('error');
+  const { openToast, ToastComponent } = useToast();
 
   const searchAuthor = useCallback(async () => {
     try {
@@ -23,8 +23,7 @@ export const AuthorContainer = () => {
         data: { message },
       },
     }) {
-      setMessage(String(message));
-      openToast();
+      openToast(String(message), 'error');
     }
   }, [id]);
 
@@ -37,8 +36,7 @@ export const AuthorContainer = () => {
         data: { message },
       },
     }) {
-      setMessage(String(message));
-      openToast();
+      openToast(String(message), 'error');
     }
   }, [id]);
 

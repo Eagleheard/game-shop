@@ -21,7 +21,7 @@ interface IGenre {
 export const Form: React.FC<IForm> = ({ games, fillGames }) => {
   const [isDiskChecked, setIsDiskChecked] = useState<boolean>(false);
   const [genres, setGenres] = useState<IGenre[]>([]);
-  const { openToast, ToastComponent } = useToast('error');
+  const { openToast, ToastComponent } = useToast();
 
   const {
     register,
@@ -37,7 +37,7 @@ export const Form: React.FC<IForm> = ({ games, fillGames }) => {
       const { data } = await fetchGenres();
       setGenres(data);
     } catch (e) {
-      openToast();
+      openToast(e, 'error');
     }
   };
 
