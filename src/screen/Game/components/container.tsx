@@ -36,5 +36,5 @@ export const GamePageContainer = () => {
     };
   }, []);
 
-  return gameInfo ? <GamePage {...gameInfo} /> : <ToastComponent />;
+  return gameInfo ? <GamePage {...gameInfo} /> : <p>loadi</p>;
 };

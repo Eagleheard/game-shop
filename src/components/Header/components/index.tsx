@@ -3,7 +3,7 @@ import { NavLink, useNavigate } from 'react-router-dom';
 
 import { fetchGames } from 'api/fetchGames';
 import { ResponsiveHeader } from './responsive';
-import { SignIn, SignUp, Portal, Select, Autocomplete } from 'components';
+import { SignIn, SignUp, Portal, Select, Autocomplete, Search } from 'components';
 import { authorization, logout } from 'api/authorization';
 import { useAuth } from 'hooks/useAuth';
 import { IGame } from 'types/interfaces';
@@ -58,6 +58,7 @@ export const Header = () => {
 
   const onChangeSearch = (value: string) => {
     const game = games.find(({ name }) => name === value);
+    console.log(value);
     navigate(`/game/${game?.id}`);
   };
 
@@ -131,12 +132,7 @@ export const Header = () => {
           signOut={signOut}
         />
       )}
-      <Autocomplete
-        options={games.map(({ name }) => name)}
-        games={games}
-        name="Search games"
-        onChangeInput={onChangeSearch}
-      />
+      <Search games={games} onChangeSearch={onChangeSearch} />
       <div className="header__sign">
         {user ? (
           <Select

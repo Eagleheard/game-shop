@@ -1,12 +1,9 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { Card } from 'screen';
-import { IGame } from 'types/interfaces';
+import React, { Children, useCallback, useEffect, useMemo, useState } from 'react';
 
 import './style.scss';
 
 interface IAutocomplete {
   options: string[];
-  games?: IGame[];
   name: string;
   reset?: string;
   onChangeInput: (input: string) => void;
@@ -14,10 +11,10 @@ interface IAutocomplete {
 
 export const Autocomplete: React.FC<IAutocomplete> = ({
   options,
-  games,
   name,
   onChangeInput,
   reset,
+  children,
 }) => {
   const [isShow, setIsShow] = useState<boolean>(false);
   const [filtered, setFiltered] = useState<string[]>([]);
@@ -65,18 +62,12 @@ export const Autocomplete: React.FC<IAutocomplete> = ({
         return (
           <ul className="autocomplete__list">
             {filtered.map((suggestion) => {
-              return games ? (
-                games
-                  .filter(({ name }) => suggestion === name)
-                  .map((game) => (
-                    <div
-                      className="autocomplete__list-item"
-                      key={game.id}
-                      onClick={() => onGameClick(game.name)}
-                    >
-                      <Card search {...game} />
-                    </div>
-                  ))
+              return children ? (
+                <div key={suggestion} onClick={() => onGameClick(suggestion)}>
+                  {Children.toArray(children).filter(
+                    (child: any, index) => child.props.name === suggestion,
+                  )}
+                </div>
               ) : (
                 <li className="autocomplete__list-item" key={suggestion} onClick={onClick}>
                   {suggestion}
@@ -94,7 +85,7 @@ export const Autocomplete: React.FC<IAutocomplete> = ({
       );
     }
     return <></>;
-  }, [filtered, isShow, value, onClick, games, onGameClick]);
+  }, [filtered, isShow, value, children, onClick, onGameClick]);
 
   return (
     <div className="autocomplete">

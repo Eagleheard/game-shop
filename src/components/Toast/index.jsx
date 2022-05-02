@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import classNames from 'classnames';
 
 import error from 'assets/error.png';
@@ -10,18 +10,17 @@ const toastTimeout = 3000;
 
 const useToast = () => {
   const [message, setMessage] = useState('Something wrong');
-  const [isToastVisible, setIsToastVisible] = useState(false);
   const [toastType, setToastType] = useState('success');
+  const [isToastVisible, setIsToastVisible] = useState(false);
 
-  const openToast = useCallback((message, toastType) => {
+  const openToast = (message, toastType) => {
     setMessage(message);
     setToastType(toastType);
     setIsToastVisible(true);
     setTimeout(() => {
       setIsToastVisible(false);
     }, toastTimeout);
-  }, []);
-
+  };
   const ToastComponent = () => (
     <div
       className={classNames('snackbar', {
