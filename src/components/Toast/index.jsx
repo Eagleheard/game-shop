@@ -1,8 +1,8 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import classNames from 'classnames';
 
-import error from 'assets/error.png';
-import success from 'assets/success.png';
+import error from 'assets/error.svg';
+import success from 'assets/success.svg';
 
 import './styles.scss';
 import { useToast } from 'hooks';
