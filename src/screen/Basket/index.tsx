@@ -2,7 +2,9 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useForm } from 'react-hook-form';
 
-import useToast from 'components/Toast';
+import { ToastOptions } from 'types/enumerators';
+import { ToastComponent } from 'components/Toast';
+import { useToast } from 'hooks';
 import { createOrder } from 'api/fetchOrders';
 import { cartSelector } from 'store/cart/selectors';
 import { CartState } from 'store/cart/types';
@@ -20,7 +22,7 @@ export const Basket = () => {
   const discount = useSelector(cartSelector.cartDiscount);
   const dispatch = useDispatch();
   const discountedPrice = useMemo(() => totalPrice - totalPrice * discount, [totalPrice, discount]);
-  const { openToast, ToastComponent } = useToast();
+  const { openToast } = useToast();
 
   const {
     register,
@@ -32,13 +34,13 @@ export const Basket = () => {
   const fillOrder = async (params: IOrder) => {
     try {
       await createOrder(params);
-      openToast('Successfully buyed', 'success');
+      openToast('Successfully buyed', ToastOptions.success);
     } catch ({
       response: {
         data: { message },
       },
     }) {
-      openToast(String(message), 'error');
+      openToast(String(message), ToastOptions.error);
     }
   };
 
@@ -52,7 +54,7 @@ export const Basket = () => {
     dispatch(getCartRequest());
     dispatch(getDiscountRequest());
     if (cartError && !isLoading) {
-      openToast(cartError, 'error');
+      openToast(cartError, ToastOptions.error);
     }
     socket.connect();
     socket.on('clearedCart', () => {

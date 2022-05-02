@@ -1,5 +1,7 @@
 import React, { Children, useCallback, useEffect, useMemo, useState } from 'react';
 
+import { Card } from 'screen';
+
 import './style.scss';
 
 interface IAutocomplete {
@@ -63,9 +65,13 @@ export const Autocomplete: React.FC<IAutocomplete> = ({
           <ul className="autocomplete__list">
             {filtered.map((suggestion) => {
               return children ? (
-                <div key={suggestion} onClick={() => onGameClick(suggestion)}>
+                <div
+                  className="autocomplete__list-item"
+                  key={suggestion}
+                  onClick={() => onGameClick(suggestion)}
+                >
                   {Children.toArray(children).filter(
-                    (child: any, index) => child.props.name === suggestion,
+                    (children: Card) => children.props.name === suggestion,
                   )}
                 </div>
               ) : (

@@ -2,8 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
+import { ToastOptions } from 'types/enumerators';
+import { ToastComponent } from 'components/Toast';
+import { useToast } from 'hooks';
 import { CartState } from 'store/cart/types';
-import useToast from 'components/Toast';
 import { Button } from 'components';
 import { addGameRequest } from 'store/cart/actions';
 
@@ -41,19 +43,19 @@ export const GamePage: React.FC<IGamePage> = ({
   const history = useNavigate();
   const dispatch = useDispatch();
   const [buyingCount, setBuyingCount] = useState(1);
-  const { openToast, ToastComponent } = useToast();
-  const { gameError, isLoading, cart } = useSelector((state: CartState) => state.cartReducer || []);
+  const { openToast } = useToast();
+  const { gameError, isLoading } = useSelector((state: CartState) => state.cartReducer || []);
 
   const handleBuy = () => {
     dispatch(addGameRequest(id, buyingCount));
+    if (!gameError && !isLoading) {
+      return openToast('Successfully added to cart', ToastOptions.success);
+    }
   };
 
   useEffect(() => {
-    if (!gameError && !isLoading && cart.find(({ gameId }) => id === gameId)) {
-      return openToast('Successfully added to cart', 'success');
-    }
     if (gameError && !isLoading) {
-      return openToast('Game already in cart', 'error');
+      return openToast('Something wrong', ToastOptions.error);
     }
   }, [gameError, isLoading]);
 

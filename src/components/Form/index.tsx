@@ -2,7 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { fetchGenres } from 'api/fetchGenres';
 
-import useToast from 'components/Toast';
+import { ToastComponent } from 'components/Toast';
+import { ToastOptions } from 'types/enumerators';
+import { useToast } from 'hooks';
 import { Autocomplete, Checkbox, Select, Button } from 'components';
 import { IGame, IParams } from 'types/interfaces';
 
@@ -21,7 +23,7 @@ interface IGenre {
 export const Form: React.FC<IForm> = ({ games, fillGames }) => {
   const [isDiskChecked, setIsDiskChecked] = useState<boolean>(false);
   const [genres, setGenres] = useState<IGenre[]>([]);
-  const { openToast, ToastComponent } = useToast();
+  const { openToast } = useToast();
 
   const {
     register,
@@ -37,7 +39,7 @@ export const Form: React.FC<IForm> = ({ games, fillGames }) => {
       const { data } = await fetchGenres();
       setGenres(data);
     } catch (e) {
-      openToast(e, 'error');
+      openToast(e, ToastOptions.error);
     }
   };
 

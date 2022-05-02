@@ -5,23 +5,11 @@ import error from 'assets/error.png';
 import success from 'assets/success.png';
 
 import './styles.scss';
+import { useToast } from 'hooks';
 
-const toastTimeout = 3000;
-
-const useToast = () => {
-  const [message, setMessage] = useState('Something wrong');
-  const [toastType, setToastType] = useState('success');
-  const [isToastVisible, setIsToastVisible] = useState(false);
-
-  const openToast = (message, toastType) => {
-    setMessage(message);
-    setToastType(toastType);
-    setIsToastVisible(true);
-    setTimeout(() => {
-      setIsToastVisible(false);
-    }, toastTimeout);
-  };
-  const ToastComponent = () => (
+export const ToastComponent = () => {
+  const { isToastVisible, toastType, message } = useToast();
+  return (
     <div
       className={classNames('snackbar', {
         snackbar__show: isToastVisible,
@@ -35,7 +23,4 @@ const useToast = () => {
       </div>
     </div>
   );
-  return { openToast, ToastComponent };
 };
-
-export default useToast;

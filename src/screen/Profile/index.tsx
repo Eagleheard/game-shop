@@ -1,13 +1,15 @@
 import React, { ChangeEvent, useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
+import { useToast } from 'hooks';
 import { fetchUserInfo, uploadUserPhoto } from 'api/fetchUser';
 import { fetchOrders } from 'api/fetchOrders';
 import { fetchAchievement } from 'api/fetchAchievements';
 import { Card } from 'screen';
 import { Achievements, Button, Select } from 'components';
 import { IAchievement, IOrder, IUser } from 'types/interfaces';
-import useToast from 'components/Toast';
+import { ToastOptions } from 'types/enumerators';
+import { ToastComponent } from 'components/Toast';
 
 import userImg from 'assets/userPhoto.png';
 
@@ -43,7 +45,7 @@ export const Profile = () => {
   const [params, setParams] = useState<IParams>({ order: 'Newest' });
   const [isAchievementsVisible, setIsAchievementsVisible] = useState(true);
   const [isOrdersVisible, setOrdersVisible] = useState(false);
-  const { openToast, ToastComponent } = useToast();
+  const { openToast } = useToast();
 
   const fetchUser = useCallback(async () => {
     try {
@@ -54,7 +56,7 @@ export const Profile = () => {
         data: { message },
       },
     }) {
-      openToast(String(message), 'error');
+      openToast(String(message), ToastOptions.error);
     }
   }, [id]);
 
@@ -67,7 +69,7 @@ export const Profile = () => {
         data: { message },
       },
     }) {
-      openToast(String(message), 'error');
+      openToast(String(message), ToastOptions.error);
     }
   };
 
@@ -80,7 +82,7 @@ export const Profile = () => {
         data: { message },
       },
     }) {
-      openToast(String(message), 'error');
+      openToast(String(message), ToastOptions.error);
     }
   }, []);
 

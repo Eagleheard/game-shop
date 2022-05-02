@@ -1,16 +1,19 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { socket } from 'config';
 
 import { IGame } from 'types/interfaces';
 import { GamePage } from '.';
 import { fetchGame } from 'api/fetchGame';
-import useToast from 'components/Toast';
+import { useToast } from 'hooks';
+import { ToastComponent } from 'components/Toast';
+import { ToastOptions } from 'types/enumerators';
 
 export const GamePageContainer = () => {
   const { id } = useParams<string>();
   const [gameInfo, setGameInfo] = useState<IGame>();
-  const { openToast, ToastComponent } = useToast();
+  const { openToast } = useToast();
+  const navigate = useNavigate();
 
   const fetchGameInfo = useCallback(async () => {
     try {
@@ -21,7 +24,8 @@ export const GamePageContainer = () => {
         data: { message },
       },
     }) {
-      openToast(String(message), 'error');
+      openToast(String(message), ToastOptions.error);
+      navigate('/');
     }
   }, [id, openToast]);
 
@@ -34,7 +38,7 @@ export const GamePageContainer = () => {
     return () => {
       socket.disconnect();
     };
-  }, []);
+  }, [id]);
 
-  return gameInfo ? <GamePage {...gameInfo} /> : <p>loadi</p>;
+  return gameInfo ? <GamePage {...gameInfo} /> : <ToastComponent />;
 };

@@ -3,9 +3,10 @@ import { useParams } from 'react-router-dom';
 import { fetchGameByAuthor } from 'api/fetchGameByAuthor';
 import { fetchAuthor } from 'api/fetchAuthor';
 
+import { ToastOptions } from 'types/enumerators';
 import { IAuthor, IGame } from 'types/interfaces';
 import { Author } from '.';
-import useToast from 'components/Toast';
+import { useToast } from 'hooks';
 
 export const AuthorContainer = () => {
   const { id } = useParams<string>();
@@ -23,7 +24,7 @@ export const AuthorContainer = () => {
         data: { message },
       },
     }) {
-      openToast(String(message), 'error');
+      openToast(String(message), ToastOptions.error);
     }
   }, [id]);
 

@@ -57,15 +57,6 @@
     width: 120px;
   }
 
-  .autocomplete {
-    width: 25%;
-    margin-bottom: 10px;
-
-    &__input {
-      border-radius: 5px;
-    }
-  }
-
   @include media-table-large {
     flex-direction: row;
     align-items: center;

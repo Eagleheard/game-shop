@@ -63,4 +63,18 @@
             opacity: 0;
         }
     }
+
+    @include media-table-large {
+        width: 95%;
+        right: 25px;
+        align-self: center;
+    }
+
+    @include media-mobile-large {
+        right: 18px;
+    }
+
+    @include media-mobile-small {
+        right: 10px;
+    }
 }

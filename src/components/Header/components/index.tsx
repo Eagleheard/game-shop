@@ -1,13 +1,15 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 
+import { ToastOptions } from 'types/enumerators';
+import { useToast } from 'hooks';
+import { ToastComponent } from 'components/Toast';
 import { fetchGames } from 'api/fetchGames';
 import { ResponsiveHeader } from './responsive';
 import { SignIn, SignUp, Portal, Select, Autocomplete, Search } from 'components';
 import { authorization, logout } from 'api/authorization';
 import { useAuth } from 'hooks/useAuth';
 import { IGame } from 'types/interfaces';
-import useToast from 'components/Toast';
 
 import logo from 'assets/logo.png';
 import menu from 'assets/menu.png';
@@ -26,7 +28,7 @@ export const Header = () => {
   const [isSignInVisible, setIsSignInVisible] = useState<boolean>(false);
   const [isSignUpVisible, setIsSignUpVisible] = useState<boolean>(false);
   const [games, setGames] = useState<IGame[]>([]);
-  const { openToast, ToastComponent } = useToast();
+  const { openToast } = useToast();
 
   const navigate = useNavigate();
 
@@ -52,13 +54,12 @@ export const Header = () => {
         data: { message },
       },
     }) {
-      openToast(String(message), 'error');
+      openToast(String(message), ToastOptions.error);
     }
   }, []);
 
   const onChangeSearch = (value: string) => {
     const game = games.find(({ name }) => name === value);
-    console.log(value);
     navigate(`/game/${game?.id}`);
   };
 
@@ -87,7 +88,7 @@ export const Header = () => {
       },
     }) {
       if (message !== 'Need authorization') {
-        openToast(String(message), 'error');
+        openToast(String(message), ToastOptions.error);
       }
     }
   };

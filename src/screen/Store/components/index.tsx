@@ -1,12 +1,13 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { fetchGames } from 'api/fetchGames';
 
-import useToast from 'components/Toast';
+import { ToastComponent } from 'components/Toast';
+import { ToastOptions } from 'types/enumerators';
 import { Card } from 'screen';
 import { Pagination, Select, ResponsiveFilter } from 'components';
 import { Filter } from 'components/Filter';
 import { IGame } from 'types/interfaces';
-import { usePagination } from 'hooks';
+import { usePagination, useToast } from 'hooks';
 
 import filter from 'assets/filter.png';
 
@@ -31,7 +32,7 @@ export const Store = () => {
   const [isFilterVisible, setIsFilterVisible] = useState<boolean>(false);
   const { goToNextPage, goToPreviousPage, changePage, currentPage, page } =
     usePagination(DATA_LIMIT);
-  const { openToast, ToastComponent } = useToast();
+  const { openToast } = useToast();
 
   const fillGames = useCallback(
     async (params?: IParams) => {
@@ -39,7 +40,7 @@ export const Store = () => {
         const { data } = await fetchGames(currentPage, DATA_LIMIT, { params });
         setGames(data.rows);
       } catch ({ response: { data } }) {
-        openToast(String(data), 'error');
+        openToast(String(data), ToastOptions.error);
       }
     },
     [currentPage],
