@@ -60,6 +60,7 @@ export interface IUser {
   lastName?: string;
   password?: string;
   photo?: string;
+  role?: string;
 }
 
 export interface IAchievement {

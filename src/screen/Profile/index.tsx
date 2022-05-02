@@ -1,5 +1,5 @@
 import React, { ChangeEvent, useCallback, useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import { fetchUserInfo, uploadUserPhoto } from 'api/fetchUser';
 import { fetchOrders } from 'api/fetchOrders';
@@ -42,6 +42,7 @@ export const Profile = () => {
   const [params, setParams] = useState<IParams>({ order: 'Newest' });
   const [isAchievementsVisible, setIsAchievementsVisible] = useState(true);
   const [isOrdersVisible, setOrdersVisible] = useState(false);
+  const navigate = useNavigate();
 
   const fetchUser = useCallback(async () => {
     try {
@@ -126,6 +127,9 @@ export const Profile = () => {
           disabled={isAchievementsVisible}
         />
         <Button text="Orders" onClick={handleSwitch} style="profile" disabled={isOrdersVisible} />
+        {userInfo.role === 'ADMIN' && (
+          <Button text="Admin panel" onClick={() => navigate('/admin')} style="profile" />
+        )}
       </ProfileNavigation>
       {!isLoading && (
         <ProfileContainer>
