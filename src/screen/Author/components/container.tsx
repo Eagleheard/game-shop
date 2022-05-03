@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { fetchGameByAuthor } from 'api/fetchGameByAuthor';
 import { fetchAuthor } from 'api/fetchAuthor';
 
@@ -7,13 +7,15 @@ import { ToastOptions } from 'types/enumerators';
 import { IAuthor, IGame } from 'types/interfaces';
 import { Author } from '.';
 import { useToast } from 'hooks';
+import { ToastComponent } from 'components/Toast';
 
 export const AuthorContainer = () => {
   const { id } = useParams<string>();
   const [authorInfo, setAuthorInfo] = useState<IAuthor>();
   const [authorGames, setAuthorGames] = useState<IGame[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const { openToast, ToastComponent } = useToast();
+  const { openToast } = useToast();
+  const navigate = useNavigate();
 
   const searchAuthor = useCallback(async () => {
     try {
@@ -25,6 +27,7 @@ export const AuthorContainer = () => {
       },
     }) {
       openToast(String(message), ToastOptions.error);
+      navigate('/');
     }
   }, [id]);
 
@@ -37,7 +40,7 @@ export const AuthorContainer = () => {
         data: { message },
       },
     }) {
-      openToast(String(message), 'error');
+      openToast(String(message), ToastOptions.error);
     }
   }, [id]);
 
@@ -49,8 +52,8 @@ export const AuthorContainer = () => {
   }, [searchAuthor, searchAuthorGames]);
 
   return !isLoading && authorInfo ? (
-    <Author {...authorInfo} authorGames={authorGames} {...ToastComponent} />
+    <Author {...authorInfo} authorGames={authorGames} />
   ) : (
-    <p>Loading</p>
+    <ToastComponent />
   );
 };

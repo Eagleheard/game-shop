@@ -1,11 +1,11 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React from 'react';
 import classNames from 'classnames';
 
+import { useToast } from 'hooks';
 import error from 'assets/error.svg';
 import success from 'assets/success.svg';
 
 import './styles.scss';
-import { useToast } from 'hooks';
 
 export const ToastComponent = () => {
   const { isToastVisible, toastType, message } = useToast();
