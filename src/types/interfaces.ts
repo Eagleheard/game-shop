@@ -22,6 +22,9 @@ export interface IGame {
   count: string;
   cart?: boolean;
   order?: boolean;
+  discount: {
+    discountCount: string;
+  };
 }
 
 export interface IAuthor {
@@ -85,4 +88,39 @@ export interface IOrder {
   quantity?: string;
   game?: IGame;
   formatedCreatedAt?: string;
+}
+
+export interface IOrderParams {
+  order?: string;
+}
+
+export interface INewGameParams {
+  id?: number;
+  name?: string;
+  price?: string;
+  count?: string;
+  image?: string;
+  authorName?: string;
+  genreName?: string;
+  disk?: boolean;
+  digital?: boolean;
+  popularity?: string;
+  isPreview?: boolean;
+  preview?: string;
+  isNew?: boolean;
+  description?: string;
+}
+
+export interface INewAuthorParams {
+  name?: string;
+  image?: string;
+  description?: string;
+  popularity?: string;
+  location?: string;
+}
+
+export interface IDiscountParams {
+  startDiscount?: string;
+  endDiscount?: string;
+  gameName?: string;
 }

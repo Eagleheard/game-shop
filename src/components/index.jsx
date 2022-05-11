@@ -13,3 +13,7 @@ export { SignIn } from 'components/Authorization';
 export { SignUp } from 'components/Authorization';
 export { Portal } from 'components/Portal';
 export { Achievements } from 'components/Achievements';
+export { NewGame } from 'components/NewGame';
+export { NewAuthor } from 'components/NewAuthor';
+export { Discount } from 'components/Discounts';
+export { GamesTable } from 'components/GamesTable';

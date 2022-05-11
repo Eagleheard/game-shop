@@ -12,12 +12,16 @@ import {
   CardAuthor,
   CardComponent,
   CardDescription,
+  CardDiscount,
   CardGenre,
   CardImg,
   CardLabel,
   CardMainInformation,
   CardNavLink,
   CardParagraph,
+  CardPaymentInformation,
+  CardPrice,
+  CardPriceInformation,
   CardQuantity,
   CardQuantityValue,
   OrderTotalPrice,
@@ -36,8 +40,12 @@ export const Card = ({
   count,
   cart,
   order,
+  discount,
 }: IGame) => {
   const dispatch = useDispatch();
+  const discountedPrice = discount
+    ? price - (price * parseInt(discount.discountCount)) / 100
+    : null;
   return (
     <CardComponent cart={cart} order={order}>
       <CardImg order={order} cart={cart} src={image} alt="logo"></CardImg>
@@ -87,7 +95,19 @@ export const Card = ({
               <img src={grey_cross} />
             </button>
           )}
-          {!purchaseDate && <CardLabel cart={cart}>Price: {price}$</CardLabel>}
+          <CardPaymentInformation>
+            {!purchaseDate && discount && (
+              <CardDiscount cart={cart}>-{discount.discountCount}%</CardDiscount>
+            )}
+            <CardPriceInformation>
+              {!purchaseDate && discount ? (
+                <CardPrice cart={cart}>{price}$</CardPrice>
+              ) : (
+                <CardLabel cart={cart}>{price}$</CardLabel>
+              )}
+              {!purchaseDate && discount && <CardLabel cart={cart}>{discountedPrice}$</CardLabel>}
+            </CardPriceInformation>
+          </CardPaymentInformation>
           {author && (
             <CardAuthor>
               <CardNavLink to={`/author/${author.id}`}>{author.name}</CardNavLink>

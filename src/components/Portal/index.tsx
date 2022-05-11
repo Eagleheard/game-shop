@@ -10,14 +10,15 @@ interface IPortal {
   isOpen: boolean;
   handleClose: () => void;
   text: string;
+  style?: string;
 }
 
-export const Portal: React.FC<IPortal> = ({ Component, isOpen, text, handleClose }) => {
+export const Portal: React.FC<IPortal> = ({ Component, isOpen, text, handleClose, style }) => {
   if (!isOpen) {
     return null;
   }
   return ReactDOM.createPortal(
-    <div className="portal">
+    <div className={`portal portal__${style}`}>
       <button className="portal__close-btn" onClick={handleClose}>
         <img src={grey_cross} />
       </button>

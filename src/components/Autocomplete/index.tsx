@@ -1,4 +1,6 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+
+import { useClickOutside } from 'hooks';
 
 import './style.scss';
 
@@ -6,13 +8,26 @@ interface IAutocomplete {
   options: string[];
   name: string;
   reset?: string;
+  style?: string;
   onChangeInput: (input: string) => void;
 }
 
-export const Autocomplete: React.FC<IAutocomplete> = ({ options, name, onChangeInput, reset }) => {
+export const Autocomplete: React.FC<IAutocomplete> = ({
+  options,
+  name,
+  onChangeInput,
+  reset,
+  style,
+}) => {
   const [isShow, setIsShow] = useState<boolean>(false);
   const [filtered, setFiltered] = useState<string[]>([]);
   const [value, setValue] = useState<string>('');
+  const autocompleteRef = useRef(null);
+  const outsideClick = () => {
+    setIsShow(false);
+  };
+
+  useClickOutside(autocompleteRef, outsideClick);
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const input = e.currentTarget.value;
@@ -44,7 +59,7 @@ export const Autocomplete: React.FC<IAutocomplete> = ({ options, name, onChangeI
     if (isShow && value) {
       if (filtered.length) {
         return (
-          <ul className="autocomplete__list">
+          <ul className={`autocomplete__list ${style}-autocomplete__list`}>
             {filtered.map((suggestion) => {
               return (
                 <li key={suggestion} onClick={onClick}>
@@ -57,20 +72,20 @@ export const Autocomplete: React.FC<IAutocomplete> = ({ options, name, onChangeI
       }
 
       return (
-        <ul className="autocomplete__list">
+        <ul className={`autocomplete__list ${style}-autocomplete__list`}>
           <li>Not found</li>
         </ul>
       );
     }
     return <></>;
-  }, [filtered, isShow, value, onClick]);
+  }, [filtered, isShow, value, style, onClick]);
 
   return (
-    <div className="autocomplete">
+    <div className={`autocomplete ${style}-autocomplete`} ref={autocompleteRef}>
       <input
         type="text"
         value={value}
-        className="autocomplete__input"
+        className={`autocomplete__input ${style}-autocomplete__input`}
         placeholder={name}
         onChange={onChange}
       />
