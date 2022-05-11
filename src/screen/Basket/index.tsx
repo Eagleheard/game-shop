@@ -11,10 +11,8 @@ import { cartSelector } from 'store/cart/selectors';
 import { CartState } from 'store/cart/types';
 import { socket } from 'config';
 import { IOrder } from 'types/interfaces';
-import { clearCart, getCartRequest, getDiscountRequest } from 'store/cart/actions';
-import { Button, Loader, Timer } from 'components';
 import { clearCartRequest, getCartRequest, getDiscountRequest } from 'store/cart/actions';
-import { Button } from 'components';
+import { Button, Loader, Timer } from 'components';
 import { Card } from 'screen';
 
 import './styles.scss';
@@ -150,7 +148,6 @@ export const Basket = () => {
                 <Button text="Buy now" type="submit" onClick={() => submitForm} style="search" />
               </div>
             </>
-          )}
           <div className="basket__order">
             <h3 className="basket__total-price">You will pay: {discountedPrice ?? 0}$</h3>
             <div className="basket__order-btn">
@@ -160,7 +157,6 @@ export const Basket = () => {
           </form>
           <ToastComponent />
         </div>
-      )}
     </div>
   );
 };
