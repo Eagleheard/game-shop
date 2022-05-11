@@ -2,7 +2,7 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 
 import {
-  addGame,
+  addGameRequest,
   decrementGameRequest,
   incrementGameRequest,
   removeGameRequest,
@@ -43,23 +43,19 @@ export const Card = ({
   count,
   cart,
   order,
+  search,
 }: IGame) => {
   const dispatch = useDispatch();
-  const { user } = useAuth();
+
   return (
-    <CardComponent cart={cart} order={order}>
-      {user && !purchaseDate && !quantity && (
-        <CardBuyButton>
-          <Button text="Buy now" onClick={() => dispatch(addGame(id, 1))} style="card-buy" />
-        </CardBuyButton>
-      )}
-      <CardImg order={order} cart={cart} src={image} alt="logo"></CardImg>
-      <CardDescription order={order} cart={cart}>
+    <CardComponent search={search} cart={cart} order={order}>
+      <CardImg search={search} order={order} cart={cart} src={image} alt="logo"></CardImg>
+      <CardDescription search={search} order={order} cart={cart}>
         <CardMainInformation order={order} cart={cart}>
           <CardLabel order={order} cart={cart}>
             <CardNavLink to={`/game/${id}`}>{name}</CardNavLink>
           </CardLabel>
-          {genre && <CardGenre>{genre.name}</CardGenre>}
+          {genre && <CardGenre search={search}>{genre.name}</CardGenre>}
           {purchaseDate && (
             <CardParagraph order={order} cart={cart}>
               Date of purchase: {purchaseDate}
@@ -102,7 +98,7 @@ export const Card = ({
           )}
           {!purchaseDate && <CardLabel cart={cart}>Price: {price}$</CardLabel>}
           {author && (
-            <CardAuthor>
+            <CardAuthor search={search}>
               <CardNavLink to={`/author/${author.id}`}>{author.name}</CardNavLink>
             </CardAuthor>
           )}

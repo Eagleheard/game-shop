@@ -1,10 +1,14 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { useAuth } from 'hooks/useAuth';
 import { Button, Portal, SignIn } from 'components';
-import { addGame } from 'store/cart/actions';
+import { addGameRequest } from 'store/cart/actions';
+import { ToastOptions } from 'types/enumerators';
+import { ToastComponent } from 'components/Toast';
+import { useToast } from 'hooks';
+import { CartState } from 'store/cart/types';
 
 import './PageStyles.scss';
 
@@ -58,10 +62,21 @@ export const GamePage: React.FC<IGamePage> = ({
     }
   };
 
-  const buyGame = () => {
-    dispatch(addGame(id, buyingCount));
-    setIsGameBuyed(true);
+  const { openToast } = useToast();
+  const { gameError, isLoading } = useSelector((state: CartState) => state.cartReducer || []);
+
+  const handleBuy = () => {
+    dispatch(addGameRequest(id, buyingCount));
+    if (!gameError && !isLoading) {
+      return openToast('Successfully added to cart', ToastOptions.success);
+    }
   };
+
+  useEffect(() => {
+    if (gameError && !isLoading) {
+      return openToast('Something wrong', ToastOptions.error);
+    }
+  }, [gameError, isLoading]);
 
   return (
     <div className="game">
@@ -104,7 +119,7 @@ export const GamePage: React.FC<IGamePage> = ({
             <div className="game__buying">
               {user ? (
                 !isGameBuyed ? (
-                  <Button text="Buy now" onClick={buyGame} style="buy" />
+                  <Button text="Buy now" onClick={handleBuy} style="buy" />
                 ) : (
                   <Button
                     text="Go to cart"

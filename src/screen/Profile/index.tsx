@@ -1,12 +1,15 @@
 import React, { ChangeEvent, useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
+import { useToast } from 'hooks';
 import { fetchUserInfo, uploadUserPhoto } from 'api/fetchUser';
 import { fetchOrders } from 'api/fetchOrders';
 import { fetchAchievement } from 'api/fetchAchievements';
 import { Card } from 'screen';
 import { Achievements, Button, Loader, Select } from 'components';
 import { IAchievement, IOrder, IUser } from 'types/interfaces';
+import { ToastOptions } from 'types/enumerators';
+import { ToastComponent } from 'components/Toast';
 
 import userImg from 'assets/userPhoto.png';
 
@@ -44,13 +47,18 @@ export const Profile = () => {
   const [params, setParams] = useState<IParams>({ order: 'Newest' });
   const [isAchievementsVisible, setIsAchievementsVisible] = useState(true);
   const [isOrdersVisible, setOrdersVisible] = useState(false);
+  const { openToast } = useToast();
 
   const fetchUser = useCallback(async () => {
     try {
       const { data } = await fetchUserInfo(id);
       setUserInfo(data);
-    } catch (e) {
-      console.log(e);
+    } catch ({
+      response: {
+        data: { message },
+      },
+    }) {
+      openToast(String(message), ToastOptions.error);
     }
   }, [id]);
 
@@ -58,8 +66,12 @@ export const Profile = () => {
     try {
       const { data } = await fetchAchievement();
       setAchievements(data);
-    } catch (e) {
-      console.log(e);
+    } catch ({
+      response: {
+        data: { message },
+      },
+    }) {
+      openToast(String(message), ToastOptions.error);
     }
   };
 
@@ -67,8 +79,12 @@ export const Profile = () => {
     try {
       const { data } = await fetchOrders({ params });
       setOrders(data);
-    } catch (e) {
-      console.log(e);
+    } catch ({
+      response: {
+        data: { message },
+      },
+    }) {
+      openToast(String(message), ToastOptions.error);
     }
   }, []);
 
@@ -106,9 +122,12 @@ export const Profile = () => {
       setIsPhotoLoading(true);
       const { data } = await uploadUserPhoto(formData, id);
       setUserInfo(data);
-      setIsPhotoLoading(false);
-    } catch (e) {
-      console.log(e);
+    } catch ({
+      response: {
+        data: { message },
+      },
+    }) {
+      openToast(String(message), 'error');
     }
   };
 
@@ -200,6 +219,7 @@ export const Profile = () => {
           </ProfileContent>
         </ProfileContainer>
       )}
+      <ToastComponent />
     </ProfileComponent>
   );
 };

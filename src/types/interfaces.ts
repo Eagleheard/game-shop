@@ -22,6 +22,7 @@ export interface IGame {
   count: string;
   cart?: boolean;
   order?: boolean;
+  search?: boolean;
 }
 
 export interface IAuthor {
