@@ -7,6 +7,7 @@ export const ProfileComponent = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  width: 100%;
 `;
 
 export const ProfileContainer = styled.div`
@@ -15,6 +16,7 @@ export const ProfileContainer = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-around;
+  overflow: auto;
   padding: 20px 0;
   box-shadow: 0 0 10px black;
 
@@ -26,7 +28,7 @@ export const ProfileContainer = styled.div`
     width: 90%;
     flex-direction: column;
     align-items: center;
-    height: 100vh;
+    height: 100%;
   }
 `;
 
@@ -116,6 +118,12 @@ export const ProfileEmail = styled.p`
 
 export const ProfileLabel = styled.h1`
   margin-left: 20px;
+  padding: 0 5px;
+
+  @media (max-width: 768px) {
+    margin-top: 20px;
+    padding: 0 10px;
+  }
 `;
 
 export const ProfileUploadPhoto = styled.label`
