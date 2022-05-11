@@ -68,6 +68,7 @@ export const GamePage: React.FC<IGamePage> = ({
   const handleBuy = () => {
     dispatch(addGameRequest(id, buyingCount));
     if (!gameError && !isLoading) {
+      setIsGameBuyed(true);
       return openToast('Successfully added to cart', ToastOptions.success);
     }
   };

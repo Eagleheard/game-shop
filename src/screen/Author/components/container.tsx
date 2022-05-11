@@ -8,7 +8,6 @@ import { IAuthor, IGame } from 'types/interfaces';
 import { Author } from '.';
 import { Loader } from 'components';
 import { useToast } from 'hooks';
-import { ToastComponent } from 'components/Toast';
 
 export const AuthorContainer = () => {
   const { id } = useParams<string>();

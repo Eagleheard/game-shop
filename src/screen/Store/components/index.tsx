@@ -30,9 +30,8 @@ interface IParams {
 
 export const Store = () => {
   const [games, setGames] = useState<IGame[]>([]);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [params, setParams] = useState<IParams>();
-  const [errorMessage, setErrorMessage] = useState('');
+  const [error, setError] = useState('');
   const [isFilterVisible, setIsFilterVisible] = useState<boolean>(false);
   const { goToNextPage, goToPreviousPage, changePage, currentPage, page } =
     usePagination(DATA_LIMIT);
@@ -43,6 +42,10 @@ export const Store = () => {
       try {
         const { data } = await fetchGames(currentPage, DATA_LIMIT, { params });
         setGames(data.rows);
+        setError('');
+        if (data.count === 0) {
+          setError('Games not found');
+        }
       } catch ({ response: { data } }) {
         openToast(String(data), ToastOptions.error);
       }
@@ -83,9 +86,7 @@ export const Store = () => {
   };
 
   useEffect(() => {
-    setIsLoading(true);
     fillGames(params);
-    setIsLoading(false);
   }, [currentPage, params, fillGames]);
 
   return (
@@ -123,10 +124,10 @@ export const Store = () => {
             />
           </div>
         </div>
-        {errorMessage ? (
-          <p className="store__error">{errorMessage}</p>
-        ) : isLoading || !games.length ? (
+        {!games.length && !error ? (
           <Loader />
+        ) : error ? (
+          <h1 className="store__error">{error}</h1>
         ) : (
           <Pagination
             RenderComponent={Card}

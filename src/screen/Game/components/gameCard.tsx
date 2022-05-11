@@ -47,8 +47,15 @@ export const Card = ({
 }: IGame) => {
   const dispatch = useDispatch();
 
+  const { user } = useAuth();
+
   return (
     <CardComponent search={search} cart={cart} order={order}>
+      {user && !purchaseDate && !quantity && (
+        <CardBuyButton>
+          <Button text="Buy now" onClick={() => dispatch(addGameRequest(id, 1))} style="card-buy" />
+        </CardBuyButton>
+      )}
       <CardImg search={search} order={order} cart={cart} src={image} alt="logo"></CardImg>
       <CardDescription search={search} order={order} cart={cart}>
         <CardMainInformation order={order} cart={cart}>

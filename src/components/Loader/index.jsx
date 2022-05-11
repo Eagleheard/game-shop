@@ -2,6 +2,12 @@ import React from 'react';
 
 import loader from 'assets/loader.svg';
 
+import './styles.scss';
+
 export const Loader = () => {
-  return <img className="loader" src={loader} />;
+  return (
+    <div className="loader">
+      <img className="loader__image" src={loader} />
+    </div>
+  );
 };

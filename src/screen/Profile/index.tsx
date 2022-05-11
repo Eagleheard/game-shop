@@ -122,6 +122,7 @@ export const Profile = () => {
       setIsPhotoLoading(true);
       const { data } = await uploadUserPhoto(formData, id);
       setUserInfo(data);
+      setIsPhotoLoading(false);
     } catch ({
       response: {
         data: { message },
@@ -209,7 +210,7 @@ export const Profile = () => {
                           />
                         ))
                       ) : (
-                        <p>Loading</p>
+                        <Loader />
                       )}
                     </ProfileOrders>
                   </>
