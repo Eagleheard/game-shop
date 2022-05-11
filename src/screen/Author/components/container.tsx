@@ -13,7 +13,6 @@ export const AuthorContainer = () => {
   const { id } = useParams<string>();
   const [authorInfo, setAuthorInfo] = useState<IAuthor>();
   const [authorGames, setAuthorGames] = useState<IGame[]>([]);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
   const { openToast } = useToast();
   const navigate = useNavigate();
 
@@ -45,13 +44,11 @@ export const AuthorContainer = () => {
   }, [id]);
 
   useEffect(() => {
-    setIsLoading(true);
     searchAuthor();
     searchAuthorGames();
-    setIsLoading(false);
   }, [searchAuthor, searchAuthorGames]);
 
-  return isLoading || !authorInfo || !authorGames ? (
+  return !authorInfo || !authorGames ? (
     <Loader />
   ) : (
     <Author {...authorInfo} authorGames={authorGames} />

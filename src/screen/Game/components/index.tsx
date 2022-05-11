@@ -6,7 +6,6 @@ import { useAuth } from 'hooks/useAuth';
 import { Button, Portal, SignIn } from 'components';
 import { addGameRequest } from 'store/cart/actions';
 import { ToastOptions } from 'types/enumerators';
-import { ToastComponent } from 'components/Toast';
 import { useToast } from 'hooks';
 import { CartState } from 'store/cart/types';
 
