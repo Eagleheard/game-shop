@@ -1,37 +1,44 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { socket } from 'config';
 
 import { IGame } from 'types/interfaces';
 import { GamePage } from '.';
 import { fetchGame } from 'api/fetchGame';
+import { useToast } from 'hooks';
+import { ToastComponent } from 'components/Toast';
+import { ToastOptions } from 'types/enumerators';
 
 export const GamePageContainer = () => {
   const { id } = useParams<string>();
   const [gameInfo, setGameInfo] = useState<IGame>();
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const { openToast } = useToast();
+  const navigate = useNavigate();
 
   const fetchGameInfo = useCallback(async () => {
     try {
       const { data } = await fetchGame(id);
       setGameInfo(data);
-    } catch (e) {
-      console.log(e);
+    } catch ({
+      response: {
+        data: { message },
+      },
+    }) {
+      openToast(String(message), ToastOptions.error);
+      navigate('/');
     }
-  }, [id]);
+  }, [id, openToast]);
 
   useEffect(() => {
-    setIsLoading(true);
     fetchGameInfo();
     socket.connect();
     socket.on('newGameInfo', (data) => {
       setGameInfo(data);
     });
-    setIsLoading(false);
     return () => {
       socket.disconnect();
     };
-  }, [gameInfo, fetchGameInfo]);
+  }, [id]);
 
-  return isLoading ? <p>Loading...</p> : <GamePage {...gameInfo} />;
+  return gameInfo ? <GamePage {...gameInfo} /> : <ToastComponent />;
 };

@@ -1,9 +1,13 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
+import { ToastOptions } from 'types/enumerators';
+import { ToastComponent } from 'components/Toast';
+import { useToast } from 'hooks';
+import { CartState } from 'store/cart/types';
 import { Button } from 'components';
-import { addGame } from 'store/cart/actions';
+import { addGameRequest } from 'store/cart/actions';
 
 import './PageStyles.scss';
 
@@ -39,6 +43,21 @@ export const GamePage: React.FC<IGamePage> = ({
   const history = useNavigate();
   const dispatch = useDispatch();
   const [buyingCount, setBuyingCount] = useState(1);
+  const { openToast } = useToast();
+  const { gameError, isLoading } = useSelector((state: CartState) => state.cartReducer || []);
+
+  const handleBuy = () => {
+    dispatch(addGameRequest(id, buyingCount));
+    if (!gameError && !isLoading) {
+      return openToast('Successfully added to cart', ToastOptions.success);
+    }
+  };
+
+  useEffect(() => {
+    if (gameError && !isLoading) {
+      return openToast('Something wrong', ToastOptions.error);
+    }
+  }, [gameError, isLoading]);
 
   return (
     <div className="game">
@@ -79,11 +98,7 @@ export const GamePage: React.FC<IGamePage> = ({
               )}
             </div>
             <div className="game__buying">
-              <Button
-                text="Buy now"
-                onClick={() => dispatch(addGame(id, buyingCount))}
-                style="buy"
-              />
+              <Button text="Buy now" onClick={handleBuy} style="buy" />
               <p className="game__price">Price: {price}$</p>
             </div>
           </div>
@@ -93,6 +108,7 @@ export const GamePage: React.FC<IGamePage> = ({
           <p className="description__text">{description}</p>
         </div>
       </div>
+      <ToastComponent />
     </div>
   );
 };

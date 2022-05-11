@@ -1,8 +1,10 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { fetchGames } from 'api/fetchGames';
 
+import { ToastOptions } from 'types/enumerators';
+import { ToastComponent } from 'components/Toast';
 import { Card } from 'screen';
-import { usePagination } from 'hooks';
+import { usePagination, useToast } from 'hooks';
 import { Pagination, Select, Preview } from 'components';
 import { IGame } from 'types/interfaces';
 
@@ -29,14 +31,15 @@ export const Home = () => {
     DATA_LIMIT,
     params,
   );
+  const { openToast } = useToast();
 
   const fillGames = useCallback(
     async (params?: IParams) => {
       try {
         const { data } = await fetchGames(currentPage, DATA_LIMIT, { params });
         setGames(data.rows);
-      } catch (e) {
-        console.log(e);
+      } catch ({ response: { data } }) {
+        openToast(String(data), ToastOptions.error);
       }
     },
     [currentPage],
@@ -93,6 +96,7 @@ export const Home = () => {
           />
         )}
       </div>
+      <ToastComponent />
     </div>
   );
 };

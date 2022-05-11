@@ -1,14 +1,21 @@
 import {
   GET_CART_SUCCESS,
-  CLEAR_CART,
   CartActionTypes,
   REMOVE_GAME_SUCCESS,
+  REMOVE_GAME_FAILURE,
   CHANGE_QUANTITY_SUCCESS,
+  CHANGE_QUANTITY_FAILURE,
   GET_CART_FAILURE,
   GET_CART_REQUEST,
   GET_DISCOUNT_REQUEST,
   GET_DISCOUNT_SUCCESS,
   GET_DISCOUNT_FAILURE,
+  ADD_GAME_FAILURE,
+  ADD_GAME_REQUEST,
+  ADD_GAME_SUCCESS,
+  CLEAR_CART_REQUEST,
+  CLEAR_CART_SUCCESS,
+  CLEAR_CART_FAILURE,
 } from 'store/cart/types';
 
 const initialState = {
@@ -27,21 +34,52 @@ const initialState = {
       },
     },
   ],
+  isLoading: null,
+  cartError: null,
+  gameError: null,
   achievements: [],
-  isLoading: false,
-  error: '',
 };
+
 export function cartReducer(state = initialState, { type, payload }: CartActionTypes) {
   switch (type) {
+    case ADD_GAME_FAILURE:
+      return {
+        ...state,
+        gameError: payload.error,
+        isLoading: false,
+      };
+    case ADD_GAME_REQUEST:
+      return {
+        ...state,
+        isLoading: true,
+      };
+    case ADD_GAME_SUCCESS:
+      return {
+        ...state,
+        cart: [payload],
+        isLoading: false,
+      };
     case CHANGE_QUANTITY_SUCCESS:
       return {
         ...state,
         cart: state.cart.map((game) => (game.gameId === payload.gameId ? payload : game)),
       };
+    case CHANGE_QUANTITY_FAILURE:
+      return {
+        ...state,
+        cartError: payload.error,
+        isLoading: false,
+      };
     case REMOVE_GAME_SUCCESS:
       return {
         ...state,
         cart: state.cart.filter(({ gameId }) => gameId !== payload.gameId),
+      };
+    case REMOVE_GAME_FAILURE:
+      return {
+        ...state,
+        cartError: payload.error,
+        isLoading: false,
       };
     case GET_DISCOUNT_REQUEST:
       return {
@@ -57,7 +95,7 @@ export function cartReducer(state = initialState, { type, payload }: CartActionT
     case GET_DISCOUNT_FAILURE:
       return {
         ...state,
-        error: payload,
+        cartError: payload.error,
         isLoading: false,
       };
     case GET_CART_SUCCESS:
@@ -74,13 +112,24 @@ export function cartReducer(state = initialState, { type, payload }: CartActionT
     case GET_CART_FAILURE:
       return {
         ...state,
-        error: payload,
+        cartError: payload.error,
         isLoading: false,
       };
-    case CLEAR_CART:
+    case CLEAR_CART_REQUEST:
+      return {
+        ...state,
+      };
+    case CLEAR_CART_SUCCESS:
       return {
         ...state,
         cart: [],
+        isLoading: false,
+      };
+    case CLEAR_CART_FAILURE:
+      return {
+        ...state,
+        cartError: payload.error,
+        isLoading: false,
       };
     default:
       return state;
