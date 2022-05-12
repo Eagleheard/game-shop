@@ -1,12 +1,20 @@
 import { AxiosRequestConfig } from 'axios';
 
 import { AdminPanelState } from 'toolkitStore/types';
-import { IDiscountParams, INewAuthorParams, INewGameParams, IOrderParams } from 'types/interfaces';
 import {
+  IDiscountParams,
+  INewAuthorParams,
+  INewGameParams,
+  IOrderParams,
+  IUserParams,
+} from 'types/interfaces';
+import {
+  blockUser,
   createDiscounts,
   createNewAuthor,
   createNewGame,
   getAllOrders,
+  getAllUsers,
   updateGame,
 } from 'api/adminRequests';
 import {
@@ -16,9 +24,15 @@ import {
   addNewAuthorRequest,
   addNewGameFailure,
   addNewGameRequest,
+  blockUserFailure,
+  blockUserRequest,
+  blockUserSuccess,
   getOrdersFailure,
   getOrdersRequest,
   getOrdersSuccess,
+  getUsersFailure,
+  getUsersRequest,
+  getUsersSuccess,
 } from 'toolkitStore/slices';
 
 export const fetchAllOrders = (params: AxiosRequestConfig<IOrderParams>) => {
@@ -29,6 +43,30 @@ export const fetchAllOrders = (params: AxiosRequestConfig<IOrderParams>) => {
       dispatch(getOrdersSuccess(data));
     } catch (error) {
       dispatch(getOrdersFailure(error));
+    }
+  };
+};
+
+export const fetchAllUsers = () => {
+  return async (dispatch: (arg0: { payload?: AdminPanelState; type: string }) => void) => {
+    dispatch(getUsersRequest());
+    try {
+      const { data } = await getAllUsers();
+      dispatch(getUsersSuccess(data));
+    } catch (error) {
+      dispatch(getUsersFailure(error));
+    }
+  };
+};
+
+export const blockCurrentUser = (params: AxiosRequestConfig<IUserParams>) => {
+  return async (dispatch: (arg0: { payload?: AdminPanelState; type: string }) => void) => {
+    dispatch(blockUserRequest());
+    try {
+      const { data } = await blockUser(params);
+      dispatch(blockUserSuccess(data));
+    } catch (error) {
+      dispatch(blockUserFailure(error));
     }
   };
 };

@@ -45,20 +45,28 @@ const initialState = {
       name: '',
     },
   },
-  newAuthor: [
-    {
-      name: '',
-      image: '',
-      location: '',
-      description: '',
-      popularity: 0,
-    },
-  ],
+  newAuthor: {
+    name: '',
+    image: '',
+    location: '',
+    description: '',
+    popularity: 0,
+  },
   discount: [
     {
       startDiscount: '',
       endDiscount: '',
       gameName: '',
+    },
+  ],
+  users: [
+    {
+      id: 0,
+      name: '',
+      lastName: '',
+      email: '',
+      photo: '',
+      blocked: false,
     },
   ],
   isLoading: false,
@@ -77,6 +85,30 @@ const adminPanelSlice = createSlice({
       state.isLoading = false;
     },
     getOrdersFailure: (state, { payload }) => {
+      state.isLoading = false;
+      state.error = payload;
+    },
+    getUsersRequest: (state) => {
+      state.isLoading = true;
+    },
+    getUsersSuccess: (state, { payload }) => {
+      state.users = payload;
+      state.isLoading = false;
+    },
+    getUsersFailure: (state, { payload }) => {
+      state.isLoading = false;
+      state.error = payload;
+    },
+    blockUserRequest: (state) => {
+      state.isLoading = true;
+    },
+    blockUserSuccess: (state, { payload }) => {
+      state.users
+        .filter((user) => user.id === payload.id)
+        .map((user) => user.blocked === payload.blocked);
+      state.isLoading = false;
+    },
+    blockUserFailure: (state, { payload }) => {
       state.isLoading = false;
       state.error = payload;
     },
@@ -142,6 +174,12 @@ export const {
   getOrdersRequest,
   getOrdersSuccess,
   getOrdersFailure,
+  getUsersRequest,
+  getUsersSuccess,
+  getUsersFailure,
+  blockUserRequest,
+  blockUserSuccess,
+  blockUserFailure,
   addNewGameRequest,
   addNewGameSuccess,
   addNewGameFailure,

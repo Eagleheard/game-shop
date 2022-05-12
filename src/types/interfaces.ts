@@ -14,7 +14,7 @@ export interface IGame {
   preview?: string;
   isPreview?: boolean;
   new?: boolean;
-  popularity: number;
+  popularity?: number;
   description?: string;
   purchaseDate?: string;
   quantity?: number;
@@ -22,7 +22,7 @@ export interface IGame {
   count: string;
   cart?: boolean;
   order?: boolean;
-  discount: {
+  discount?: {
     discountCount: string;
   };
 }
@@ -58,12 +58,21 @@ export interface ISign {
 }
 
 export interface IUser {
+  id?: string;
   email?: string;
   name?: string;
   lastName?: string;
   password?: string;
   photo?: string;
   role?: string;
+  blocked?: boolean;
+}
+
+export interface IUserParams {
+  id?: string;
+  blocked?: boolean;
+}
+{
 }
 
 export interface IAchievement {

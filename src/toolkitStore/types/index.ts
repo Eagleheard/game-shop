@@ -11,12 +11,16 @@ export interface AdminPanelState {
       formatedCreatedAt: string;
       formatedUpdatedAt: string;
       game: {
-        id: number;
         name: string;
-        price: number;
+        price: string;
         image: string;
         disk: boolean;
-        digital: boolean;
+        author: {
+          name: string;
+        };
+        genre: {
+          name: string;
+        };
       };
     }[];
     newGame: {
@@ -43,6 +47,14 @@ export interface AdminPanelState {
         name: string;
       };
     };
+    users: {
+      id: string;
+      name: string;
+      lastName: string;
+      photo: string;
+      email: string;
+      blocked: boolean;
+    }[];
     isLoading?: boolean;
   };
 }

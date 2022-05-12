@@ -24,13 +24,18 @@ import {
   MenuItem,
   Select,
   SelectChangeEvent,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
 } from '@mui/material';
 import FiberNewIcon from '@mui/icons-material/FiberNew';
 import LocalOfferIcon from '@mui/icons-material/LocalOffer';
-import { Card } from 'screen';
-import { Discount, GamesTable, NewAuthor, NewGame, Portal } from 'components';
+import { Discount, GamesTable, NewAuthor, NewGame, Orders, Portal, Users } from 'components';
 import { AdminPanelState } from 'toolkitStore/types';
-import { addNewGame, fetchAllOrders } from 'toolkitStore/thunk';
+import { fetchAllOrders } from 'toolkitStore/thunk';
 import { IOrderParams } from 'types/interfaces';
 
 enum orderOptions {
@@ -77,6 +82,7 @@ export const AdminPanel = () => {
   const [isOrdersVisible, setIsOrdersVisible] = useState(true);
   const [isDiscountsVisible, setIsDiscountsVisible] = useState(false);
   const [isGamesVisible, setIsGamesVisible] = useState(false);
+  const [isUsersVisible, setIsUsersVisible] = useState(false);
   const dispatch = useDispatch();
   const { orders, isLoading } = useSelector(
     (state: AdminPanelState) => state.adminPanelReducer || [],
@@ -101,9 +107,20 @@ export const AdminPanel = () => {
   };
 
   const handleOpenOrders = () => {
+    dispatch(fetchAllOrders({ params }));
     setIsNewGameVisible(false);
     setIsNewAuthorVisible(false);
     setIsOrdersVisible(true);
+    setIsGamesVisible(false);
+    setIsUpdateGameVisible(false);
+    setIsUsersVisible(false);
+  };
+
+  const handleOpenUsers = () => {
+    setIsUsersVisible(true);
+    setIsNewGameVisible(false);
+    setIsNewAuthorVisible(false);
+    setIsOrdersVisible(false);
     setIsGamesVisible(false);
     setIsUpdateGameVisible(false);
   };
@@ -114,6 +131,7 @@ export const AdminPanel = () => {
     setIsOrdersVisible(false);
     setIsGamesVisible(false);
     setIsUpdateGameVisible(false);
+    setIsUsersVisible(false);
   };
 
   const handleOpenUpdateGame = () => {
@@ -122,6 +140,7 @@ export const AdminPanel = () => {
     setIsOrdersVisible(false);
     setIsGamesVisible(false);
     setIsUpdateGameVisible(true);
+    setIsUsersVisible(false);
   };
 
   const handleOpenNewAuthor = () => {
@@ -130,6 +149,7 @@ export const AdminPanel = () => {
     setIsOrdersVisible(false);
     setIsGamesVisible(false);
     setIsUpdateGameVisible(false);
+    setIsUsersVisible(false);
   };
 
   const handleOpenGames = () => {
@@ -138,6 +158,7 @@ export const AdminPanel = () => {
     setIsOrdersVisible(false);
     setIsGamesVisible(true);
     setIsUpdateGameVisible(false);
+    setIsUsersVisible(false);
   };
 
   useEffect(() => {
@@ -168,6 +189,12 @@ export const AdminPanel = () => {
                 <ListAltIcon />
               </ListItemIcon>
               <ListItemText primary="Orders" />
+            </ListItem>
+            <ListItem button key="Users" onClick={handleOpenUsers}>
+              <ListItemIcon>
+                <ListAltIcon />
+              </ListItemIcon>
+              <ListItemText primary="Users" />
             </ListItem>
             <ListItem button key="All games" onClick={handleOpenGames}>
               <ListItemIcon>
@@ -221,7 +248,7 @@ export const AdminPanel = () => {
                       <FormControl
                         sx={{
                           mb: '20px',
-                          width: '90%',
+                          width: '100%',
                           alignSelf: 'center',
                         }}
                       >
@@ -238,15 +265,26 @@ export const AdminPanel = () => {
                         </Select>
                       </FormControl>
                       {orders && !isLoading ? (
-                        orders.map(({ id, game, formatedCreatedAt, quantity }) => (
-                          <Card
-                            order
-                            key={id}
-                            purchaseDate={formatedCreatedAt}
-                            quantity={quantity}
-                            {...game}
-                          />
-                        ))
+                        <TableContainer component={Paper}>
+                          <Table aria-label="collapsible table">
+                            <TableHead>
+                              <TableRow>
+                                <TableCell />
+                                <TableCell>Game</TableCell>
+                                <TableCell align="right">Image</TableCell>
+                                <TableCell align="right">Price</TableCell>
+                                <TableCell align="right">Author</TableCell>
+                                <TableCell align="right">Genre</TableCell>
+                                <TableCell align="right">Type</TableCell>
+                              </TableRow>
+                            </TableHead>
+                            <TableBody>
+                              {orders.map((order) => (
+                                <Orders key={order.id} {...order} />
+                              ))}
+                            </TableBody>
+                          </Table>
+                        </TableContainer>
                       ) : (
                         <p>Loading</p>
                       )}
@@ -260,6 +298,7 @@ export const AdminPanel = () => {
                     <NewGame label="Update game" handleOpenNewAuthor={handleOpenNewAuthor} />
                   )}
                   {isGamesVisible && <GamesTable handleOpenNewGame={handleOpenUpdateGame} />}
+                  {isUsersVisible && <Users />}
                 </Paper>
               </Grid>
               {isOrdersVisible && (

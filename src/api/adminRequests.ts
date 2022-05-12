@@ -1,4 +1,10 @@
-import { IDiscountParams, INewAuthorParams, INewGameParams, IOrderParams } from 'types/interfaces';
+import {
+  IDiscountParams,
+  INewAuthorParams,
+  INewGameParams,
+  IOrderParams,
+  IUserParams,
+} from 'types/interfaces';
 import axios, { AxiosRequestConfig } from 'axios';
 
 export const uploadGamePhoto = (formData: FormData) => {
@@ -25,4 +31,12 @@ export const createNewAuthor = (params: INewAuthorParams) => {
 
 export const createDiscounts = (params: IDiscountParams) => {
   return axios.post('/discount/', params);
+};
+
+export const getAllUsers = () => {
+  return axios.get('/user');
+};
+
+export const blockUser = ({ params }: AxiosRequestConfig<IUserParams>) => {
+  return axios.put(`/user/block/${params.id}`, params);
 };

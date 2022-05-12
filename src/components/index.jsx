@@ -17,3 +17,5 @@ export { NewGame } from 'components/NewGame';
 export { NewAuthor } from 'components/NewAuthor';
 export { Discount } from 'components/Discounts';
 export { GamesTable } from 'components/GamesTable';
+export { Orders } from 'components/Orders';
+export { Users } from 'components/Users';

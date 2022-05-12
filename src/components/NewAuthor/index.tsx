@@ -49,6 +49,7 @@ export const NewAuthor: React.FC = () => {
   return (
     <div className="new-author">
       <form onSubmit={handleSubmit(submitForm)} className="new-author__form">
+        <h1>New author</h1>
         <div className="new-author__image-info">
           <img
             className="new-author__image"
