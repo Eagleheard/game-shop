@@ -40,7 +40,7 @@ import {
   clearCartFailure,
 } from '../actions';
 
-function* getStore() {
+export function* getStore() {
   try {
     yield put(getCartRequest());
     const { data } = yield call(getBasket);
@@ -54,7 +54,7 @@ function* getStore() {
   }
 }
 
-function* getDiscount() {
+export function* getDiscount() {
   try {
     yield put(getDiscountRequest());
     const { data } = yield call(fetchAchievement);
