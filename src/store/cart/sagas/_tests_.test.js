@@ -9,7 +9,7 @@ describe('Cart', () => {
 it('get games that in cart', async () => {
     const dispatchedActions = [];
 
-    const mockedBasket = [];
+    const mockedBasket = {data: []};
     cartApi.getBasket = jest.fn(() => Promise.resolve(mockedBasket));
     const fakeStore = {
         getState: () => ({}),
@@ -18,7 +18,7 @@ it('get games that in cart', async () => {
 
     await runSaga(fakeStore, getStore).done;
     expect(cartApi.getBasket.mock.calls.length).toBe(1);
-    expect(dispatchedActions).toContainEqual(getCartRequest(mockedBasket));
+    expect(dispatchedActions).toContainEqual(getCartSuccess([]));
 })
 
 it('get discounts for 1 user', async () => {
