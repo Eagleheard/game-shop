@@ -1,5 +1,5 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import {
   addGameRequest,
@@ -10,6 +10,9 @@ import {
 import { IGame } from 'types/interfaces';
 import { Button } from 'components';
 import { useAuth } from 'hooks/useAuth';
+import { ToastOptions } from 'types/enumerators';
+import { useToast } from 'hooks';
+import { CartState } from 'store/cart/types';
 
 import grey_cross from 'assets/grey-cross.png';
 
@@ -24,6 +27,7 @@ import {
   CardLabel,
   CardMainInformation,
   CardNavLink,
+  CardNavLinkToCart,
   CardParagraph,
   CardQuantity,
   CardQuantityValue,
@@ -46,14 +50,33 @@ export const Card = ({
   search,
 }: IGame) => {
   const dispatch = useDispatch();
-
+  const { openToast } = useToast();
+  const { gameError, isLoading } = useSelector((state: CartState) => state.cartReducer || []);
   const { user } = useAuth();
+
+  const handleBuy = () => {
+    dispatch(addGameRequest(id, 1));
+    if (!gameError && !isLoading) {
+      return openToast(
+        <>
+          Successfully added to cart
+          <CardNavLinkToCart to={`/cart/${user.id}`} className="link">
+            Go to cart?
+          </CardNavLinkToCart>
+        </>,
+        ToastOptions.success,
+      );
+    }
+    if (gameError) {
+      return openToast('Game already in cart', ToastOptions.error);
+    }
+  };
 
   return (
     <CardComponent search={search} cart={cart} order={order}>
       {user && !purchaseDate && !quantity && (
         <CardBuyButton>
-          <Button text="Buy now" onClick={() => dispatch(addGameRequest(id, 1))} style="card-buy" />
+          <Button disabled={count === 0} text="Buy now" onClick={handleBuy} style="card-buy" />
         </CardBuyButton>
       )}
       <CardImg search={search} order={order} cart={cart} src={image} alt="logo"></CardImg>
@@ -89,7 +112,7 @@ export const Card = ({
                 text="+"
                 onClick={() => dispatch(incrementGameRequest(id))}
                 style="cart-btn"
-                disabled={parseInt(count) === 0 || quantity === 10}
+                disabled={count === 0 || quantity === 10}
               />
             </CardQuantityValue>
           )}
@@ -103,7 +126,11 @@ export const Card = ({
               <img src={grey_cross} />
             </button>
           )}
-          {!purchaseDate && <CardLabel cart={cart}>Price: {price}$</CardLabel>}
+          {!purchaseDate && (
+            <CardLabel order={order} cart={cart}>
+              Price: {price}$
+            </CardLabel>
+          )}
           {author && (
             <CardAuthor search={search}>
               <CardNavLink to={`/author/${author.id}`}>{author.name}</CardNavLink>

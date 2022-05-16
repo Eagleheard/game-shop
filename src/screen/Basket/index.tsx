@@ -1,8 +1,7 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useForm } from 'react-hook-form';
 
-import { useTimer } from 'hooks/useTimer';
 import { ToastOptions } from 'types/enumerators';
 import { ToastComponent } from 'components/Toast';
 import { useToast } from 'hooks';
@@ -18,13 +17,14 @@ import { Card } from 'screen';
 import './styles.scss';
 
 export const Basket = () => {
-  const { cart, isLoading, cartError } = useSelector((state: CartState) => state.cartReducer || []);
+  const { cart, isLoading, cartError, isTimerActive } = useSelector(
+    (state: CartState) => state.cartReducer || [],
+  );
   const totalPrice = useSelector(cartSelector.cartPrice);
   const discount = useSelector(cartSelector.cartDiscount);
   const dispatch = useDispatch();
   const discountedPrice = useMemo(() => totalPrice - totalPrice * discount, [totalPrice, discount]);
-  const { setIsActive } = useTimer();
-  const { openToast } = useToast();
+  const { openToast, setIsToastVisible } = useToast();
 
   const {
     register,
@@ -50,34 +50,30 @@ export const Basket = () => {
     fillOrder(params);
     reset();
     dispatch(clearCartRequest());
-    setIsActive(false);
   };
 
   const resetCart = () => {
     dispatch(clearCartRequest());
-    setIsActive(false);
   };
 
   useEffect(() => {
+    setIsToastVisible(false);
     dispatch(getCartRequest());
     dispatch(getDiscountRequest());
     if (cartError && !isLoading) {
       openToast(cartError, ToastOptions.error);
     }
-    if (cart.length !== 0) {
-      setIsActive(true);
-    }
     socket.connect();
     socket.on('clearedCart', () => {
       dispatch(clearCartRequest());
     });
-  }, [cart.length, setIsActive]);
+  }, [cart.length]);
 
   return (
     <div className="basket">
       <div className="basket__container">
         <div className="basket__games">
-          {cart.length !== 0 && <Timer />}
+          {isTimerActive && <Timer />}
           {!isLoading && !cart.length && <h1>Cart is empty</h1>}
           {cart && !isLoading ? (
             cart.map(({ game, quantity }) => (

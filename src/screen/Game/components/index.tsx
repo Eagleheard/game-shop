@@ -3,7 +3,7 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { useAuth } from 'hooks/useAuth';
-import { Button, Portal, SignIn } from 'components';
+import { Button, Portal, SignUp, SignIn } from 'components';
 import { addGameRequest } from 'store/cart/actions';
 import { ToastOptions } from 'types/enumerators';
 import { useToast } from 'hooks';
@@ -12,7 +12,7 @@ import { CartState } from 'store/cart/types';
 import './PageStyles.scss';
 
 interface IGamePage {
-  id?: number;
+  id: number;
   name?: string;
   preview?: string;
   popularity?: number;
@@ -26,7 +26,8 @@ interface IGamePage {
     name: string;
   };
   description?: string;
-  count?: string;
+  count: number;
+  disk?: boolean;
 }
 
 export const GamePage: React.FC<IGamePage> = ({
@@ -39,10 +40,11 @@ export const GamePage: React.FC<IGamePage> = ({
   author,
   description,
   count,
+  disk,
 }) => {
   const history = useNavigate();
   const dispatch = useDispatch();
-  const [buyingCount, setBuyingCount] = useState(1);
+  const [buyingCount, setBuyingCount] = useState(count !== 0 ? 1 : 0);
   const [isSignInVisible, setIsSignInVisible] = useState<boolean>(false);
   const [isSignUpVisible, setIsSignUpVisible] = useState<boolean>(false);
   const [isGameBuyed, setIsGameBuyed] = useState<boolean>(false);
@@ -98,7 +100,7 @@ export const GamePage: React.FC<IGamePage> = ({
               </p>
               <p className="about__popularity">Popularity: {popularity}%</p>
               {count ? <p className="about__count">Count: {count}</p> : null}
-              {count && (
+              {disk && (
                 <div className="about__buying-count">
                   <Button
                     text="-"
@@ -111,7 +113,7 @@ export const GamePage: React.FC<IGamePage> = ({
                     text="+"
                     onClick={() => setBuyingCount((prevValue) => prevValue + 1)}
                     style="cart-btn"
-                    disabled={buyingCount === parseInt(count) || buyingCount === 10}
+                    disabled={buyingCount === count || buyingCount === 10 || count === 0}
                   />
                 </div>
               )}
@@ -119,7 +121,12 @@ export const GamePage: React.FC<IGamePage> = ({
             <div className="game__buying">
               {user ? (
                 !isGameBuyed ? (
-                  <Button text="Buy now" onClick={handleBuy} style="buy" />
+                  <Button
+                    text="Buy now"
+                    disabled={count === 0}
+                    onClick={handleBuy}
+                    style={count === 0 ? 'buy--disabled' : 'buy'}
+                  />
                 ) : (
                   <Button
                     text="Go to cart"
@@ -139,12 +146,22 @@ export const GamePage: React.FC<IGamePage> = ({
           <p className="description__text">{description}</p>
         </div>
       </div>
-      <Portal
-        Component={() => <SignIn handleSwitch={handleSwitch} />}
-        isOpen={isSignInVisible}
-        text="Sign In"
-        handleClose={() => setIsSignInVisible(false)}
-      />
+      {isSignInVisible && !user && (
+        <Portal
+          Component={() => <SignIn handleSwitch={handleSwitch} />}
+          isOpen={isSignInVisible}
+          text="Sign In"
+          handleClose={() => setIsSignInVisible(false)}
+        />
+      )}
+      {isSignUpVisible && (
+        <Portal
+          Component={() => <SignUp handleSwitch={handleSwitch} />}
+          isOpen={isSignUpVisible}
+          text="Sign Up"
+          handleClose={() => setIsSignUpVisible(false)}
+        />
+      )}
     </div>
   );
 };

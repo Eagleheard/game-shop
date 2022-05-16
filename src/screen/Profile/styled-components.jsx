@@ -94,7 +94,8 @@ export const ProfileOrders = styled.div`
 
 export const ProfilePhoto = styled.img`
   width: 50%;
-  height: 25%;
+  height: 20vh;
+  min-height: 150px;
   border-radius: 15px;
 
   @media (max-width: 1024px) {

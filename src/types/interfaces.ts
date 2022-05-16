@@ -19,7 +19,7 @@ export interface IGame {
   purchaseDate?: string;
   quantity?: number;
   disk?: boolean;
-  count: string;
+  count: number;
   cart?: boolean;
   order?: boolean;
   search?: boolean;

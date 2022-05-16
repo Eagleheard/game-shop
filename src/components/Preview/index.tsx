@@ -5,7 +5,6 @@ import { NavLink } from 'react-router-dom';
 import { fetchPreviewGames } from 'api/fetchPreviewGames';
 
 import { ToastOptions } from 'types/enumerators';
-import { ToastComponent } from 'components/Toast';
 import { useToast } from 'hooks';
 import { Button } from 'components/Button';
 import { IGame } from 'types/interfaces';
