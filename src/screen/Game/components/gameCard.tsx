@@ -34,6 +34,8 @@ import {
   OrderTotalPrice,
 } from './styled-components';
 
+const quantityLimit = 10;
+
 export const Card = ({
   id,
   name,
@@ -112,7 +114,7 @@ export const Card = ({
                 text="+"
                 onClick={() => dispatch(incrementGameRequest(id))}
                 style="cart-btn"
-                disabled={count === 0 || quantity === 10}
+                disabled={count === 0 || quantity === quantityLimit}
               />
             </CardQuantityValue>
           )}

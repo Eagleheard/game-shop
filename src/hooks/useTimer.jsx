@@ -1,12 +1,14 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 
+const timerCount = 900;
+
 export const TimerContext = createContext();
 
 export const TimerProvider = ({ children }) => {
   const [second, setSecond] = useState('00');
   const [minute, setMinute] = useState('00');
-  const [counter, setCounter] = useState(900);
+  const [counter, setCounter] = useState(timerCount);
   const { isTimerActive } = useSelector((state) => state.cartReducer);
 
   useEffect(() => {
@@ -27,11 +29,11 @@ export const TimerProvider = ({ children }) => {
         setCounter((counter) => counter - 1);
       }, 1000);
       if (counter === 0) {
-        setCounter(900);
+        setCounter(timerCount);
       }
     }
     if (!isTimerActive) {
-      setCounter(900);
+      setCounter(timerCount);
     }
     return () => clearInterval(intervalId);
   }, [isTimerActive, counter]);

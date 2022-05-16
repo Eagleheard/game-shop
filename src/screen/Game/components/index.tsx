@@ -30,6 +30,8 @@ interface IGamePage {
   disk?: boolean;
 }
 
+const quantityLimit = 10;
+
 export const GamePage: React.FC<IGamePage> = ({
   id,
   name,
@@ -113,7 +115,7 @@ export const GamePage: React.FC<IGamePage> = ({
                     text="+"
                     onClick={() => setBuyingCount((prevValue) => prevValue + 1)}
                     style="cart-btn"
-                    disabled={buyingCount === count || buyingCount === 10 || count === 0}
+                    disabled={buyingCount === count || buyingCount === quantityLimit || count === 0}
                   />
                 </div>
               )}
