@@ -3,9 +3,7 @@ import classNames from 'classnames';
 import { NavLink } from 'react-router-dom';
 
 import { fetchPreviewGames } from 'api/fetchPreviewGames';
-
 import { ToastOptions } from 'types/enumerators';
-import { ToastComponent } from 'components/Toast';
 import { useToast } from 'hooks';
 import { Button } from 'components/Button';
 import { IGame } from 'types/interfaces';
@@ -57,6 +55,7 @@ export const Preview = () => {
       {previewGames.map(({ id, name, genre, price, preview }, index) => (
         <div
           key={id}
+          data-testid='preview'
           className={classNames('preview__container', {
             'preview__container--active': index === previewPage,
             'preview__container--prev': index === previewPage - 1,
@@ -65,6 +64,7 @@ export const Preview = () => {
         >
           <img
             src={preview}
+            data-testid={`preview-${index}`}
             alt="preview logo"
             className={classNames('preview__img', {
               'preview__img--active': index === previewPage,

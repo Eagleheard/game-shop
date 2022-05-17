@@ -68,7 +68,7 @@ export function* getDiscount() {
   }
 }
 
-function* addGameToStore({ payload }: AddGameSuccessAction) {
+export function* addGameToStore({ payload }: AddGameSuccessAction) {
   try {
     const { data } = yield call(addGameToBasket, { ...payload });
     yield socket.emit('buyingGame', { id: payload.gameId });
@@ -95,7 +95,7 @@ function* decrementGameFromStore({ payload }: DecrementGameSuccessAction) {
   }
 }
 
-function* incrementGameToStore({ payload }: IncrementGameSuccessAction) {
+export function* incrementGameToStore({ payload }: IncrementGameSuccessAction) {
   try {
     const { data } = yield call(incrementGameToBasket, { ...payload });
     yield put(changeQuantitySuccess(data));
@@ -121,7 +121,7 @@ function* removeGameFromStore({ payload }: RemoveGameSuccessAction) {
   }
 }
 
-function* clearStore() {
+export function* clearStore() {
   try {
     yield call(clearBasket);
     yield put(clearCartSuccess());
