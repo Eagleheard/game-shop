@@ -17,12 +17,7 @@ export const NewAuthor: React.FC = () => {
   const [descriptionCount, setDescriptionCount] = useState(0);
   const dispatch = useDispatch();
 
-  const {
-    handleSubmit,
-    register,
-    reset,
-    formState: { errors },
-  } = useForm();
+  const { handleSubmit, register, reset } = useForm();
 
   const uploadNewAuthorPhoto = async (files: FileList | null) => {
     try {

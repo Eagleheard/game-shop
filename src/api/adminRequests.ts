@@ -40,3 +40,7 @@ export const getAllUsers = () => {
 export const blockUser = ({ params }: AxiosRequestConfig<IUserParams>) => {
   return axios.put(`/user/block/${params.id}`, params);
 };
+
+export const deleteGame = (id: number) => {
+  return axios.delete(`/game/${id}`);
+};

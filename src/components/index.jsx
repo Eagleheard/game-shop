@@ -19,3 +19,4 @@ export { Discount } from 'components/Discounts';
 export { GamesTable } from 'components/GamesTable';
 export { Orders } from 'components/Orders';
 export { Users } from 'components/Users';
+export { Confirm } from 'components/Confirm';

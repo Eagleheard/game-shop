@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 
+import { AuthorizationOptions } from 'types/enumerators';
+import { useAuth } from 'hooks/useAuth';
 import { registration } from 'api/authorization';
 import { Button } from 'components/Button';
 import { ISign, IUser } from 'types/interfaces';
 
 import './styles.scss';
-import { AuthorizationOptions } from 'types/enumerators';
 
 export const SignUp: React.FC<ISign> = ({ handleSwitch }) => {
+  const { user } = useAuth();
   const [error, setError] = useState<string>('');
   const {
     handleSubmit,
@@ -29,11 +31,17 @@ export const SignUp: React.FC<ISign> = ({ handleSwitch }) => {
   };
 
   const submitForm: SubmitHandler<FieldValues> = (data) => {
-    signUp(data);
+    if (!user) {
+      return signUp(data);
+    }
+    if (user.role === 'ADMIN') {
+      return signUp({ ...data, role: 'MANAGER' });
+    }
   };
 
   return (
     <div className="login">
+      {user && <h1>Create manager</h1>}
       <form onSubmit={handleSubmit(submitForm)} className="login__form">
         <div className="login__group">
           <input
@@ -104,12 +112,14 @@ export const SignUp: React.FC<ISign> = ({ handleSwitch }) => {
           {errors.password && <p className="login__password--error">Password too short</p>}
         </div>
         <div className="login__submit">
-          <div className="login__sign-up">
-            <h5 className="login__sign">Or</h5>
-            <h5 className="login__sign--link" onClick={handleSwitch}>
-              sign In
-            </h5>
-          </div>
+          {!user && (
+            <div className="login__sign-up">
+              <h5 className="login__sign">Or</h5>
+              <h5 className="login__sign--link" onClick={handleSwitch}>
+                sign In
+              </h5>
+            </div>
+          )}
           <Button text="Sign Up" onClick={() => submitForm} style="sign-in" />
         </div>
       </form>

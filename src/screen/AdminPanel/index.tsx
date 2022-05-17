@@ -1,6 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
+import { Discount, GamesTable, NewAuthor, NewGame, Orders, SignUp, Users } from 'components';
+import { AdminPanelState } from 'toolkitStore/types';
+import { fetchAllOrders } from 'toolkitStore/thunk';
+import { IOrderParams } from 'types/interfaces';
+import { useAuth } from 'hooks/useAuth';
+import { userOptions } from 'types/enumerators';
+
 import { styled, createTheme, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import MuiDrawer from '@mui/material/Drawer';
@@ -31,16 +38,24 @@ import {
   TableHead,
   TableRow,
 } from '@mui/material';
+
 import FiberNewIcon from '@mui/icons-material/FiberNew';
 import LocalOfferIcon from '@mui/icons-material/LocalOffer';
-import { Discount, GamesTable, NewAuthor, NewGame, Orders, Portal, Users } from 'components';
-import { AdminPanelState } from 'toolkitStore/types';
-import { fetchAllOrders } from 'toolkitStore/thunk';
-import { IOrderParams } from 'types/interfaces';
 
 enum orderOptions {
   NEWEST_ORDERS = 'Newest orders',
   OLDEST_ORDERS = 'Oldest orders',
+}
+
+enum pageOptions {
+  ORDERS = 'Orders',
+  ALL_GAMES = 'All games',
+  NEW_GAME = 'New game',
+  UPDATE_GAME = 'Update game',
+  NEW_AUTHOR = 'New author',
+  USERS = 'Users',
+  DISCOUNT = 'Discount',
+  SIGN_UP = 'Sign up',
 }
 
 const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(
@@ -76,6 +91,7 @@ export const AdminPanel = () => {
   const [open, setOpen] = useState(true);
   const [params, setParams] = useState<IOrderParams>({ order: 'Newest' });
   const [orderParams, setOrderParams] = useState('');
+  const { user } = useAuth();
   const [isNewGameVisible, setIsNewGameVisible] = useState(false);
   const [isUpdateGameVisible, setIsUpdateGameVisible] = useState(false);
   const [isNewAuthorVisible, setIsNewAuthorVisible] = useState(false);
@@ -83,6 +99,7 @@ export const AdminPanel = () => {
   const [isDiscountsVisible, setIsDiscountsVisible] = useState(false);
   const [isGamesVisible, setIsGamesVisible] = useState(false);
   const [isUsersVisible, setIsUsersVisible] = useState(false);
+  const [isSignUpVisible, setIsSignUpVisisble] = useState(false);
   const dispatch = useDispatch();
   const { orders, isLoading } = useSelector(
     (state: AdminPanelState) => state.adminPanelReducer || [],
@@ -106,59 +123,88 @@ export const AdminPanel = () => {
     }
   };
 
-  const handleOpenOrders = () => {
-    dispatch(fetchAllOrders({ params }));
-    setIsNewGameVisible(false);
-    setIsNewAuthorVisible(false);
-    setIsOrdersVisible(true);
-    setIsGamesVisible(false);
-    setIsUpdateGameVisible(false);
-    setIsUsersVisible(false);
-  };
-
-  const handleOpenUsers = () => {
-    setIsUsersVisible(true);
-    setIsNewGameVisible(false);
-    setIsNewAuthorVisible(false);
-    setIsOrdersVisible(false);
-    setIsGamesVisible(false);
-    setIsUpdateGameVisible(false);
-  };
-
-  const handleOpenNewGame = () => {
-    setIsNewGameVisible(true);
-    setIsNewAuthorVisible(false);
-    setIsOrdersVisible(false);
-    setIsGamesVisible(false);
-    setIsUpdateGameVisible(false);
-    setIsUsersVisible(false);
-  };
-
-  const handleOpenUpdateGame = () => {
-    setIsNewGameVisible(false);
-    setIsNewAuthorVisible(false);
-    setIsOrdersVisible(false);
-    setIsGamesVisible(false);
-    setIsUpdateGameVisible(true);
-    setIsUsersVisible(false);
-  };
-
-  const handleOpenNewAuthor = () => {
-    setIsNewGameVisible(false);
-    setIsNewAuthorVisible(true);
-    setIsOrdersVisible(false);
-    setIsGamesVisible(false);
-    setIsUpdateGameVisible(false);
-    setIsUsersVisible(false);
-  };
-
-  const handleOpenGames = () => {
-    setIsNewGameVisible(false);
-    setIsNewAuthorVisible(false);
-    setIsOrdersVisible(false);
-    setIsGamesVisible(true);
-    setIsUpdateGameVisible(false);
-    setIsUsersVisible(false);
+  const handleOpen = (page: string) => {
+    if (page === pageOptions.ALL_GAMES) {
+      setIsNewGameVisible(false);
+      setIsNewAuthorVisible(false);
+      setIsOrdersVisible(false);
+      setIsGamesVisible(true);
+      setIsUpdateGameVisible(false);
+      setIsUsersVisible(false);
+      setIsSignUpVisisble(false);
+      setIsDiscountsVisible(false);
+    }
+    if (page === pageOptions.ORDERS) {
+      dispatch(fetchAllOrders({ params }));
+      setIsNewGameVisible(false);
+      setIsNewAuthorVisible(false);
+      setIsOrdersVisible(true);
+      setIsGamesVisible(false);
+      setIsUpdateGameVisible(false);
+      setIsUsersVisible(false);
+      setIsSignUpVisisble(false);
+      setIsDiscountsVisible(false);
+    }
+    if (page === pageOptions.USERS) {
+      setIsUsersVisible(true);
+      setIsNewGameVisible(false);
+      setIsNewAuthorVisible(false);
+      setIsOrdersVisible(false);
+      setIsGamesVisible(false);
+      setIsUpdateGameVisible(false);
+      setIsSignUpVisisble(false);
+      setIsDiscountsVisible(false);
+    }
+    if (page === pageOptions.NEW_GAME) {
+      setIsNewGameVisible(true);
+      setIsNewAuthorVisible(false);
+      setIsOrdersVisible(false);
+      setIsGamesVisible(false);
+      setIsUpdateGameVisible(false);
+      setIsUsersVisible(false);
+      setIsSignUpVisisble(false);
+      setIsDiscountsVisible(false);
+    }
+    if (page === pageOptions.UPDATE_GAME) {
+      setIsNewGameVisible(false);
+      setIsNewAuthorVisible(false);
+      setIsOrdersVisible(false);
+      setIsGamesVisible(false);
+      setIsUpdateGameVisible(true);
+      setIsUsersVisible(false);
+      setIsSignUpVisisble(false);
+      setIsDiscountsVisible(false);
+    }
+    if (page === pageOptions.NEW_AUTHOR) {
+      setIsNewGameVisible(false);
+      setIsNewAuthorVisible(true);
+      setIsOrdersVisible(false);
+      setIsGamesVisible(false);
+      setIsUpdateGameVisible(false);
+      setIsUsersVisible(false);
+      setIsSignUpVisisble(false);
+      setIsDiscountsVisible(false);
+    }
+    if (page === pageOptions.DISCOUNT) {
+      setIsNewGameVisible(false);
+      setIsNewAuthorVisible(false);
+      setIsOrdersVisible(false);
+      setIsGamesVisible(false);
+      setIsUpdateGameVisible(false);
+      setIsUsersVisible(false);
+      setIsDiscountsVisible(true);
+      setIsSignUpVisisble(false);
+    }
+    if (page === pageOptions.SIGN_UP) {
+      setIsNewGameVisible(false);
+      setIsNewAuthorVisible(false);
+      setIsOrdersVisible(false);
+      setIsGamesVisible(false);
+      setIsUpdateGameVisible(false);
+      setIsUsersVisible(false);
+      setIsDiscountsVisible(false);
+      setIsSignUpVisisble(true);
+    }
   };
 
   useEffect(() => {
@@ -184,42 +230,52 @@ export const AdminPanel = () => {
           </Toolbar>
           <Divider />
           <List>
-            <ListItem button key="Orders" onClick={handleOpenOrders}>
+            <ListItem button key="Orders" onClick={() => handleOpen(pageOptions.ORDERS)}>
               <ListItemIcon>
                 <ListAltIcon />
               </ListItemIcon>
               <ListItemText primary="Orders" />
             </ListItem>
-            <ListItem button key="Users" onClick={handleOpenUsers}>
-              <ListItemIcon>
-                <ListAltIcon />
-              </ListItemIcon>
-              <ListItemText primary="Users" />
-            </ListItem>
-            <ListItem button key="All games" onClick={handleOpenGames}>
+            {user?.role === userOptions.ADMIN && (
+              <ListItem button key="Users" onClick={() => handleOpen(pageOptions.USERS)}>
+                <ListItemIcon>
+                  <ListAltIcon />
+                </ListItemIcon>
+                <ListItemText primary="Users" />
+              </ListItem>
+            )}
+            <ListItem button key="All games" onClick={() => handleOpen(pageOptions.ALL_GAMES)}>
               <ListItemIcon>
                 <ListAltIcon />
               </ListItemIcon>
               <ListItemText primary="All games" />
             </ListItem>
-            <ListItem button key="New game" onClick={handleOpenNewGame}>
+            <ListItem button key="New game" onClick={() => handleOpen(pageOptions.NEW_GAME)}>
               <ListItemIcon>
                 <FiberNewIcon />
               </ListItemIcon>
               <ListItemText primary="New game" />
             </ListItem>
-            <ListItem button key="New author" onClick={handleOpenNewAuthor}>
+            <ListItem button key="New author" onClick={() => handleOpen(pageOptions.NEW_AUTHOR)}>
               <ListItemIcon>
                 <FiberNewIcon />
               </ListItemIcon>
               <ListItemText primary="New author" />
             </ListItem>
-            <ListItem button key="Discounts" onClick={() => setIsDiscountsVisible(true)}>
+            <ListItem button key="Discounts" onClick={() => handleOpen(pageOptions.DISCOUNT)}>
               <ListItemIcon>
                 <LocalOfferIcon />
               </ListItemIcon>
               <ListItemText primary="Discounts" />
             </ListItem>
+            {user?.role === userOptions.ADMIN && (
+              <ListItem button key="Create manager" onClick={() => handleOpen(pageOptions.SIGN_UP)}>
+                <ListItemIcon>
+                  <LocalOfferIcon />
+                </ListItemIcon>
+                <ListItemText primary="Create manager" />
+              </ListItem>
+            )}
           </List>
         </Drawer>
         <Box
@@ -291,14 +347,24 @@ export const AdminPanel = () => {
                     </>
                   )}
                   {isNewGameVisible && (
-                    <NewGame label="New game" handleOpenNewAuthor={handleOpenNewAuthor} />
+                    <NewGame
+                      label="New game"
+                      handleOpenNewAuthor={() => handleOpen(pageOptions.NEW_GAME)}
+                    />
                   )}
                   {isNewAuthorVisible && <NewAuthor />}
                   {isUpdateGameVisible && (
-                    <NewGame label="Update game" handleOpenNewAuthor={handleOpenNewAuthor} />
+                    <NewGame
+                      label="Update game"
+                      handleOpenNewAuthor={() => handleOpen(pageOptions.UPDATE_GAME)}
+                    />
                   )}
-                  {isGamesVisible && <GamesTable handleOpenNewGame={handleOpenUpdateGame} />}
+                  {isGamesVisible && (
+                    <GamesTable handleOpenNewGame={() => handleOpen(pageOptions.UPDATE_GAME)} />
+                  )}
                   {isUsersVisible && <Users />}
+                  {isDiscountsVisible && <Discount />}
+                  {isSignUpVisible && user?.role === userOptions.ADMIN && <SignUp />}
                 </Paper>
               </Grid>
               {isOrdersVisible && (
@@ -315,14 +381,6 @@ export const AdminPanel = () => {
               )}
             </Grid>
           </Container>
-          {isDiscountsVisible && (
-            <Portal
-              Component={() => <Discount />}
-              isOpen={isDiscountsVisible}
-              text="Discounts"
-              handleClose={() => setIsDiscountsVisible(false)}
-            />
-          )}
         </Box>
       </Box>
     </ThemeProvider>

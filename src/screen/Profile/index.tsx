@@ -1,6 +1,7 @@
 import React, { ChangeEvent, useCallback, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
+import { userOptions } from 'types/enumerators';
 import { fetchUserInfo, uploadUserPhoto } from 'api/fetchUser';
 import { fetchOrders } from 'api/fetchOrders';
 import { fetchAchievement } from 'api/fetchAchievements';
@@ -127,7 +128,7 @@ export const Profile = () => {
           disabled={isAchievementsVisible}
         />
         <Button text="Orders" onClick={handleSwitch} style="profile" disabled={isOrdersVisible} />
-        {userInfo.role === 'ADMIN' && (
+        {(userInfo.role === userOptions.ADMIN || userInfo.role === userOptions.MANAGER) && (
           <Button text="Admin panel" onClick={() => navigate('/admin')} style="profile" />
         )}
       </ProfileNavigation>

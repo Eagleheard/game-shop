@@ -19,12 +19,14 @@ import { fetchGames } from 'api/fetchGames';
 import { TableHead } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { Autocomplete } from 'components';
+import { Autocomplete, Confirm } from 'components';
 import ClearIcon from '@mui/icons-material/Clear';
 
 import './styles.scss';
 import { useDispatch } from 'react-redux';
 import { addNewGameRequest } from 'toolkitStore/slices';
+import { Portal } from 'components/Portal';
+import { deleteGame } from 'api/adminRequests';
 
 interface TablePaginationActionsProps {
   count: number;
@@ -91,12 +93,24 @@ export const GamesTable: React.FC<IGamesTable> = ({ handleOpenNewGame }) => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [games, setGames] = useState<IGame[]>([]);
+  const [isConfirmVisible, setIsConfirmVisible] = useState(false);
   const dispatch = useDispatch();
 
   const fillGames = async () => {
     try {
       const { data } = await fetchGames();
       setGames(data.rows);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const handleDeleteGame = async (id: number) => {
+    try {
+      await deleteGame(id);
+      const { data } = await fetchGames();
+      setGames(data.rows);
+      setIsConfirmVisible(false);
     } catch (e) {
       console.log(e);
     }
@@ -185,8 +199,21 @@ export const GamesTable: React.FC<IGamesTable> = ({ handleOpenNewGame }) => {
                   <EditIcon className="table__cell--icon" onClick={() => handleEditGame(game)} />
                 </TableCell>
                 <TableCell style={{ width: 40 }} align="center">
-                  <DeleteIcon onClick={() => alert('12')} />
+                  <DeleteIcon onClick={() => setIsConfirmVisible(true)} />
                 </TableCell>
+                {isConfirmVisible && (
+                  <Portal
+                    Component={() => (
+                      <Confirm
+                        confirmDeleting={() => handleDeleteGame(game.id)}
+                        handleClose={() => setIsConfirmVisible(false)}
+                      />
+                    )}
+                    isOpen={isConfirmVisible}
+                    text="Delete selected game?"
+                    handleClose={() => setIsConfirmVisible(false)}
+                  />
+                )}
               </TableRow>
             ))}
             {emptyRows > 0 && (

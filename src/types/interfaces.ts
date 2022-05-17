@@ -54,7 +54,7 @@ export interface ICart {
 }
 
 export interface ISign {
-  handleSwitch: () => void;
+  handleSwitch?: () => void;
 }
 
 export interface IUser {

@@ -98,7 +98,7 @@ export const Discount: React.FC = () => {
           </div>
         </div>
         <div className="login__submit">
-          <Button text="Sign In" onClick={() => submitForm} style="sign-in" />
+          <Button text="Create discount" onClick={() => submitForm} style="sign-in" />
         </div>
       </form>
     </div>

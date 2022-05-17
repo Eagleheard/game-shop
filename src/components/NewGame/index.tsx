@@ -82,7 +82,7 @@ export const NewGame: React.FC<INewGame> = ({ handleOpenNewAuthor, label }) => {
     try {
       const formData = new FormData();
       files ? formData.append('file', files[0]) : undefined;
-      formData.append('upload_preset', 'fabra5gx');
+      formData.append('upload_preset', 'jumymijs');
       const { data } = await uploadGamePhoto(formData);
       dispatch(addNewGameSaveOptionts({ ...newGame, ['preview']: data.url }));
     } catch (e) {

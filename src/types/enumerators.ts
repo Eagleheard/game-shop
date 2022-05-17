@@ -3,3 +3,8 @@ export enum AuthorizationOptions {
   NAME_LENGTH = 20,
   PASSWORD_LENGTH = 8,
 }
+
+export enum userOptions {
+  ADMIN = 'ADMIN',
+  MANAGER = 'MANAGER',
+}
