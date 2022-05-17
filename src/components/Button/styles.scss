@@ -103,6 +103,38 @@
     cursor: pointer;
   }
 
+  &__card-buy {
+    font-family: $lato;
+    width: 50%;
+    border-radius: 5px;
+    margin: 0;
+    background-color: $secondary;
+    border: 2px solid $secondary;
+    color: $primary;
+
+    &--disabled {
+      font-family: $lato;
+      width: 50%;
+      border-radius: 5px;
+      margin: 0;
+      background-color: $search-primary;
+      border: 2px solid $search-primary;
+    }
+  }
+
+  &__buy {
+    border: none;
+    font-family: $lato;
+    background: $secondary;
+    color: $primary;
+    border-radius: 5px;
+    padding: 3px;
+    margin: 0;
+    width: 40%;
+    height: 30px;
+    cursor: pointer;
+  }
+
   @include media-table-large {
     width: 35px;
     height: 35px;
@@ -112,23 +144,14 @@
       height: 25px;
     }
 
+    &__card-buy {
+      font-size: 10px;
+    }
+
     &__search,
     &__clear {
       width: 30%;
     }
-  }
-
-  &__buy {
-    border: none;
-    font-family: $lato;
-    background: $search-primary;
-    color: $black;
-    border-radius: 5px;
-    padding: 3px;
-    margin: 0;
-    width: 50%;
-    height: 30px;
-    cursor: pointer;
   }
 
   &__back-btn {
@@ -160,7 +183,8 @@
     }
 
     &__buy {
-      width: 40%;
+      width: 80%;
+      height: 5vh;
     }
 
     &__profile {
@@ -170,6 +194,7 @@
 
   @include media-table-small {
     &__buy {
+      width: 60%;
       font-size: 12px;
     }
   }
@@ -190,6 +215,12 @@
       font-size: 8px;
     }
 
+    &__card-buy {
+      font-size: 10px;
+      height: 35px;
+      width: 35px;
+    }
+
     &__search,
     &__clear {
       font-size: 12px;
@@ -198,7 +229,8 @@
     }
 
     &__buy {
-      width: 50%;
+      width: 15vw;
+      height: 5vh;
       font-size: 12px;
     }
 

@@ -1,12 +1,18 @@
-export const ADD_GAME = 'ADD_GAME';
+export const ADD_GAME_REQUEST = 'ADD_GAME_REQUEST';
+export const ADD_GAME_SUCCESS = 'ADD_GAME_SUCCESS';
+export const ADD_GAME_FAILURE = 'ADD_GAME_FAILURE';
 export const REMOVE_GAME_REQUEST = 'REMOVE_GAME_REQUEST';
 export const REMOVE_GAME_SUCCESS = 'REMOVE_GAME_SUCCESS';
+export const REMOVE_GAME_FAILURE = 'REMOVE_GAME_FAILURE';
 export const DECREMENT_GAME_REQUEST = 'DECREMENT_GAME_REQUEST';
 export const DECREMENT_GAME_SUCCESS = 'DECREMENT_GAME_SUCCESS';
 export const INCREMENT_GAME_REQUEST = 'INCREMENT_GAME_REQUEST';
 export const INCREMENT_GAME_SUCCESS = 'INCREMENT_GAME__SUCCESS';
 export const CHANGE_QUANTITY_SUCCESS = 'CHANGE_QUANTITY_SUCCESS';
-export const CLEAR_CART = 'CLEAR_CART';
+export const CHANGE_QUANTITY_FAILURE = 'CHANGE_QUANTITY_FAILURE';
+export const CLEAR_CART_REQUEST = 'CLEAR_CART_REQUEST';
+export const CLEAR_CART_SUCCESS = 'CLEAR_CART_SUCCESS';
+export const CLEAR_CART_FAILURE = 'CLEAR_CART_FAILURE';
 export const GET_CART_SUCCESS = 'GET_CART_SUCCESS';
 export const GET_CART_REQUEST = 'GET_CART_REQUEST';
 export const GET_CART_FAILURE = 'GET_CART_FAILURE';
@@ -14,15 +20,42 @@ export const GET_DISCOUNT_SUCCESS = 'GET_DISCOUNT_SUCCESS';
 export const GET_DISCOUNT_REQUEST = 'GET_DISCOUNT_REQUEST';
 export const GET_DISCOUNT_FAILURE = 'GET_DISCOUNT_FAILURE';
 
-export interface AddGameAction {
-  type: typeof ADD_GAME;
+export interface AddGameRequestAction {
+  type: typeof ADD_GAME_REQUEST;
   gameId: number;
   value: number;
   payload: {
     id?: number;
     userId?: number;
-    gameId?: number;
+    gameId: number;
     quantity: number;
+    error?: string;
+  };
+}
+
+export interface AddGameSuccessAction {
+  type: typeof ADD_GAME_SUCCESS;
+  gameId: number;
+  value: number;
+  payload: {
+    id?: number;
+    userId?: number;
+    gameId: number;
+    quantity: number;
+    error?: string;
+  };
+}
+
+export interface AddGameFailureAction {
+  type: typeof ADD_GAME_FAILURE;
+  gameId: number;
+  value: number;
+  payload: {
+    id?: number;
+    userId?: number;
+    gameId: number;
+    quantity: number;
+    error?: string;
   };
 }
 
@@ -35,6 +68,7 @@ export interface IncrementGameRequestAction {
     userId?: number;
     gameId: number;
     quantity: number;
+    error?: string;
   };
 }
 
@@ -47,6 +81,7 @@ export interface IncrementGameSuccessAction {
     userId: number;
     gameId: number;
     quantity: number;
+    error?: string;
   };
 }
 
@@ -59,6 +94,7 @@ export interface RemoveGameRequestAction {
     userId: number;
     gameId: number;
     quantity: number;
+    error?: string;
   };
 }
 
@@ -71,6 +107,20 @@ export interface RemoveGameSuccessAction {
     userId: number;
     gameId: number;
     quantity: number;
+    error?: string;
+  };
+}
+
+export interface RemoveGameFailureAction {
+  type: typeof REMOVE_GAME_FAILURE;
+  gameId: number;
+  value: number;
+  payload: {
+    id: number;
+    userId: number;
+    gameId: number;
+    quantity: number;
+    error?: string;
   };
 }
 
@@ -83,6 +133,7 @@ export interface DecrementGameRequestAction {
     userId: number;
     gameId: number;
     quantity: number;
+    error?: string;
   };
 }
 
@@ -95,6 +146,20 @@ export interface DecrementGameSuccessAction {
     userId: number;
     gameId: number;
     quantity: number;
+    error?: string;
+  };
+}
+
+export interface ChangeQuantityFailureAction {
+  type: typeof CHANGE_QUANTITY_FAILURE;
+  gameId: number;
+  value: number;
+  payload: {
+    id: number;
+    userId: number;
+    gameId: number;
+    quantity: number;
+    error?: string;
   };
 }
 
@@ -106,6 +171,7 @@ export interface GetDiscountRequestAction {
     gameId: number;
     quantity: number;
     isLoading?: boolean;
+    error?: string;
   };
 }
 
@@ -117,6 +183,7 @@ export interface GetDiscountSuccessAction {
     gameId: number;
     quantity: number;
     isLoading?: boolean;
+    error?: string;
   };
 }
 
@@ -128,6 +195,7 @@ export interface GetDiscountFailureAction {
     gameId: number;
     quantity: number;
     isLoading?: boolean;
+    error?: string;
   };
 }
 
@@ -139,6 +207,7 @@ export interface GetCartRequestAction {
     gameId: number;
     quantity: number;
     isLoading?: boolean;
+    error?: string;
   };
 }
 
@@ -147,8 +216,9 @@ export interface GetCartSuccessAction {
   payload: {
     id?: number;
     userId?: number;
-    gameId?: number;
+    gameId: number;
     quantity?: number;
+    error?: string;
   };
 }
 
@@ -157,31 +227,60 @@ export interface GetCartFailureAction {
   payload: {
     id?: number;
     userId?: number;
-    gameId?: number;
+    gameId: number;
     quantity?: number;
     error?: string;
   };
 }
 
-export interface ClearCartAction {
-  type: typeof CLEAR_CART;
+export interface ClearCartRequestAction {
+  type: typeof CLEAR_CART_REQUEST;
   payload: {
     id?: number;
     userId?: number;
-    gameId?: number;
+    gameId: number;
     quantity?: number;
+    error?: string;
+  };
+}
+
+export interface ClearCartSuccessAction {
+  type: typeof CLEAR_CART_SUCCESS;
+  payload: {
+    id?: number;
+    userId?: number;
+    gameId: number;
+    quantity?: number;
+    error?: string;
+  };
+}
+
+export interface ClearCartFailureAction {
+  type: typeof CLEAR_CART_FAILURE;
+  payload: {
+    id?: number;
+    userId?: number;
+    gameId: number;
+    quantity?: number;
+    error?: string;
   };
 }
 
 export type CartActionTypes =
-  | AddGameAction
+  | AddGameRequestAction
+  | AddGameFailureAction
+  | AddGameSuccessAction
   | RemoveGameRequestAction
   | RemoveGameSuccessAction
+  | RemoveGameFailureAction
   | IncrementGameRequestAction
   | IncrementGameSuccessAction
   | DecrementGameRequestAction
   | DecrementGameSuccessAction
-  | ClearCartAction
+  | ChangeQuantityFailureAction
+  | ClearCartRequestAction
+  | ClearCartSuccessAction
+  | ClearCartFailureAction
   | GetCartSuccessAction
   | GetCartFailureAction
   | GetCartRequestAction
@@ -206,7 +305,9 @@ export interface CartState {
       };
     }[];
     isLoading: boolean;
-    error: string;
+    isTimerActive: boolean;
+    gameError: string;
+    cartError: string;
     achievements: {
       id: number;
       isAchieved: boolean;

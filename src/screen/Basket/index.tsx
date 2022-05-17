@@ -2,23 +2,29 @@ import React, { useEffect, useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useForm } from 'react-hook-form';
 
+import { ToastOptions } from 'types/enumerators';
+import { ToastComponent } from 'components/Toast';
+import { useToast } from 'hooks';
 import { createOrder } from 'api/fetchOrders';
 import { cartSelector } from 'store/cart/selectors';
 import { CartState } from 'store/cart/types';
 import { socket } from 'config';
 import { IOrder } from 'types/interfaces';
-import { clearCart, getCartRequest, getDiscountRequest } from 'store/cart/actions';
-import { Button } from 'components';
+import { clearCartRequest, getCartRequest, getDiscountRequest } from 'store/cart/actions';
+import { Button, Loader, Timer } from 'components';
 import { Card } from 'screen';
 
 import './styles.scss';
 
 export const Basket = () => {
-  const { cart, isLoading, error } = useSelector((state: CartState) => state.cartReducer || []);
+  const { cart, isLoading, cartError, isTimerActive } = useSelector(
+    (state: CartState) => state.cartReducer || [],
+  );
   const totalPrice = useSelector(cartSelector.cartPrice);
   const discount = useSelector(cartSelector.cartDiscount);
   const dispatch = useDispatch();
   const discountedPrice = useMemo(() => totalPrice - totalPrice * discount, [totalPrice, discount]);
+  const { openToast, setIsToastVisible } = useToast();
 
   const {
     register,
@@ -30,38 +36,51 @@ export const Basket = () => {
   const fillOrder = async (params: IOrder) => {
     try {
       await createOrder(params);
-    } catch (e) {
-      console.log(e);
+      openToast('Successfully buyed', ToastOptions.success);
+    } catch ({
+      response: {
+        data: { message },
+      },
+    }) {
+      openToast(String(message), ToastOptions.error);
     }
   };
 
   const submitForm = (params: IOrder) => {
     fillOrder(params);
     reset();
-    dispatch(clearCart());
+    dispatch(clearCartRequest());
+  };
+
+  const resetCart = () => {
+    dispatch(clearCartRequest());
   };
 
   useEffect(() => {
+    setIsToastVisible(false);
     dispatch(getCartRequest());
     dispatch(getDiscountRequest());
+    if (cartError && !isLoading) {
+      openToast(cartError, ToastOptions.error);
+    }
     socket.connect();
     socket.on('clearedCart', () => {
-      dispatch(clearCart());
+      dispatch(clearCartRequest());
     });
-  }, [dispatch]);
+  }, [cart.length]);
 
   return (
     <div className="basket">
       <div className="basket__container">
         <div className="basket__games">
-          {error && <p>Something wrong: {error}</p>}
-          {!cart.length && <h1>Cart is empty</h1>}
+          {isTimerActive && <Timer />}
+          {!isLoading && !cart.length && <h1>Cart is empty</h1>}
           {cart && !isLoading ? (
             cart.map(({ game, quantity }) => (
               <Card cart key={game.id} {...game} quantity={quantity} />
             ))
           ) : (
-            <p>Loading</p>
+            <Loader />
           )}
         </div>
         <form onSubmit={handleSubmit(submitForm)} className="basket__info">
@@ -118,16 +137,12 @@ export const Basket = () => {
           <div className="basket__order">
             <h3 className="basket__total-price">You will pay: {discountedPrice ?? 0}$</h3>
             <div className="basket__order-btn">
-              <Button
-                text="Clear cart"
-                type="reset"
-                onClick={() => dispatch(clearCart())}
-                style="clear"
-              />
+              <Button text="Clear cart" type="reset" onClick={resetCart} style="clear" />
               <Button text="Buy now" type="submit" onClick={() => submitForm} style="search" />
             </div>
           </div>
         </form>
+        <ToastComponent />
       </div>
     </div>
   );

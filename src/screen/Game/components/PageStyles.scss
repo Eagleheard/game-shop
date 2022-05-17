@@ -35,7 +35,8 @@
 
   &__price {
     font-family: $lato;
-    font-size: 18px;
+    font-size: 16px;
+    text-align: center;
   }
 
   &__buying {
@@ -44,6 +45,7 @@
     align-items: center;
     justify-content: space-between;
     width: 100%;
+    margin-top: 10px;
   }
 
   &__count {
@@ -64,7 +66,7 @@
     &__name {
       font-size: 24px;
       font-weight: bold;
-      margin-bottom: 20px;
+      margin-bottom: 10px;
       align-self: center;
       color: $secondary;
     }
@@ -86,10 +88,20 @@
       }
     }
 
-    &__popularity,
+    &__popularity {
+      font-size: 16px;
+      margin-top: 5px;
+    }
+
     &__count {
       font-size: 16px;
       margin-top: 5px;
+    }
+
+    &__buying-value {
+      font-size: 16px;
+      margin-top: 5px;
+      padding: 0 10px;
     }
 
     &__buying-count {

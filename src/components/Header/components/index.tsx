@@ -1,11 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 
-import { Search } from 'components/Search';
+import { ToastOptions } from 'types/enumerators';
+import { useToast } from 'hooks';
+import { ToastComponent } from 'components/Toast';
+import { fetchGames } from 'api/fetchGames';
 import { ResponsiveHeader } from './responsive';
-import { SignIn, SignUp, Portal, Select } from 'components';
+import { SignIn, SignUp, Portal, Select, Search } from 'components';
 import { authorization, logout } from 'api/authorization';
 import { useAuth } from 'hooks/useAuth';
+import { IGame } from 'types/interfaces';
 
 import logo from 'assets/logo.png';
 import menu from 'assets/menu.png';
@@ -23,6 +27,8 @@ export const Header = () => {
   const [isNavVisible, setNavVisibility] = useState<boolean>(false);
   const [isSignInVisible, setIsSignInVisible] = useState<boolean>(false);
   const [isSignUpVisible, setIsSignUpVisible] = useState<boolean>(false);
+  const [games, setGames] = useState<IGame[]>([]);
+  const { openToast } = useToast();
 
   const navigate = useNavigate();
 
@@ -39,6 +45,24 @@ export const Header = () => {
     }
   };
 
+  const fillGames = useCallback(async () => {
+    try {
+      const { data } = await fetchGames();
+      setGames(data.rows);
+    } catch ({
+      response: {
+        data: { message },
+      },
+    }) {
+      openToast(String(message), ToastOptions.error);
+    }
+  }, []);
+
+  const onChangeSearch = (value: string) => {
+    const game = games.find(({ name }) => name === value);
+    navigate(`/game/${game?.id}`);
+  };
+
   const handleSelect = (value: string) => {
     switch (value) {
       case sortOptions.PROFILE:
@@ -49,6 +73,7 @@ export const Header = () => {
         break;
       case sortOptions.LOGOUT:
         signOut();
+        navigate('/');
         break;
     }
   };
@@ -57,8 +82,14 @@ export const Header = () => {
     try {
       const { data } = await authorization();
       setUser(data);
-    } catch (error) {
-      console.log(error);
+    } catch ({
+      response: {
+        data: { message },
+      },
+    }) {
+      if (message !== 'Need authorization') {
+        openToast(String(message), ToastOptions.error);
+      }
     }
   };
 
@@ -70,6 +101,7 @@ export const Header = () => {
 
   useEffect(() => {
     checkUser();
+    fillGames();
   }, []);
 
   return (
@@ -101,7 +133,7 @@ export const Header = () => {
           signOut={signOut}
         />
       )}
-      <Search />
+      <Search games={games} onChangeSearch={onChangeSearch} />
       <div className="header__sign">
         {user ? (
           <Select
@@ -146,6 +178,7 @@ export const Header = () => {
           handleClose={() => setIsSignUpVisible(false)}
         />
       )}
+      <ToastComponent />
     </header>
   );
 };

@@ -2,6 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { fetchGenres } from 'api/fetchGenres';
 
+import { ToastComponent } from 'components/Toast';
+import { ToastOptions } from 'types/enumerators';
+import { useToast } from 'hooks';
 import { Autocomplete, Checkbox, Select, Button } from 'components';
 import { IGame, IParams } from 'types/interfaces';
 
@@ -20,6 +23,7 @@ interface IGenre {
 export const Form: React.FC<IForm> = ({ games, fillGames }) => {
   const [isDiskChecked, setIsDiskChecked] = useState<boolean>(false);
   const [genres, setGenres] = useState<IGenre[]>([]);
+  const { openToast } = useToast();
 
   const {
     register,
@@ -35,7 +39,7 @@ export const Form: React.FC<IForm> = ({ games, fillGames }) => {
       const { data } = await fetchGenres();
       setGenres(data);
     } catch (e) {
-      console.log(e);
+      openToast(e, ToastOptions.error);
     }
   };
 
@@ -105,7 +109,7 @@ export const Form: React.FC<IForm> = ({ games, fillGames }) => {
               matchesMaxPrice: (value) => {
                 const { minPrice } = getValues();
                 return value
-                  ? parseInt(value) >= parseInt(minPrice) ||
+                  ? parseInt(value) >= (parseInt(minPrice) ? minPrice : 0) ||
                       'Max price should be bigger then min price'
                   : undefined;
               },
@@ -151,6 +155,7 @@ export const Form: React.FC<IForm> = ({ games, fillGames }) => {
         <Button style="clear" text="Clear" type="reset" onClick={handleReset} />
         <Button style="search" text="Filter" type="submit" onClick={() => submitForm} />
       </div>
+      <ToastComponent />
     </form>
   );
 };

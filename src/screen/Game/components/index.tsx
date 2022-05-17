@@ -1,14 +1,18 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
-import { Button } from 'components';
-import { addGame } from 'store/cart/actions';
+import { useAuth } from 'hooks/useAuth';
+import { Button, Portal, SignUp, SignIn } from 'components';
+import { addGameRequest } from 'store/cart/actions';
+import { ToastOptions } from 'types/enumerators';
+import { useToast } from 'hooks';
+import { CartState } from 'store/cart/types';
 
 import './PageStyles.scss';
 
 interface IGamePage {
-  id?: number;
+  id: number;
   name?: string;
   preview?: string;
   popularity?: number;
@@ -22,8 +26,11 @@ interface IGamePage {
     name: string;
   };
   description?: string;
-  count?: string;
+  count: number;
+  disk?: boolean;
 }
+
+const quantityLimit = 10;
 
 export const GamePage: React.FC<IGamePage> = ({
   id,
@@ -35,10 +42,45 @@ export const GamePage: React.FC<IGamePage> = ({
   author,
   description,
   count,
+  disk,
 }) => {
   const history = useNavigate();
   const dispatch = useDispatch();
-  const [buyingCount, setBuyingCount] = useState(1);
+  const [buyingCount, setBuyingCount] = useState(count !== 0 ? 1 : 0);
+  const [isSignInVisible, setIsSignInVisible] = useState<boolean>(false);
+  const [isSignUpVisible, setIsSignUpVisible] = useState<boolean>(false);
+  const [isGameBuyed, setIsGameBuyed] = useState<boolean>(false);
+  const { user } = useAuth();
+
+  const handleSwitch = () => {
+    if (isSignInVisible) {
+      setIsSignInVisible(false);
+      setIsSignUpVisible(true);
+      return;
+    }
+    if (isSignUpVisible) {
+      setIsSignInVisible(true);
+      setIsSignUpVisible(false);
+      return;
+    }
+  };
+
+  const { openToast } = useToast();
+  const { gameError, isLoading } = useSelector((state: CartState) => state.cartReducer || []);
+
+  const handleBuy = () => {
+    dispatch(addGameRequest(id, buyingCount));
+    if (!gameError && !isLoading) {
+      setIsGameBuyed(true);
+      return openToast('Successfully added to cart', ToastOptions.success);
+    }
+  };
+
+  useEffect(() => {
+    if (gameError && !isLoading) {
+      return openToast('Something wrong', ToastOptions.error);
+    }
+  }, [gameError, isLoading]);
 
   return (
     <div className="game">
@@ -60,7 +102,7 @@ export const GamePage: React.FC<IGamePage> = ({
               </p>
               <p className="about__popularity">Popularity: {popularity}%</p>
               {count ? <p className="about__count">Count: {count}</p> : null}
-              {count && (
+              {disk && (
                 <div className="about__buying-count">
                   <Button
                     text="-"
@@ -68,22 +110,35 @@ export const GamePage: React.FC<IGamePage> = ({
                     style="cart-btn"
                     disabled={buyingCount === 1}
                   />
-                  <p className="card__quantity">{buyingCount}</p>
+                  <p className="about__buying-value">{buyingCount}</p>
                   <Button
                     text="+"
                     onClick={() => setBuyingCount((prevValue) => prevValue + 1)}
                     style="cart-btn"
-                    disabled={buyingCount === parseInt(count)}
+                    disabled={buyingCount === count || buyingCount === quantityLimit || count === 0}
                   />
                 </div>
               )}
             </div>
             <div className="game__buying">
-              <Button
-                text="Buy now"
-                onClick={() => dispatch(addGame(id, buyingCount))}
-                style="buy"
-              />
+              {user ? (
+                !isGameBuyed ? (
+                  <Button
+                    text="Buy now"
+                    disabled={count === 0}
+                    onClick={handleBuy}
+                    style={count === 0 ? 'buy--disabled' : 'buy'}
+                  />
+                ) : (
+                  <Button
+                    text="Go to cart"
+                    onClick={() => history(`/cart/${user.id}`)}
+                    style="buy"
+                  />
+                )
+              ) : (
+                <Button text="Sign In" onClick={() => setIsSignInVisible(true)} style="buy" />
+              )}
               <p className="game__price">Price: {price}$</p>
             </div>
           </div>
@@ -93,6 +148,22 @@ export const GamePage: React.FC<IGamePage> = ({
           <p className="description__text">{description}</p>
         </div>
       </div>
+      {isSignInVisible && !user && (
+        <Portal
+          Component={() => <SignIn handleSwitch={handleSwitch} />}
+          isOpen={isSignInVisible}
+          text="Sign In"
+          handleClose={() => setIsSignInVisible(false)}
+        />
+      )}
+      {isSignUpVisible && (
+        <Portal
+          Component={() => <SignUp handleSwitch={handleSwitch} />}
+          isOpen={isSignUpVisible}
+          text="Sign Up"
+          handleClose={() => setIsSignUpVisible(false)}
+        />
+      )}
     </div>
   );
 };

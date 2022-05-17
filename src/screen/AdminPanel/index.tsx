@@ -99,7 +99,7 @@ export const AdminPanel = () => {
   const [isDiscountsVisible, setIsDiscountsVisible] = useState(false);
   const [isGamesVisible, setIsGamesVisible] = useState(false);
   const [isUsersVisible, setIsUsersVisible] = useState(false);
-  const [isSignUpVisible, setIsSignUpVisisble] = useState(false);
+  const [isSignUpVisible, setIsSignUpVisible] = useState(false);
   const dispatch = useDispatch();
   const { orders, isLoading } = useSelector(
     (state: AdminPanelState) => state.adminPanelReducer || [],
@@ -131,7 +131,7 @@ export const AdminPanel = () => {
       setIsGamesVisible(true);
       setIsUpdateGameVisible(false);
       setIsUsersVisible(false);
-      setIsSignUpVisisble(false);
+      setIsSignUpVisible(false);
       setIsDiscountsVisible(false);
     }
     if (page === pageOptions.ORDERS) {
@@ -142,7 +142,7 @@ export const AdminPanel = () => {
       setIsGamesVisible(false);
       setIsUpdateGameVisible(false);
       setIsUsersVisible(false);
-      setIsSignUpVisisble(false);
+      setIsSignUpVisible(false);
       setIsDiscountsVisible(false);
     }
     if (page === pageOptions.USERS) {
@@ -152,7 +152,7 @@ export const AdminPanel = () => {
       setIsOrdersVisible(false);
       setIsGamesVisible(false);
       setIsUpdateGameVisible(false);
-      setIsSignUpVisisble(false);
+      setIsSignUpVisible(false);
       setIsDiscountsVisible(false);
     }
     if (page === pageOptions.NEW_GAME) {
@@ -162,7 +162,7 @@ export const AdminPanel = () => {
       setIsGamesVisible(false);
       setIsUpdateGameVisible(false);
       setIsUsersVisible(false);
-      setIsSignUpVisisble(false);
+      setIsSignUpVisible(false);
       setIsDiscountsVisible(false);
     }
     if (page === pageOptions.UPDATE_GAME) {
@@ -172,7 +172,7 @@ export const AdminPanel = () => {
       setIsGamesVisible(false);
       setIsUpdateGameVisible(true);
       setIsUsersVisible(false);
-      setIsSignUpVisisble(false);
+      setIsSignUpVisible(false);
       setIsDiscountsVisible(false);
     }
     if (page === pageOptions.NEW_AUTHOR) {
@@ -182,7 +182,7 @@ export const AdminPanel = () => {
       setIsGamesVisible(false);
       setIsUpdateGameVisible(false);
       setIsUsersVisible(false);
-      setIsSignUpVisisble(false);
+      setIsSignUpVisible(false);
       setIsDiscountsVisible(false);
     }
     if (page === pageOptions.DISCOUNT) {
@@ -193,7 +193,7 @@ export const AdminPanel = () => {
       setIsUpdateGameVisible(false);
       setIsUsersVisible(false);
       setIsDiscountsVisible(true);
-      setIsSignUpVisisble(false);
+      setIsSignUpVisible(false);
     }
     if (page === pageOptions.SIGN_UP) {
       setIsNewGameVisible(false);
@@ -203,7 +203,7 @@ export const AdminPanel = () => {
       setIsUpdateGameVisible(false);
       setIsUsersVisible(false);
       setIsDiscountsVisible(false);
-      setIsSignUpVisisble(true);
+      setIsSignUpVisible(true);
     }
   };
 
@@ -364,7 +364,9 @@ export const AdminPanel = () => {
                   )}
                   {isUsersVisible && <Users />}
                   {isDiscountsVisible && <Discount />}
-                  {isSignUpVisible && user?.role === userOptions.ADMIN && <SignUp />}
+                  {isSignUpVisible && user?.role === userOptions.ADMIN && (
+                    <SignUp handleSwitch={() => setIsSignUpVisible(false)} />
+                  )}
                 </Paper>
               </Grid>
               {isOrdersVisible && (

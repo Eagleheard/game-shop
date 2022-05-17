@@ -19,12 +19,13 @@ export interface IGame {
   purchaseDate?: string;
   quantity?: number;
   disk?: boolean;
-  count: string;
+  count: number;
   cart?: boolean;
   order?: boolean;
   discount?: {
     discountCount: string;
   };
+  search?: boolean;
 }
 
 export interface IAuthor {
@@ -54,7 +55,7 @@ export interface ICart {
 }
 
 export interface ISign {
-  handleSwitch?: () => void;
+  handleSwitch: () => void;
 }
 
 export interface IUser {

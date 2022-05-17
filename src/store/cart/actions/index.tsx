@@ -5,25 +5,49 @@ import {
   GET_CART_REQUEST,
   CHANGE_QUANTITY_SUCCESS,
   REMOVE_GAME_SUCCESS,
+  REMOVE_GAME_FAILURE,
   GET_CART_SUCCESS,
-  ADD_GAME,
-  CLEAR_CART,
+  ADD_GAME_REQUEST,
+  ADD_GAME_SUCCESS,
+  ADD_GAME_FAILURE,
+  GET_DISCOUNT_SUCCESS,
+  GET_DISCOUNT_FAILURE,
+  GET_CART_FAILURE,
+  CLEAR_CART_REQUEST,
+  CHANGE_QUANTITY_FAILURE,
+  CLEAR_CART_SUCCESS,
   GetCartSuccessAction,
-  ClearCartAction,
   DecrementGameSuccessAction,
   RemoveGameSuccessAction,
   GET_DISCOUNT_REQUEST,
   GetDiscountSuccessAction,
-  GET_DISCOUNT_SUCCESS,
-  GET_DISCOUNT_FAILURE,
+  AddGameSuccessAction,
+  ClearCartRequestAction,
+  CLEAR_CART_FAILURE,
 } from 'store/cart/types';
 
-export function addGame(gameId?: number, quantity?: number) {
+export function addGameRequest(gameId?: number, quantity?: number) {
   return {
-    type: ADD_GAME,
+    type: ADD_GAME_REQUEST,
     payload: {
       gameId,
       value: quantity,
+    },
+  };
+}
+
+export function addGameSuccess(payload: AddGameSuccessAction) {
+  return {
+    type: ADD_GAME_SUCCESS,
+    payload,
+  };
+}
+
+export function addGameFailure(error: string) {
+  return {
+    type: ADD_GAME_FAILURE,
+    payload: {
+      error,
     },
   };
 }
@@ -44,6 +68,15 @@ export function changeQuantitySuccess(payload: DecrementGameSuccessAction) {
   };
 }
 
+export function changeQuantityFailure(error: string) {
+  return {
+    type: CHANGE_QUANTITY_FAILURE,
+    payload: {
+      error,
+    },
+  };
+}
+
 export function incrementGameRequest(gameId?: number) {
   return {
     type: INCREMENT_GAME_REQUEST,
@@ -56,9 +89,6 @@ export function incrementGameRequest(gameId?: number) {
 export function getDiscountRequest() {
   return {
     type: GET_DISCOUNT_REQUEST,
-    payload: {
-      isLoading: true,
-    },
   };
 }
 
@@ -66,7 +96,6 @@ export function getDiscountSuccess(payload?: GetDiscountSuccessAction) {
   return {
     type: GET_DISCOUNT_SUCCESS,
     payload,
-    isLoading: false,
   };
 }
 
@@ -83,32 +112,44 @@ export function getCartSuccess(payload?: GetCartSuccessAction) {
   return {
     type: GET_CART_SUCCESS,
     payload,
-    isLoading: false,
   };
 }
 
 export function getCartRequest() {
   return {
     type: GET_CART_REQUEST,
-    payload: {
-      isLoading: true,
-    },
   };
 }
 
 export function getCartFailure(error: string) {
   return {
-    type: GET_CART_REQUEST,
+    type: GET_CART_FAILURE,
     payload: {
       error,
     },
   };
 }
 
-export function clearCart(payload?: ClearCartAction) {
+export function clearCartRequest(payload?: ClearCartRequestAction) {
   return {
-    type: CLEAR_CART,
+    type: CLEAR_CART_REQUEST,
     payload,
+  };
+}
+
+export function clearCartSuccess(payload?: ClearCartRequestAction) {
+  return {
+    type: CLEAR_CART_SUCCESS,
+    payload,
+  };
+}
+
+export function clearCartFailure(error: string) {
+  return {
+    type: CLEAR_CART_FAILURE,
+    payload: {
+      error,
+    },
   };
 }
 
@@ -125,5 +166,14 @@ export function removeGameSuccess(payload: RemoveGameSuccessAction) {
   return {
     type: REMOVE_GAME_SUCCESS,
     payload,
+  };
+}
+
+export function removeGameFailure(error: string) {
+  return {
+    type: REMOVE_GAME_FAILURE,
+    payload: {
+      error,
+    },
   };
 }
