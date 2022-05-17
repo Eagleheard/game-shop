@@ -6,8 +6,8 @@ import { IGame } from 'types/interfaces';
 import { GamePage } from '.';
 import { fetchGame } from 'api/fetchGame';
 import { useToast } from 'hooks';
-import { ToastComponent } from 'components/Toast';
 import { ToastOptions } from 'types/enumerators';
+import { Loader } from 'components';
 
 export const GamePageContainer = () => {
   const { id } = useParams<string>();
@@ -40,5 +40,5 @@ export const GamePageContainer = () => {
     };
   }, [id]);
 
-  return gameInfo ? <GamePage {...gameInfo} /> : <ToastComponent />;
+  return gameInfo ? <GamePage {...gameInfo} /> : <Loader />;
 };

@@ -5,7 +5,6 @@ import { login } from 'api/authorization';
 import { Button } from 'components/Button';
 import { useAuth } from 'hooks/useAuth';
 import { ISign, IUser } from 'types/interfaces';
-import { AuthorizationOptions } from 'types/enumerators';
 
 import './styles.scss';
 
@@ -38,10 +37,9 @@ export const SignIn: React.FC<ISign> = ({ handleSwitch }) => {
         <div className="login__group">
           <input
             {...register('email', {
-              validate: (value) => value !== AuthorizationOptions.EMAIL_VALIDATION,
               required: true,
             })}
-            type="text"
+            type="email"
             id="email"
             placeholder="Email"
             className="login__email"

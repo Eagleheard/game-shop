@@ -6,14 +6,13 @@ import { fetchAuthor } from 'api/fetchAuthor';
 import { ToastOptions } from 'types/enumerators';
 import { IAuthor, IGame } from 'types/interfaces';
 import { Author } from '.';
+import { Loader } from 'components';
 import { useToast } from 'hooks';
-import { ToastComponent } from 'components/Toast';
 
 export const AuthorContainer = () => {
   const { id } = useParams<string>();
   const [authorInfo, setAuthorInfo] = useState<IAuthor>();
   const [authorGames, setAuthorGames] = useState<IGame[]>([]);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
   const { openToast } = useToast();
   const navigate = useNavigate();
 
@@ -45,15 +44,13 @@ export const AuthorContainer = () => {
   }, [id]);
 
   useEffect(() => {
-    setIsLoading(true);
     searchAuthor();
     searchAuthorGames();
-    setIsLoading(false);
   }, [searchAuthor, searchAuthorGames]);
 
-  return !isLoading && authorInfo ? (
-    <Author {...authorInfo} authorGames={authorGames} />
+  return !authorInfo || !authorGames ? (
+    <Loader />
   ) : (
-    <ToastComponent />
+    <Author {...authorInfo} authorGames={authorGames} />
   );
 };

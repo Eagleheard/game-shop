@@ -29,6 +29,7 @@
     align-items: center;
     flex-direction: column;
     width: 45%;
+    height: 100%;
     overflow: auto;
   }
 
@@ -216,16 +217,18 @@
     &__container {
       flex-direction: column;
       align-items: center;
-      justify-content: space-around;
+      justify-content: flex-start;
     }
 
-    &__games,
-    &__info {
+    &__games {
+      min-height: 35vh;
       width: 100%;
     }
 
     &__info {
       margin-top: 20px;
+      width: 100%;
+      align-items: center;
     }
 
     &__payment {
@@ -237,7 +240,7 @@
 
       &-info {
         margin: 10px 20px;
-        width: 40%;
+        width: 90%;
       }
     }
 

@@ -5,7 +5,6 @@ import { NavLink } from 'react-router-dom';
 import { fetchPreviewGames } from 'api/fetchPreviewGames';
 
 import { ToastOptions } from 'types/enumerators';
-import { ToastComponent } from 'components/Toast';
 import { useToast } from 'hooks';
 import { Button } from 'components/Button';
 import { IGame } from 'types/interfaces';
@@ -79,7 +78,7 @@ export const Preview = () => {
               </NavLink>
             </h1>
             <p className="preview__genre">Genre: {genre.name}</p>
-            <h1 className="preview__price">Price: {price}</h1>
+            <h1 className="preview__price">Price: {price}$</h1>
           </div>
         </div>
       ))}

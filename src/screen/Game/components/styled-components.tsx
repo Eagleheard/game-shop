@@ -12,12 +12,23 @@ interface ICard {
   search?: boolean;
 }
 
+export const CardBuyButton = styled.div`
+  display: flex;
+  align-self: flex-end;
+  justify-content: flex-end;
+  width: 10%;
+  position: absolute;
+  opacity: 0;
+  transition: opacity 0.3s;
+`;
+
 export const CardComponent = styled.div<ICard>`
   display: flex;
   flex-direction: ${({ cart, order, search }) => (search || cart || order ? 'row' : 'column')};
   align-items: center;
   justify-self: center;
   border-radius: 10px;
+  margin: 10px 0;
   width: ${({ cart, order }) => (cart || order ? '90%' : '100%')};
   box-shadow: ${({ search }) => (search ? 'none' : `0 0 10px ${black};`)}
   background: ${primary};
@@ -38,7 +49,12 @@ export const CardComponent = styled.div<ICard>`
   }
 
   @media (max-width: 500px) {
-    width: 100%;
+    width: ${({ cart, order }) => (cart || order ? '95%' : '100%')};
+  }
+
+  &:hover > ${CardBuyButton} {
+    opacity: 1;
+    transition: opacity 0.3s;
   }
 `;
 
@@ -93,6 +109,14 @@ export const CardDescription = styled.div<ICard>`
          height: 15vh;`
       : null}
   ${({ search }) => search && `justify-content: space-between; width: 100%;`}
+
+  @media (max-width: 600px) {
+    height: ${({ cart }) => (cart ? '20vh' : '15vh')};
+  }
+
+  @media (max-width: 500px) {
+    height: ${({ order }) => (order ? '20vh' : '15vh')};
+  }
 `;
 
 export const CardMainInformation = styled.div<ICard>`
@@ -114,6 +138,14 @@ export const CardMainInformation = styled.div<ICard>`
       justify-content: space-around;
       height: 15vh;
     `}
+  
+  @media (max-width: 600px) {
+    height: ${({ cart }) => (cart ? '20vh' : '15vh')};
+  }
+
+  @media (max-width: 500px) {
+    height: ${({ order }) => (order ? '20vh' : '15vh')};
+  }
 `;
 
 export const CardAdditionalInformation = styled.div<ICard>`
@@ -122,6 +154,15 @@ export const CardAdditionalInformation = styled.div<ICard>`
   justify-content: space-between;
   width: 40%;
   height: ${({ cart }) => (cart ? '13vh' : '100%')};
+
+  @media (max-width: 600px) {
+    height: ${({ cart }) => (cart ? '20vh' : '15vh')};
+  }
+
+  @media (max-width: 500px) {
+    height: ${({ order }) => (order ? '20vh' : '5vh')};
+    height: ${({ cart }) => (cart ? '13vh' : '5vh')};
+  }
 `;
 
 export const CardQuantity = styled.p<ICard>`
@@ -142,6 +183,10 @@ export const OrderTotalPrice = styled.div`
   font-size: 14px;
   align-self: flex-end;
   width: 35%;
+
+  @media (max-width: 500px) {
+    font-size: 12px;
+  }
 `;
 
 export const CardParagraph = styled.p<ICard>`
@@ -164,6 +209,10 @@ export const CardNavLink = styled(NavLink)`
   &:hover {
     color: ${hoverLink};
   }
+`;
+
+export const CardNavLinkToCart = styled(CardNavLink)`
+  text-decoration: underline;
 `;
 
 export const CardGenre = styled.p<ICard>`

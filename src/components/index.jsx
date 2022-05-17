@@ -12,4 +12,6 @@ export { SignIn } from 'components/Authorization';
 export { SignUp } from 'components/Authorization';
 export { Portal } from 'components/Portal';
 export { Achievements } from 'components/Achievements';
+export { Loader } from 'components/Loader';
+export { Timer } from 'components/Timer';
 export { Search } from 'components/Search';

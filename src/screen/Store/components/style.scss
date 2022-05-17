@@ -12,7 +12,9 @@
   }
 
   &__options {
-    display: grid;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
     margin-top: 20px;
     width: 100%;
   }
@@ -21,6 +23,23 @@
     justify-self: flex-end;
     margin-right: 20px;
     font-size: 20px;
+  }
+
+  &__filters {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  &__error {
+    font-size: 30px;
+    margin-top: 200px;
+    font-family: $lato;
+    align-self: center;
+  }
+
+  .loader {
+    width: 70vw;
+    height: 70vh;
   }
 
   .card {
