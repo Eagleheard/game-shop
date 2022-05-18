@@ -2,9 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import classNames from 'classnames';
 
+import { Loader } from 'components/Loader';
 import { AdminPanelState } from 'toolkitStore/types';
 import { blockCurrentUser, fetchAllUsers } from 'toolkitStore/thunk';
 import { IUserParams } from 'types/interfaces';
+import { ToastOptions } from 'types/enumerators';
+import { useToast } from 'hooks';
+import { ToastComponent } from 'components/Toast';
 
 import {
   Box,
@@ -86,8 +90,11 @@ function TablePaginationActions(props: TablePaginationActionsProps) {
 export const Users = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
-  const { users } = useSelector((state: AdminPanelState) => state.adminPanelReducer || []);
+  const { users, usersError, isLoading } = useSelector(
+    (state: AdminPanelState) => state.adminPanelReducer || [],
+  );
   const dispatch = useDispatch();
+  const { openToast } = useToast();
 
   const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - users.length) : 0;
 
@@ -116,95 +123,103 @@ export const Users = () => {
 
   useEffect(() => {
     dispatch(fetchAllUsers());
+    if (usersError && !isLoading) {
+      openToast(usersError, ToastOptions.error);
+    }
   }, []);
 
   return (
     <>
       <h1>Users</h1>
-      <TableContainer className="table" component={Paper}>
-        <Table sx={{ minWidth: 500 }} aria-label="custom pagination table">
-          <TableHead>
-            <TableRow>
-              <TableCell style={{ width: 160 }} align="center">
-                Photo
-              </TableCell>
-              <TableCell style={{ width: 160 }} align="center">
-                Name
-              </TableCell>
-              <TableCell style={{ width: 160 }} align="center">
-                Last name
-              </TableCell>
-              <TableCell style={{ width: 160 }} align="center">
-                Email
-              </TableCell>
-              <TableCell style={{ width: 80 }} align="center">
-                Status
-              </TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {(rowsPerPage > 0
-              ? users.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              : users
-            ).map((user) => (
-              <TableRow key={user.id}>
+      {users.length !== 0 ? (
+        <TableContainer className="table" component={Paper}>
+          <Table sx={{ minWidth: 500 }} aria-label="custom pagination table">
+            <TableHead>
+              <TableRow>
                 <TableCell style={{ width: 160 }} align="center">
-                  <img
-                    className="users__photo"
-                    width={50}
-                    src={user.photo ? user.photo : userImg}
-                  />
+                  Photo
                 </TableCell>
                 <TableCell style={{ width: 160 }} align="center">
-                  {user.name}
+                  Name
                 </TableCell>
                 <TableCell style={{ width: 160 }} align="center">
-                  {user.lastName}
+                  Last name
                 </TableCell>
                 <TableCell style={{ width: 160 }} align="center">
-                  {user.email}
+                  Email
                 </TableCell>
                 <TableCell style={{ width: 80 }} align="center">
-                  <p
-                    onClick={() => handleBlockUser(user)}
-                    className={classNames('users__status', {
-                      'users__status--active': !user.blocked,
-                      'users__status--blocked': user.blocked,
-                    })}
-                  >
-                    {user.blocked ? 'Blocked' : 'Active'}
-                  </p>
+                  Status
                 </TableCell>
               </TableRow>
-            ))}
-            {emptyRows > 0 && (
-              <TableRow style={{ height: 53 * emptyRows }}>
-                <TableCell colSpan={6} />
+            </TableHead>
+            <TableBody>
+              {(rowsPerPage > 0
+                ? users.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                : users
+              ).map((user) => (
+                <TableRow key={user.id}>
+                  <TableCell style={{ width: 160 }} align="center">
+                    <img
+                      className="users__photo"
+                      width={50}
+                      src={user.photo ? user.photo : userImg}
+                    />
+                  </TableCell>
+                  <TableCell style={{ width: 160 }} align="center">
+                    {user.name}
+                  </TableCell>
+                  <TableCell style={{ width: 160 }} align="center">
+                    {user.lastName}
+                  </TableCell>
+                  <TableCell style={{ width: 160 }} align="center">
+                    {user.email}
+                  </TableCell>
+                  <TableCell style={{ width: 80 }} align="center">
+                    <p
+                      onClick={() => handleBlockUser(user)}
+                      className={classNames('users__status', {
+                        'users__status--active': !user.blocked,
+                        'users__status--blocked': user.blocked,
+                      })}
+                    >
+                      {user.blocked ? 'Blocked' : 'Active'}
+                    </p>
+                  </TableCell>
+                </TableRow>
+              ))}
+              {emptyRows > 0 && (
+                <TableRow style={{ height: 53 * emptyRows }}>
+                  <TableCell colSpan={6} />
+                </TableRow>
+              )}
+            </TableBody>
+            <TableFooter>
+              <TableRow>
+                <TablePagination
+                  rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
+                  colSpan={3}
+                  count={users.length}
+                  rowsPerPage={rowsPerPage}
+                  page={page}
+                  SelectProps={{
+                    inputProps: {
+                      'aria-label': 'games per page',
+                    },
+                    native: true,
+                  }}
+                  onPageChange={handleChangePage}
+                  onRowsPerPageChange={handleChangeRowsPerPage}
+                  ActionsComponent={TablePaginationActions}
+                />
               </TableRow>
-            )}
-          </TableBody>
-          <TableFooter>
-            <TableRow>
-              <TablePagination
-                rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
-                colSpan={3}
-                count={users.length}
-                rowsPerPage={rowsPerPage}
-                page={page}
-                SelectProps={{
-                  inputProps: {
-                    'aria-label': 'games per page',
-                  },
-                  native: true,
-                }}
-                onPageChange={handleChangePage}
-                onRowsPerPageChange={handleChangeRowsPerPage}
-                ActionsComponent={TablePaginationActions}
-              />
-            </TableRow>
-          </TableFooter>
-        </Table>
-      </TableContainer>
+            </TableFooter>
+          </Table>
+        </TableContainer>
+      ) : (
+        <Loader />
+      )}
+      <ToastComponent />
     </>
   );
 };

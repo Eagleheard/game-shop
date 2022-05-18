@@ -2,6 +2,9 @@ import React, { ChangeEvent, useEffect, useState } from 'react';
 import { Controller, FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 
+import { ToastComponent } from 'components/Toast';
+import { ToastOptions } from 'types/enumerators';
+import { useToast } from 'hooks';
 import { AdminPanelState } from 'toolkitStore/types';
 import { addNewGameSaveOptionts, resetGame } from 'toolkitStore/slices';
 import { addNewGame, updateSelectedGame } from 'toolkitStore/thunk';
@@ -37,8 +40,11 @@ export const NewGame: React.FC<INewGame> = ({ handleOpenNewAuthor, label }) => {
   const [authors, setAuthors] = useState<IAuthor[]>([]);
   const [isDiskChecked, setIsDiskChecked] = useState(false);
   const [descriptionCount, setDescriptionCount] = useState(0);
-  const { newGame } = useSelector((state: AdminPanelState) => state.adminPanelReducer || []);
+  const { newGame, gameError, isLoading } = useSelector(
+    (state: AdminPanelState) => state.adminPanelReducer || [],
+  );
   const dispatch = useDispatch();
+  const { openToast } = useToast();
 
   const {
     handleSubmit,
@@ -52,8 +58,12 @@ export const NewGame: React.FC<INewGame> = ({ handleOpenNewAuthor, label }) => {
     try {
       const { data } = await fetchGenres();
       setGenres(data);
-    } catch (e) {
-      console.log(e);
+    } catch ({
+      response: {
+        data: { message },
+      },
+    }) {
+      openToast(String(message), ToastOptions.error);
     }
   };
 
@@ -61,8 +71,12 @@ export const NewGame: React.FC<INewGame> = ({ handleOpenNewAuthor, label }) => {
     try {
       const { data } = await fetchAllAuthors();
       setAuthors(data);
-    } catch (e) {
-      console.log(e);
+    } catch ({
+      response: {
+        data: { message },
+      },
+    }) {
+      openToast(String(message), ToastOptions.error);
     }
   };
 
@@ -73,8 +87,12 @@ export const NewGame: React.FC<INewGame> = ({ handleOpenNewAuthor, label }) => {
       formData.append('upload_preset', 'fabra5gx');
       const { data } = await uploadGamePhoto(formData);
       dispatch(addNewGameSaveOptionts({ ...newGame, ['image']: data.url }));
-    } catch (e) {
-      console.log(e);
+    } catch ({
+      response: {
+        data: { message },
+      },
+    }) {
+      openToast(String(message), ToastOptions.error);
     }
   };
 
@@ -85,14 +103,21 @@ export const NewGame: React.FC<INewGame> = ({ handleOpenNewAuthor, label }) => {
       formData.append('upload_preset', 'jumymijs');
       const { data } = await uploadGamePhoto(formData);
       dispatch(addNewGameSaveOptionts({ ...newGame, ['preview']: data.url }));
-    } catch (e) {
-      console.log(e);
+    } catch ({
+      response: {
+        data: { message },
+      },
+    }) {
+      openToast(String(message), ToastOptions.error);
     }
   };
 
   const submitForm: SubmitHandler<FieldValues> = (data) => {
     if (label === 'New game') {
       dispatch(addNewGame({ ...data, image: newGame.image, preview: newGame.preview }));
+      if (!gameError && !isLoading) {
+        openToast('Successfully created', ToastOptions.success);
+      }
     }
     if (label === 'Update game') {
       dispatch(
@@ -103,6 +128,9 @@ export const NewGame: React.FC<INewGame> = ({ handleOpenNewAuthor, label }) => {
           preview: newGame.preview,
         }),
       );
+      if (!gameError && !isLoading) {
+        openToast('Successfully updated', ToastOptions.success);
+      }
     }
     handleReset();
   };
@@ -128,6 +156,12 @@ export const NewGame: React.FC<INewGame> = ({ handleOpenNewAuthor, label }) => {
     fillGenres();
     fillAuthors();
   }, []);
+
+  useEffect(() => {
+    if (gameError && !isLoading) {
+      openToast(gameError, ToastOptions.error);
+    }
+  }, [gameError]);
 
   return (
     <div className="new-game">
@@ -353,6 +387,7 @@ export const NewGame: React.FC<INewGame> = ({ handleOpenNewAuthor, label }) => {
           <Button style="admin-search" text={label} type="submit" onClick={() => submitForm} />
         </div>
       </form>
+      <ToastComponent />
     </div>
   );
 };

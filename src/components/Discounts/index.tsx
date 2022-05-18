@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { Controller, FieldValues, SubmitHandler, useForm } from 'react-hook-form';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
+import { AdminPanelState } from 'toolkitStore/types';
+import { useToast } from 'hooks';
+import { ToastComponent, Autocomplete } from 'components';
+import { ToastOptions } from 'types/enumerators';
 import { addDiscounts } from 'toolkitStore/thunk';
 import { fetchGames } from 'api/fetchGames';
-import { Autocomplete } from 'components';
 import { Button } from 'components/Button';
 import { IGame } from 'types/interfaces';
 
@@ -12,6 +15,11 @@ import './styles.scss';
 
 export const Discount: React.FC = () => {
   const [games, setGames] = useState<IGame[]>([]);
+  const { openToast } = useToast();
+  const { discountError, isLoading } = useSelector(
+    (state: AdminPanelState) => state.adminPanelReducer || [],
+  );
+
   const dispatch = useDispatch();
   const {
     handleSubmit,
@@ -24,13 +32,20 @@ export const Discount: React.FC = () => {
     try {
       const { data } = await fetchGames();
       setGames(data.rows);
-    } catch (e) {
-      console.log(e);
+    } catch ({
+      response: {
+        data: { message },
+      },
+    }) {
+      openToast(String(message), ToastOptions.error);
     }
   };
 
   useEffect(() => {
     fillGames();
+    if (discountError && !isLoading) {
+      openToast(discountError, ToastOptions.error);
+    }
   }, []);
 
   const submitForm: SubmitHandler<FieldValues> = (data) => {
@@ -39,6 +54,7 @@ export const Discount: React.FC = () => {
 
   return (
     <div className="login">
+      <h1>Discounts</h1>
       <form onSubmit={handleSubmit(submitForm)} className="login__form">
         <div className="login__group">
           <Controller
@@ -101,6 +117,7 @@ export const Discount: React.FC = () => {
           <Button text="Create discount" onClick={() => submitForm} style="sign-in" />
         </div>
       </form>
+      <ToastComponent />
     </div>
   );
 };

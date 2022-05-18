@@ -76,7 +76,7 @@ export const Autocomplete: React.FC<IAutocomplete> = ({
             {filtered.map((suggestion) => {
               return children ? (
                 <div
-                  className="autocomplete__list-item"
+                  className={`autocomplete__list-item ${style}-autocomplete__list-item`}
                   key={suggestion}
                   onClick={() => onGameClick(suggestion)}
                 >
@@ -85,7 +85,11 @@ export const Autocomplete: React.FC<IAutocomplete> = ({
                   )}
                 </div>
               ) : (
-                <li className="autocomplete__list-item" key={suggestion} onClick={onClick}>
+                <li
+                  className={`autocomplete__list-item ${style}-autocomplete__list-item`}
+                  key={suggestion}
+                  onClick={onClick}
+                >
                   {suggestion}
                 </li>
               );

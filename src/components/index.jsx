@@ -22,3 +22,4 @@ export { Confirm } from 'components/Confirm';
 export { Loader } from 'components/Loader';
 export { Timer } from 'components/Timer';
 export { Search } from 'components/Search';
+export { ToastComponent } from 'components/Toast';

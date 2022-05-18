@@ -71,6 +71,11 @@ const initialState = {
   ],
   isLoading: false,
   error: '',
+  gameError: '',
+  authorError: '',
+  discountError: '',
+  ordersError: '',
+  usersError: '',
 };
 
 const adminPanelSlice = createSlice({
@@ -83,10 +88,11 @@ const adminPanelSlice = createSlice({
     getOrdersSuccess: (state, { payload }) => {
       state.orders = payload;
       state.isLoading = false;
+      state.ordersError = '';
     },
     getOrdersFailure: (state, { payload }) => {
       state.isLoading = false;
-      state.error = payload;
+      state.ordersError = payload;
     },
     getUsersRequest: (state) => {
       state.isLoading = true;
@@ -94,10 +100,11 @@ const adminPanelSlice = createSlice({
     getUsersSuccess: (state, { payload }) => {
       state.users = payload;
       state.isLoading = false;
+      state.usersError = '';
     },
     getUsersFailure: (state, { payload }) => {
       state.isLoading = false;
-      state.error = payload;
+      state.usersError = payload;
     },
     blockUserRequest: (state) => {
       state.isLoading = true;
@@ -107,10 +114,11 @@ const adminPanelSlice = createSlice({
         .filter((user) => user.id === payload.id)
         .map((user) => user.blocked === payload.blocked);
       state.isLoading = false;
+      state.usersError = '';
     },
     blockUserFailure: (state, { payload }) => {
       state.isLoading = false;
-      state.error = payload;
+      state.usersError = payload;
     },
     addNewGameRequest: (state, { payload }) => {
       state.isLoading = true;
@@ -134,10 +142,11 @@ const adminPanelSlice = createSlice({
     addNewGameSuccess: (state, { payload }) => {
       state.isLoading = false;
       state.newGame = payload;
+      state.gameError = '';
     },
     addNewGameFailure: (state, { payload }) => {
       state.isLoading = false;
-      state.error = payload;
+      state.gameError = payload;
     },
     resetGame: (state) => {
       state.newGame = initialState.newGame;
@@ -149,10 +158,11 @@ const adminPanelSlice = createSlice({
     addNewAuthorSuccess: (state, { payload }) => {
       state.isLoading = false;
       state.newAuthor = payload;
+      state.authorError = '';
     },
     addNewAuthorFailure: (state, { payload }) => {
       state.isLoading = false;
-      state.error = payload;
+      state.authorError = payload;
     },
     addDiscountsRequest: (state, { payload }) => {
       state.isLoading = true;
@@ -161,10 +171,11 @@ const adminPanelSlice = createSlice({
     addDiscountsSuccess: (state, { payload }) => {
       state.isLoading = false;
       state.discount = payload;
+      state.discountError = '';
     },
     addDiscountsFailure: (state, { payload }) => {
       state.isLoading = false;
-      state.error = payload;
+      state.discountError = payload;
     },
   },
 });

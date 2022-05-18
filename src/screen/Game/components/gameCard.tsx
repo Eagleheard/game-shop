@@ -84,7 +84,7 @@ export const Card = ({
 
   return (
     <CardComponent search={search} cart={cart} order={order}>
-      {user && !purchaseDate && !quantity && (
+      {user && !purchaseDate && !quantity && !search && (
         <CardBuyButton>
           <Button disabled={count === 0} text="Buy now" onClick={handleBuy} style="card-buy" />
         </CardBuyButton>

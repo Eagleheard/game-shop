@@ -1,10 +1,14 @@
-import React, { ChangeEvent, useState } from 'react';
+import React, { ChangeEvent, useEffect, useState } from 'react';
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
+import { AdminPanelState } from 'toolkitStore/types';
+import { useToast } from 'hooks';
 import { uploadGamePhoto } from 'api/adminRequests';
 import { Button } from 'components/Button';
+import { ToastComponent } from 'components/Toast';
 import { addNewAuthor } from 'toolkitStore/thunk';
+import { ToastOptions } from 'types/enumerators';
 
 import userPhoto from 'assets/userPhoto.png';
 
@@ -16,6 +20,10 @@ export const NewAuthor: React.FC = () => {
   const [authorPhoto, setAuthorPhoto] = useState<string>();
   const [descriptionCount, setDescriptionCount] = useState(0);
   const dispatch = useDispatch();
+  const { openToast } = useToast();
+  const { authorError, isLoading } = useSelector(
+    (state: AdminPanelState) => state.adminPanelReducer || [],
+  );
 
   const { handleSubmit, register, reset } = useForm();
 
@@ -26,13 +34,21 @@ export const NewAuthor: React.FC = () => {
       formData.append('upload_preset', 'fabra5gx');
       const { data } = await uploadGamePhoto(formData);
       setAuthorPhoto(data.url);
-    } catch (e) {
-      console.log(e);
+      openToast('Successfully added', ToastOptions.success);
+    } catch ({
+      response: {
+        data: { message },
+      },
+    }) {
+      openToast(String(message), ToastOptions.error);
     }
   };
 
   const submitForm: SubmitHandler<FieldValues> = (data) => {
     dispatch(addNewAuthor({ ...data, image: authorPhoto }));
+    if (!authorError && !isLoading) {
+      openToast('Successfully created', ToastOptions.success);
+    }
     handleReset();
   };
 
@@ -40,6 +56,12 @@ export const NewAuthor: React.FC = () => {
     reset();
     setAuthorPhoto('');
   };
+
+  useEffect(() => {
+    if (authorError && !isLoading) {
+      openToast(authorError, ToastOptions.error);
+    }
+  }, [authorError]);
 
   return (
     <div className="new-author">
@@ -128,6 +150,7 @@ export const NewAuthor: React.FC = () => {
           <Button style="admin-search" text="Add game" type="submit" onClick={() => submitForm} />
         </div>
       </form>
+      <ToastComponent />
     </div>
   );
 };

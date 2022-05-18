@@ -41,8 +41,12 @@ export const fetchAllOrders = (params: AxiosRequestConfig<IOrderParams>) => {
     try {
       const { data } = await getAllOrders({ params });
       dispatch(getOrdersSuccess(data));
-    } catch (error) {
-      dispatch(getOrdersFailure(error));
+    } catch ({
+      response: {
+        data: { message },
+      },
+    }) {
+      dispatch(getOrdersFailure(message));
     }
   };
 };
@@ -53,8 +57,12 @@ export const fetchAllUsers = () => {
     try {
       const { data } = await getAllUsers();
       dispatch(getUsersSuccess(data));
-    } catch (error) {
-      dispatch(getUsersFailure(error));
+    } catch ({
+      response: {
+        data: { message },
+      },
+    }) {
+      dispatch(getUsersFailure(message));
     }
   };
 };
@@ -65,8 +73,12 @@ export const blockCurrentUser = (params: AxiosRequestConfig<IUserParams>) => {
     try {
       const { data } = await blockUser(params);
       dispatch(blockUserSuccess(data));
-    } catch (error) {
-      dispatch(blockUserFailure(error));
+    } catch ({
+      response: {
+        data: { message },
+      },
+    }) {
+      dispatch(blockUserFailure(message));
     }
   };
 };
@@ -75,9 +87,13 @@ export const addNewGame = (params: INewGameParams) => {
   return async (dispatch: (arg0: { payload: INewGameParams; type: string }) => void) => {
     dispatch(addNewGameRequest(params));
     try {
-      createNewGame(params);
-    } catch (error) {
-      dispatch(addNewGameFailure(error));
+      await createNewGame(params);
+    } catch ({
+      response: {
+        data: { message },
+      },
+    }) {
+      dispatch(addNewGameFailure(message));
     }
   };
 };
@@ -87,8 +103,12 @@ export const updateSelectedGame = (params: INewGameParams) => {
     dispatch(addNewGameRequest(params));
     try {
       updateGame(params);
-    } catch (error) {
-      dispatch(addNewGameFailure(error));
+    } catch ({
+      response: {
+        data: { message },
+      },
+    }) {
+      dispatch(addNewGameFailure(message));
     }
   };
 };
@@ -98,8 +118,12 @@ export const addNewAuthor = (params: INewAuthorParams) => {
     dispatch(addNewAuthorRequest(params));
     try {
       createNewAuthor(params);
-    } catch (error) {
-      dispatch(addNewAuthorFailure(error));
+    } catch ({
+      response: {
+        data: { message },
+      },
+    }) {
+      dispatch(addNewAuthorFailure(message));
     }
   };
 };
@@ -109,8 +133,12 @@ export const addDiscounts = (params: IDiscountParams) => {
     dispatch(addDiscountsRequest(params));
     try {
       createDiscounts(params);
-    } catch (error) {
-      dispatch(addDiscountsFailure(error));
+    } catch ({
+      response: {
+        data: { message },
+      },
+    }) {
+      dispatch(addDiscountsFailure(message));
     }
   };
 };

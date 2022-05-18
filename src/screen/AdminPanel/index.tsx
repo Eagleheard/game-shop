@@ -1,26 +1,25 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { Discount, GamesTable, NewAuthor, NewGame, Orders, SignUp, Users } from 'components';
+import {
+  Discount,
+  GamesTable,
+  Loader,
+  NewAuthor,
+  NewGame,
+  Orders,
+  SignUp,
+  Users,
+  ToastComponent,
+} from 'components';
 import { AdminPanelState } from 'toolkitStore/types';
 import { fetchAllOrders } from 'toolkitStore/thunk';
 import { IOrderParams } from 'types/interfaces';
 import { useAuth } from 'hooks/useAuth';
-import { userOptions } from 'types/enumerators';
+import { userOptions, ToastOptions } from 'types/enumerators';
+import { useToast } from 'hooks';
 
-import { styled, createTheme, ThemeProvider } from '@mui/material/styles';
-import CssBaseline from '@mui/material/CssBaseline';
 import MuiDrawer from '@mui/material/Drawer';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import Divider from '@mui/material/Divider';
-import IconButton from '@mui/material/IconButton';
-import Container from '@mui/material/Container';
-import Grid from '@mui/material/Grid';
-import Paper from '@mui/material/Paper';
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import ListAltIcon from '@mui/icons-material/ListAlt';
 import {
   FormControl,
   InputLabel,
@@ -37,10 +36,24 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  Paper,
+  Grid,
+  Container,
+  IconButton,
+  Divider,
+  Toolbar,
+  Box,
+  CssBaseline,
 } from '@mui/material';
 
+import ListAltIcon from '@mui/icons-material/ListAlt';
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import FiberNewIcon from '@mui/icons-material/FiberNew';
 import LocalOfferIcon from '@mui/icons-material/LocalOffer';
+import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt';
+
+import { styled, createTheme, ThemeProvider } from '@mui/material/styles';
 
 enum orderOptions {
   NEWEST_ORDERS = 'Newest orders',
@@ -101,9 +114,10 @@ export const AdminPanel = () => {
   const [isUsersVisible, setIsUsersVisible] = useState(false);
   const [isSignUpVisible, setIsSignUpVisible] = useState(false);
   const dispatch = useDispatch();
-  const { orders, isLoading } = useSelector(
+  const { orders, isLoading, ordersError } = useSelector(
     (state: AdminPanelState) => state.adminPanelReducer || [],
   );
+  const { openToast } = useToast();
 
   const toggleDrawer = () => {
     setOpen(!open);
@@ -209,6 +223,9 @@ export const AdminPanel = () => {
 
   useEffect(() => {
     dispatch(fetchAllOrders({ params }));
+    if (ordersError && !isLoading) {
+      openToast(ordersError, ToastOptions.error);
+    }
   }, [params]);
 
   return (
@@ -271,7 +288,7 @@ export const AdminPanel = () => {
             {user?.role === userOptions.ADMIN && (
               <ListItem button key="Create manager" onClick={() => handleOpen(pageOptions.SIGN_UP)}>
                 <ListItemIcon>
-                  <LocalOfferIcon />
+                  <PersonAddAltIcon />
                 </ListItemIcon>
                 <ListItemText primary="Create manager" />
               </ListItem>
@@ -342,7 +359,7 @@ export const AdminPanel = () => {
                           </Table>
                         </TableContainer>
                       ) : (
-                        <p>Loading</p>
+                        <Loader />
                       )}
                     </>
                   )}
@@ -385,6 +402,7 @@ export const AdminPanel = () => {
           </Container>
         </Box>
       </Box>
+      <ToastComponent />
     </ThemeProvider>
   );
 };

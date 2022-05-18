@@ -56,5 +56,11 @@ export interface AdminPanelState {
       blocked: boolean;
     }[];
     isLoading?: boolean;
+    error?: string;
+    gameError?: string;
+    authorError?: string;
+    discountError?: string;
+    ordersError?: string;
+    usersError?: string;
   };
 }

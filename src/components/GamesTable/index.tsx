@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+
 import { useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Table from '@mui/material/Table';
@@ -19,14 +21,17 @@ import { fetchGames } from 'api/fetchGames';
 import { TableHead } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { Autocomplete, Confirm } from 'components';
+import { Autocomplete, Confirm, Loader } from 'components';
 import ClearIcon from '@mui/icons-material/Clear';
 
-import './styles.scss';
-import { useDispatch } from 'react-redux';
 import { addNewGameRequest } from 'toolkitStore/slices';
 import { Portal } from 'components/Portal';
 import { deleteGame } from 'api/adminRequests';
+import { useToast } from 'hooks';
+import { ToastOptions } from 'types/enumerators';
+import { ToastComponent } from 'components/Toast';
+
+import './styles.scss';
 
 interface TablePaginationActionsProps {
   count: number;
@@ -95,13 +100,18 @@ export const GamesTable: React.FC<IGamesTable> = ({ handleOpenNewGame }) => {
   const [games, setGames] = useState<IGame[]>([]);
   const [isConfirmVisible, setIsConfirmVisible] = useState(false);
   const dispatch = useDispatch();
+  const { openToast } = useToast();
 
   const fillGames = async () => {
     try {
       const { data } = await fetchGames();
       setGames(data.rows);
-    } catch (e) {
-      console.log(e);
+    } catch ({
+      response: {
+        data: { message },
+      },
+    }) {
+      openToast(String(message), ToastOptions.error);
     }
   };
 
@@ -111,8 +121,13 @@ export const GamesTable: React.FC<IGamesTable> = ({ handleOpenNewGame }) => {
       const { data } = await fetchGames();
       setGames(data.rows);
       setIsConfirmVisible(false);
-    } catch (e) {
-      console.log(e);
+      openToast('Successfully deleted', ToastOptions.success);
+    } catch ({
+      response: {
+        data: { message },
+      },
+    }) {
+      openToast(String(message), ToastOptions.error);
     }
   };
 
@@ -147,103 +162,111 @@ export const GamesTable: React.FC<IGamesTable> = ({ handleOpenNewGame }) => {
   return (
     <>
       <h1>All games</h1>
-      <TableContainer className="table" component={Paper}>
-        <ClearIcon className="table__close-btn" onClick={fillGames} />
-        <Autocomplete
-          options={games.map(({ name }) => name)}
-          name="Game"
-          onChangeInput={handleSelectGame}
-        />
-        <Table sx={{ minWidth: 500 }} aria-label="custom pagination table">
-          <TableHead>
-            <TableRow>
-              <TableCell style={{ width: 160 }} align="center">
-                Name
-              </TableCell>
-              <TableCell style={{ width: 160 }} align="center">
-                Author
-              </TableCell>
-              <TableCell style={{ width: 160 }} align="center">
-                Genre
-              </TableCell>
-              <TableCell style={{ width: 160 }} align="center">
-                Price
-              </TableCell>
-              <TableCell style={{ width: 40 }} align="center">
-                Edit
-              </TableCell>
-              <TableCell style={{ width: 40 }} align="center">
-                Delete
-              </TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {(rowsPerPage > 0
-              ? games.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              : games
-            ).map((game) => (
-              <TableRow key={game.id}>
+      {games.length !== 0 ? (
+        <TableContainer className="table" component={Paper}>
+          <ClearIcon className="table__close-btn" onClick={fillGames} />
+          <Autocomplete
+            options={games.map(({ name }) => name)}
+            name="Game"
+            onChangeInput={handleSelectGame}
+          />
+          <Table sx={{ minWidth: 500 }} aria-label="custom pagination table">
+            <TableHead>
+              <TableRow>
                 <TableCell style={{ width: 160 }} align="center">
-                  {game.name}
+                  Name
                 </TableCell>
                 <TableCell style={{ width: 160 }} align="center">
-                  {game.author.name}
+                  Author
                 </TableCell>
                 <TableCell style={{ width: 160 }} align="center">
-                  {game.genre.name}
+                  Genre
                 </TableCell>
                 <TableCell style={{ width: 160 }} align="center">
-                  {game.price}$
-                </TableCell>
-                <TableCell className="table__cell" style={{ width: 40 }} align="center">
-                  <EditIcon className="table__cell--icon" onClick={() => handleEditGame(game)} />
+                  Price
                 </TableCell>
                 <TableCell style={{ width: 40 }} align="center">
-                  <DeleteIcon onClick={() => setIsConfirmVisible(true)} />
+                  Edit
                 </TableCell>
-                {isConfirmVisible && (
-                  <Portal
-                    Component={() => (
-                      <Confirm
-                        confirmDeleting={() => handleDeleteGame(game.id)}
-                        handleClose={() => setIsConfirmVisible(false)}
-                      />
-                    )}
-                    isOpen={isConfirmVisible}
-                    text="Delete selected game?"
-                    handleClose={() => setIsConfirmVisible(false)}
-                  />
-                )}
+                <TableCell style={{ width: 40 }} align="center">
+                  Delete
+                </TableCell>
               </TableRow>
-            ))}
-            {emptyRows > 0 && (
-              <TableRow style={{ height: 53 * emptyRows }}>
-                <TableCell colSpan={6} />
+            </TableHead>
+            <TableBody>
+              {(rowsPerPage > 0
+                ? games.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                : games
+              ).map((game) => (
+                <TableRow key={game.id}>
+                  <TableCell style={{ width: 160 }} align="center">
+                    {game.name}
+                  </TableCell>
+                  <TableCell style={{ width: 160 }} align="center">
+                    {game.author.name}
+                  </TableCell>
+                  <TableCell style={{ width: 160 }} align="center">
+                    {game.genre.name}
+                  </TableCell>
+                  <TableCell style={{ width: 160 }} align="center">
+                    {game.price}$
+                  </TableCell>
+                  <TableCell className="table__cell" style={{ width: 40 }} align="center">
+                    <EditIcon className="table__cell--icon" onClick={() => handleEditGame(game)} />
+                  </TableCell>
+                  <TableCell className="table__cell" style={{ width: 40 }} align="center">
+                    <DeleteIcon
+                      className="table__cell--icon"
+                      onClick={() => setIsConfirmVisible(true)}
+                    />
+                  </TableCell>
+                  {isConfirmVisible && (
+                    <Portal
+                      Component={() => (
+                        <Confirm
+                          confirmDeleting={() => handleDeleteGame(game.id)}
+                          handleClose={() => setIsConfirmVisible(false)}
+                        />
+                      )}
+                      isOpen={isConfirmVisible}
+                      text="Delete selected game?"
+                      handleClose={() => setIsConfirmVisible(false)}
+                    />
+                  )}
+                </TableRow>
+              ))}
+              {emptyRows > 0 && (
+                <TableRow style={{ height: 53 * emptyRows }}>
+                  <TableCell colSpan={6} />
+                </TableRow>
+              )}
+            </TableBody>
+            <TableFooter>
+              <TableRow>
+                <TablePagination
+                  rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
+                  colSpan={3}
+                  count={games.length}
+                  rowsPerPage={rowsPerPage}
+                  page={page}
+                  SelectProps={{
+                    inputProps: {
+                      'aria-label': 'games per page',
+                    },
+                    native: true,
+                  }}
+                  onPageChange={handleChangePage}
+                  onRowsPerPageChange={handleChangeRowsPerPage}
+                  ActionsComponent={TablePaginationActions}
+                />
               </TableRow>
-            )}
-          </TableBody>
-          <TableFooter>
-            <TableRow>
-              <TablePagination
-                rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
-                colSpan={3}
-                count={games.length}
-                rowsPerPage={rowsPerPage}
-                page={page}
-                SelectProps={{
-                  inputProps: {
-                    'aria-label': 'games per page',
-                  },
-                  native: true,
-                }}
-                onPageChange={handleChangePage}
-                onRowsPerPageChange={handleChangeRowsPerPage}
-                ActionsComponent={TablePaginationActions}
-              />
-            </TableRow>
-          </TableFooter>
-        </Table>
-      </TableContainer>
+            </TableFooter>
+          </Table>
+        </TableContainer>
+      ) : (
+        <Loader />
+      )}
+      <ToastComponent />
     </>
   );
 };
