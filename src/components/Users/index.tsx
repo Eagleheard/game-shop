@@ -131,7 +131,7 @@ export const Users = () => {
   return (
     <>
       <h1>Users</h1>
-      {users.length !== 0 ? (
+      {!isLoading ? (
         <TableContainer className="table" component={Paper}>
           <Table sx={{ minWidth: 500 }} aria-label="custom pagination table">
             <TableHead>

@@ -135,6 +135,23 @@
     cursor: pointer;
   }
 
+  &__sign-in {
+    height: 3%;
+    width: 35%;
+    border: none;
+    font-family: $lato;
+    font-size: 14px;
+    background: $search-primary;
+    color: $black;
+    border-radius: 5px;
+    margin: 0;
+    cursor: pointer;
+
+    @include media-mobile-large {
+      height: 30px;
+    }
+  }
+
   @include media-table-large {
     width: 35px;
     height: 35px;
