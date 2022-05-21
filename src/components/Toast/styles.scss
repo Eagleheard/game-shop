@@ -2,79 +2,79 @@
 @import 'constants/media-queries';
 
 .snackbar {
-    display: none;
-    width: 20%;
-    color: $black;
-    border-radius: 2px;
-    padding: 16px;
-    position: absolute;
-    right: 30px;
-    bottom: 30px;
+  display: none;
+  width: 20%;
+  color: $black;
+  border-radius: 2px;
+  padding: 16px;
+  position: absolute;
+  right: 30px;
+  bottom: 30px;
 
-    &__show {
-        display: block;
-        animation: fadein 0.5s, fadeout 0.5s 2.5s;
+  &__show {
+    display: block;
+    animation: fadein 0.5s, fadeout 0.5s 2.5s;
 
-        &--error {
-            background-color: $error;
-            border-top: 5px solid $red;
-        }
-    
-        &--success {
-            background-color: $success;
-            border-top: 5px solid $green;
-        }
+    &--error {
+      background-color: $error;
+      border-top: 5px solid $red;
     }
 
-    &__icon {
-        height: 25px;
-        width: 25px;
-        margin-right: 10px;
+    &--success {
+      background-color: $success;
+      border-top: 5px solid $green;
     }
-    
-    &__content {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: space-between;
-        font-size: 16px;
-        font-family: $lato;
-        font-weight: bold;
-    }
+  }
 
-    @keyframes fadein {
-        from {
-          bottom: 0;
-          opacity: 0;
-        }
-        to {
-          bottom: 30px;
-          opacity: 1;
-        }
-      }
-      
-    @keyframes fadeout {
-        from {
-            bottom: 30px;
-            opacity: 1;
-        }
-        to {
-            bottom: 0;
-            opacity: 0;
-        }
-    }
+  &__icon {
+    height: 25px;
+    width: 25px;
+    margin-right: 10px;
+  }
 
-    @include media-table-large {
-        width: 95%;
-        right: 25px;
-        align-self: center;
-    }
+  &__content {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 16px;
+    font-family: $lato;
+    font-weight: bold;
+  }
 
-    @include media-mobile-large {
-        right: 18px;
+  @keyframes fadein {
+    from {
+      bottom: 0;
+      opacity: 0;
     }
+    to {
+      bottom: 30px;
+      opacity: 1;
+    }
+  }
 
-    @include media-mobile-small {
-        right: 10px;
+  @keyframes fadeout {
+    from {
+      bottom: 30px;
+      opacity: 1;
     }
+    to {
+      bottom: 0;
+      opacity: 0;
+    }
+  }
+
+  @include media-table-large {
+    width: 95%;
+    right: 25px;
+    align-self: center;
+  }
+
+  @include media-mobile-large {
+    right: 18px;
+  }
+
+  @include media-mobile-small {
+    right: 10px;
+  }
 }

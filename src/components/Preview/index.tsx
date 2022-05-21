@@ -27,12 +27,8 @@ export const Preview = () => {
     try {
       const { data } = await fetchPreviewGames();
       setPreviewGames(data.rows);
-    } catch ({
-      response: {
-        data: { message },
-      },
-    }) {
-      openToast(String(message), ToastOptions.error);
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -51,11 +47,11 @@ export const Preview = () => {
   }, [previewPage, previewGames.length]);
 
   return (
-    <div className="preview">
+    <div className="preview" data-testid="container">
       {previewGames.map(({ id, name, genre, price, preview }, index) => (
         <div
           key={id}
-          data-testid='preview'
+          data-testid="preview"
           className={classNames('preview__container', {
             'preview__container--active': index === previewPage,
             'preview__container--prev': index === previewPage - 1,
