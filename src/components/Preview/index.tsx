@@ -27,8 +27,12 @@ export const Preview = () => {
     try {
       const { data } = await fetchPreviewGames();
       setPreviewGames(data.rows);
-    } catch (error) {
-      console.log(error);
+    } catch ({
+      response: {
+        data: { message },
+      },
+    }) {
+      openToast(String(message), ToastOptions.error);
     }
   };
 
@@ -79,18 +83,22 @@ export const Preview = () => {
           </div>
         </div>
       ))}
-      <Button
-        text="«"
-        onClick={setPreviousPreviewPage}
-        style="prev-btn"
-        disabled={previewPage === 0}
-      />
-      <Button
-        text="»"
-        onClick={setNextPreviewPage}
-        style="next-btn"
-        disabled={previewPage === previewGames.length - 1}
-      />
+      {previewGames.length !== 0 && (
+        <>
+          <Button
+            text="«"
+            onClick={setPreviousPreviewPage}
+            style="prev-btn"
+            disabled={previewPage === 0}
+          />
+          <Button
+            text="»"
+            onClick={setNextPreviewPage}
+            style="next-btn"
+            disabled={previewPage === previewGames.length - 1}
+          />
+        </>
+      )}
     </div>
   );
 };

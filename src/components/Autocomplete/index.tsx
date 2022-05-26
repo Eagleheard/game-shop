@@ -62,7 +62,7 @@ export const Autocomplete: React.FC<IAutocomplete> = ({
     if (isShow && value) {
       if (filtered.length) {
         return (
-          <ul className="autocomplete__list">
+          <ul className="autocomplete__list" data-testid="autocomplete__list">
             {filtered.map((suggestion) => {
               return children ? (
                 <div
@@ -75,7 +75,12 @@ export const Autocomplete: React.FC<IAutocomplete> = ({
                   )}
                 </div>
               ) : (
-                <li className="autocomplete__list-item" key={suggestion} onClick={onClick}>
+                <li
+                  data-testid="suggest"
+                  className="autocomplete__list-item"
+                  key={suggestion}
+                  onClick={onClick}
+                >
                   {suggestion}
                 </li>
               );
@@ -85,7 +90,7 @@ export const Autocomplete: React.FC<IAutocomplete> = ({
       }
 
       return (
-        <ul className="autocomplete__list">
+        <ul className="autocomplete__list" data-testid="autocomplete__list">
           <li className="autocomplete__list-item">Not found</li>
         </ul>
       );
@@ -97,6 +102,7 @@ export const Autocomplete: React.FC<IAutocomplete> = ({
     <div className="autocomplete">
       <input
         type="text"
+        data-testid="autocomplete"
         value={value}
         className="autocomplete__input"
         placeholder={name}

@@ -39,8 +39,12 @@ export const Store = () => {
       try {
         const { data } = await fetchGames(currentPage, DATA_LIMIT, { params });
         setGames(data.rows);
-      } catch ({ response: { data } }) {
-        openToast(String(data), ToastOptions.error);
+      } catch ({
+        response: {
+          data: { message },
+        },
+      }) {
+        openToast(message, ToastOptions.error);
       }
     },
     [currentPage],

@@ -38,8 +38,12 @@ export const Form: React.FC<IForm> = ({ games, fillGames }) => {
     try {
       const { data } = await fetchGenres();
       setGenres(data);
-    } catch (e) {
-      openToast(e, ToastOptions.error);
+    } catch ({
+      response: {
+        data: { message },
+      },
+    }) {
+      openToast(message, ToastOptions.error);
     }
   };
 
