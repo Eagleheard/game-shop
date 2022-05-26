@@ -9,7 +9,7 @@ interface IConfirm {
   handleClose: () => void;
 }
 
-export const Confirm: React.FC<IConfirm> = ({ confirmDeleting, handleClose }) => {
+export const ConfirmDialog: React.FC<IConfirm> = ({ confirmDeleting, handleClose }) => {
   return (
     <div className="confirm">
       <Button text="No" onClick={handleClose} style="clear" />

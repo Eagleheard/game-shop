@@ -12,7 +12,7 @@ import {
   Users,
   ToastComponent,
 } from 'components';
-import { AdminPanelState } from 'toolkitStore/types';
+import { OrdersReducerState } from 'toolkitStore/types';
 import { fetchAllOrders } from 'toolkitStore/thunk';
 import { IOrderParams } from 'types/interfaces';
 import { useAuth } from 'hooks/useAuth';
@@ -115,8 +115,9 @@ export const AdminPanel = () => {
   const [isSignUpVisible, setIsSignUpVisible] = useState(false);
   const dispatch = useDispatch();
   const { orders, isLoading, ordersError } = useSelector(
-    (state: AdminPanelState) => state.adminPanelReducer || [],
+    (state: OrdersReducerState) => state.ordersReducer || [],
   );
+
   const { openToast } = useToast();
 
   const toggleDrawer = () => {
@@ -365,14 +366,14 @@ export const AdminPanel = () => {
                   )}
                   {isNewGameVisible && (
                     <NewGame
-                      label="New game"
+                      createMode="New game"
                       handleOpenNewAuthor={() => handleOpen(pageOptions.NEW_GAME)}
                     />
                   )}
                   {isNewAuthorVisible && <NewAuthor />}
                   {isUpdateGameVisible && (
                     <NewGame
-                      label="Update game"
+                      createMode="Update game"
                       handleOpenNewAuthor={() => handleOpen(pageOptions.UPDATE_GAME)}
                     />
                   )}
@@ -381,7 +382,7 @@ export const AdminPanel = () => {
                   )}
                   {isUsersVisible && <Users />}
                   {isDiscountsVisible && <Discount />}
-                  {isSignUpVisible && user?.role === userOptions.ADMIN && (
+                  {isSignUpVisible && user.role === userOptions.ADMIN && (
                     <SignUp handleSwitch={() => setIsSignUpVisible(false)} />
                   )}
                 </Paper>

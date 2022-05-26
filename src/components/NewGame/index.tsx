@@ -5,13 +5,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { ToastComponent } from 'components/Toast';
 import { ToastOptions } from 'types/enumerators';
 import { useToast } from 'hooks';
-import { AdminPanelState } from 'toolkitStore/types';
-import { addNewGameSaveOptionts, resetGame } from 'toolkitStore/slices';
+import { GamesReducerState } from 'toolkitStore/types';
+
+import { addNewGameSaveOptionts, resetGame } from 'toolkitStore/actions/games';
 import { addNewGame, updateSelectedGame } from 'toolkitStore/thunk';
-import { Autocomplete, Checkbox } from 'components';
+import { Autocomplete, Checkbox, Button } from 'components';
 import { fetchGenres } from 'api/fetchGenres';
 import { uploadGamePhoto } from 'api/adminRequests';
-import { Button } from 'components/Button';
 import { fetchAllAuthors } from 'api/fetchAuthor';
 
 import gameBackground from 'assets/gameBackground.png';
@@ -30,18 +30,18 @@ interface IAuthor {
 
 interface INewGame {
   handleOpenNewAuthor: () => void;
-  label: string;
+  createMode: string;
 }
 
-const maxDescriptionCount = 300;
+const MAX_DESCRIPTION_COUNT = 300;
 
-export const NewGame: React.FC<INewGame> = ({ handleOpenNewAuthor, label }) => {
+export const NewGame: React.FC<INewGame> = ({ handleOpenNewAuthor, createMode }) => {
   const [genres, setGenres] = useState<IGenre[]>([]);
   const [authors, setAuthors] = useState<IAuthor[]>([]);
   const [isDiskChecked, setIsDiskChecked] = useState(false);
   const [descriptionCount, setDescriptionCount] = useState(0);
   const { newGame, gameError, isLoading } = useSelector(
-    (state: AdminPanelState) => state.adminPanelReducer || [],
+    (state: GamesReducerState) => state.gamesReducer || [],
   );
   const dispatch = useDispatch();
   const { openToast } = useToast();
@@ -113,13 +113,13 @@ export const NewGame: React.FC<INewGame> = ({ handleOpenNewAuthor, label }) => {
   };
 
   const submitForm: SubmitHandler<FieldValues> = (data) => {
-    if (label === 'New game') {
+    if (createMode === 'New game') {
       dispatch(addNewGame({ ...data, image: newGame.image, preview: newGame.preview }));
       if (!gameError && !isLoading) {
         openToast('Successfully created', ToastOptions.success);
       }
     }
-    if (label === 'Update game') {
+    if (createMode === 'Update game') {
       dispatch(
         updateSelectedGame({
           ...data,
@@ -166,7 +166,7 @@ export const NewGame: React.FC<INewGame> = ({ handleOpenNewAuthor, label }) => {
   return (
     <div className="new-game">
       <form onSubmit={handleSubmit(submitForm)} className="new-game__form">
-        <h1 className="new-game__preview">{label}</h1>
+        <h1 className="new-game__preview">{createMode}</h1>
         <div className="new-game__info">
           <div className="new-game__image-info">
             <div className="new-game__main-image">
@@ -253,7 +253,7 @@ export const NewGame: React.FC<INewGame> = ({ handleOpenNewAuthor, label }) => {
                 placeholder="description"
                 className="new-game__description"
                 onChange={handleDescriptionCount}
-                maxLength={maxDescriptionCount}
+                maxLength={MAX_DESCRIPTION_COUNT}
               />
               <label htmlFor="description" className="new-game__label">
                 Description
@@ -262,7 +262,7 @@ export const NewGame: React.FC<INewGame> = ({ handleOpenNewAuthor, label }) => {
                 <p className="new-game__errors">Description cannot be empty</p>
               )}
               <p className="new-game__description-count">
-                {maxDescriptionCount - descriptionCount}
+                {MAX_DESCRIPTION_COUNT - descriptionCount}
               </p>
             </div>
           </div>
@@ -384,7 +384,7 @@ export const NewGame: React.FC<INewGame> = ({ handleOpenNewAuthor, label }) => {
         </div>
         <div className="new-game__submit">
           <Button style="admin-clear" text="Clear" type="reset" onClick={handleReset} />
-          <Button style="admin-search" text={label} type="submit" onClick={() => submitForm} />
+          <Button style="admin-search" text={createMode} type="submit" onClick={() => submitForm} />
         </div>
       </form>
       <ToastComponent />

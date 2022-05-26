@@ -2,14 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { Controller, FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { AdminPanelState } from 'toolkitStore/types';
-import { useToast } from 'hooks';
-import { ToastComponent, Search } from 'components';
+import { DiscountsReducerState } from 'toolkitStore/types';
 import { ToastOptions } from 'types/enumerators';
 import { addDiscounts } from 'toolkitStore/thunk';
-import { fetchGames } from 'api/fetchGames';
-import { Button } from 'components/Button';
 import { IGame } from 'types/interfaces';
+import { useToast } from 'hooks';
+import { ToastComponent, Search, Button } from 'components';
+import { fetchGames } from 'api/fetchGames';
 
 import './styles.scss';
 
@@ -17,7 +16,7 @@ export const Discount: React.FC = () => {
   const [games, setGames] = useState<IGame[]>([]);
   const { openToast } = useToast();
   const { discountError, isLoading } = useSelector(
-    (state: AdminPanelState) => state.adminPanelReducer || [],
+    (state: DiscountsReducerState) => state.discountReducer || [],
   );
 
   const dispatch = useDispatch();

@@ -17,23 +17,18 @@ import {
   getAllUsers,
   updateGame,
 } from 'api/adminRequests';
+import { addDiscountsRequest, addDiscountsFailure } from 'toolkitStore/actions/discounts';
+import { addNewGameRequest, addNewGameFailure } from 'toolkitStore/actions/games';
+import { getOrdersRequest, getOrdersSuccess, getOrdersFailure } from 'toolkitStore/actions/orders';
 import {
-  addDiscountsFailure,
-  addDiscountsRequest,
-  addNewAuthorFailure,
-  addNewAuthorRequest,
-  addNewGameFailure,
-  addNewGameRequest,
-  blockUserFailure,
-  blockUserRequest,
-  blockUserSuccess,
-  getOrdersFailure,
-  getOrdersRequest,
-  getOrdersSuccess,
-  getUsersFailure,
   getUsersRequest,
   getUsersSuccess,
-} from 'toolkitStore/slices';
+  getUsersFailure,
+  blockUserRequest,
+  blockUserSuccess,
+  blockUserFailure,
+} from 'toolkitStore/actions/users';
+import { addNewAuthorRequest, addNewAuthorFailure } from 'toolkitStore/slices/authors';
 
 export const fetchAllOrders = (params: AxiosRequestConfig<IOrderParams>) => {
   return async (dispatch: (arg0: { payload?: AdminPanelState; type: string }) => void) => {

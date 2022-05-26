@@ -1,3 +1,5 @@
+import axios, { AxiosRequestConfig } from 'axios';
+
 import {
   IDiscountParams,
   INewAuthorParams,
@@ -5,7 +7,6 @@ import {
   IOrderParams,
   IUserParams,
 } from 'types/interfaces';
-import axios, { AxiosRequestConfig } from 'axios';
 
 export const uploadGamePhoto = (formData: FormData) => {
   return axios.post('https://api.cloudinary.com/v1_1/game-shop/image/upload', formData);

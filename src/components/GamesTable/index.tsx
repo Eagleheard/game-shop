@@ -1,97 +1,39 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 
-import { useTheme } from '@mui/material/styles';
-import Box from '@mui/material/Box';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableFooter from '@mui/material/TableFooter';
-import TablePagination from '@mui/material/TablePagination';
-import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
-import IconButton from '@mui/material/IconButton';
-import FirstPageIcon from '@mui/icons-material/FirstPage';
-import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
-import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
-import LastPageIcon from '@mui/icons-material/LastPage';
-import { IGame } from 'types/interfaces';
-import { fetchGames } from 'api/fetchGames';
-import { TableHead } from '@mui/material';
-import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/Delete';
-import { Autocomplete, Confirm, Loader } from 'components';
-import ClearIcon from '@mui/icons-material/Clear';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableFooter,
+  TablePagination,
+  TableRow,
+  Paper,
+  TableHead,
+} from '@mui/material';
 
-import { addNewGameRequest } from 'toolkitStore/slices';
+import { addNewGameRequest } from 'toolkitStore/actions/games';
+import { ToastOptions } from 'types/enumerators';
+import { IGame } from 'types/interfaces';
 import { Portal } from 'components/Portal';
 import { deleteGame } from 'api/adminRequests';
+import { fetchGames } from 'api/fetchGames';
 import { useToast } from 'hooks';
-import { ToastOptions } from 'types/enumerators';
-import { ToastComponent } from 'components/Toast';
+import {
+  Autocomplete,
+  ConfirmDialog,
+  Loader,
+  ToastComponent,
+  TablePaginationButtons,
+} from 'components';
+
+import { Edit, Delete, Clear } from '@mui/icons-material';
 
 import './styles.scss';
 
-interface TablePaginationActionsProps {
-  count: number;
-  page: number;
-  rowsPerPage: number;
-  onPageChange: (event: React.MouseEvent<HTMLButtonElement>, newPage: number) => void;
-}
-
 interface IGamesTable {
   handleOpenNewGame: () => void;
-}
-
-function TablePaginationActions(props: TablePaginationActionsProps) {
-  const theme = useTheme();
-  const { count, page, rowsPerPage, onPageChange } = props;
-
-  const handleFirstPageButtonClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    onPageChange(event, 0);
-  };
-
-  const handleBackButtonClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    onPageChange(event, page - 1);
-  };
-
-  const handleNextButtonClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    onPageChange(event, page + 1);
-  };
-
-  const handleLastPageButtonClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    onPageChange(event, Math.max(0, Math.ceil(count / rowsPerPage) - 1));
-  };
-
-  return (
-    <Box sx={{ flexShrink: 0, ml: 2.5 }}>
-      <IconButton
-        onClick={handleFirstPageButtonClick}
-        disabled={page === 0}
-        aria-label="first page"
-      >
-        {theme.direction === 'rtl' ? <LastPageIcon /> : <FirstPageIcon />}
-      </IconButton>
-      <IconButton onClick={handleBackButtonClick} disabled={page === 0} aria-label="previous page">
-        {theme.direction === 'rtl' ? <KeyboardArrowRight /> : <KeyboardArrowLeft />}
-      </IconButton>
-      <IconButton
-        onClick={handleNextButtonClick}
-        disabled={page >= Math.ceil(count / rowsPerPage) - 1}
-        aria-label="next page"
-      >
-        {theme.direction === 'rtl' ? <KeyboardArrowLeft /> : <KeyboardArrowRight />}
-      </IconButton>
-      <IconButton
-        onClick={handleLastPageButtonClick}
-        disabled={page >= Math.ceil(count / rowsPerPage) - 1}
-        aria-label="last page"
-      >
-        {theme.direction === 'rtl' ? <FirstPageIcon /> : <LastPageIcon />}
-      </IconButton>
-    </Box>
-  );
 }
 
 export const GamesTable: React.FC<IGamesTable> = ({ handleOpenNewGame }) => {
@@ -164,7 +106,7 @@ export const GamesTable: React.FC<IGamesTable> = ({ handleOpenNewGame }) => {
       <h1>All games</h1>
       {games.length !== 0 ? (
         <TableContainer className="table" component={Paper}>
-          <ClearIcon className="table__close-btn" onClick={fillGames} />
+          <Clear className="table__close-btn" onClick={fillGames} />
           <Autocomplete
             options={games.map(({ name }) => name)}
             name="Game"
@@ -212,10 +154,10 @@ export const GamesTable: React.FC<IGamesTable> = ({ handleOpenNewGame }) => {
                     {game.price}$
                   </TableCell>
                   <TableCell className="table__cell" style={{ width: 40 }} align="center">
-                    <EditIcon className="table__cell--icon" onClick={() => handleEditGame(game)} />
+                    <Edit className="table__cell--icon" onClick={() => handleEditGame(game)} />
                   </TableCell>
                   <TableCell className="table__cell" style={{ width: 40 }} align="center">
-                    <DeleteIcon
+                    <Delete
                       className="table__cell--icon"
                       onClick={() => setIsConfirmVisible(true)}
                     />
@@ -223,7 +165,7 @@ export const GamesTable: React.FC<IGamesTable> = ({ handleOpenNewGame }) => {
                   {isConfirmVisible && (
                     <Portal
                       Component={() => (
-                        <Confirm
+                        <ConfirmDialog
                           confirmDeleting={() => handleDeleteGame(game.id)}
                           handleClose={() => setIsConfirmVisible(false)}
                         />
@@ -257,7 +199,7 @@ export const GamesTable: React.FC<IGamesTable> = ({ handleOpenNewGame }) => {
                   }}
                   onPageChange={handleChangePage}
                   onRowsPerPageChange={handleChangeRowsPerPage}
-                  ActionsComponent={TablePaginationActions}
+                  ActionsComponent={TablePaginationButtons}
                 />
               </TableRow>
             </TableFooter>

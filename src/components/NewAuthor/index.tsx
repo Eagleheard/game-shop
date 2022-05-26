@@ -2,19 +2,18 @@ import React, { ChangeEvent, useEffect, useState } from 'react';
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { AdminPanelState } from 'toolkitStore/types';
-import { useToast } from 'hooks';
-import { uploadGamePhoto } from 'api/adminRequests';
-import { Button } from 'components/Button';
-import { ToastComponent } from 'components/Toast';
+import { AuthorsReducerState } from 'toolkitStore/types';
 import { addNewAuthor } from 'toolkitStore/thunk';
 import { ToastOptions } from 'types/enumerators';
+import { useToast } from 'hooks';
+import { uploadGamePhoto } from 'api/adminRequests';
+import { Button, ToastComponent } from 'components';
 
 import userPhoto from 'assets/userPhoto.png';
 
 import './styles.scss';
 
-const maxDescriptionCount = 300;
+const MAX_DESCRIPTION_COUNT = 300;
 
 export const NewAuthor: React.FC = () => {
   const [authorPhoto, setAuthorPhoto] = useState<string>();
@@ -22,7 +21,7 @@ export const NewAuthor: React.FC = () => {
   const dispatch = useDispatch();
   const { openToast } = useToast();
   const { authorError, isLoading } = useSelector(
-    (state: AdminPanelState) => state.adminPanelReducer || [],
+    (state: AuthorsReducerState) => state.authorsReducer || [],
   );
 
   const { handleSubmit, register, reset } = useForm();
@@ -136,12 +135,14 @@ export const NewAuthor: React.FC = () => {
               placeholder="description"
               className="new-author__description"
               onChange={(e) => setDescriptionCount(e.target.value.length)}
-              maxLength={maxDescriptionCount}
+              maxLength={MAX_DESCRIPTION_COUNT}
             />
             <label htmlFor="description" className="new-author__label">
               Description
             </label>
-            <p className="new-game__description-count">{maxDescriptionCount - descriptionCount}</p>
+            <p className="new-game__description-count">
+              {MAX_DESCRIPTION_COUNT - descriptionCount}
+            </p>
           </div>
         </div>
         <div className="new-author__additional-info"></div>

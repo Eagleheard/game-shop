@@ -11,6 +11,7 @@ interface IAutocomplete {
   reset?: string;
   style?: string;
   onChangeInput: (input: string) => void;
+  children?: JSX.Element[];
 }
 
 export const Autocomplete: React.FC<IAutocomplete> = ({
