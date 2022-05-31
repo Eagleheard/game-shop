@@ -9,6 +9,7 @@ interface IAutocomplete {
   name: string;
   reset?: string;
   onChangeInput: (input: string) => void;
+  children?: JSX.Element[];
 }
 
 export const Autocomplete: React.FC<IAutocomplete> = ({
@@ -90,7 +91,7 @@ export const Autocomplete: React.FC<IAutocomplete> = ({
       }
 
       return (
-        <ul className="autocomplete__list" data-testid="autocomplete__list">
+        <ul className="autocomplete__list">
           <li className="autocomplete__list-item">Not found</li>
         </ul>
       );

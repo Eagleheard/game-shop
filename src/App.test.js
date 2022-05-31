@@ -1,25 +1,25 @@
-import {
-  cleanup,
-  render,
-  waitFor,
-  screen,
-  fireEvent,
-  act,
-  getByText,
-} from '@testing-library/react';
+import { render } from '@testing-library/react';
+import '@testing-library/jest-dom';
+import '../jest.env';
 import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 
-import { ToastProvider } from 'hooks/useToast';
-import ErrorBoundary from 'components/ErrorBoundary';
-import { AuthProvider } from 'hooks/useAuth';
+import { runSaga } from 'redux-saga';
+import * as cartApi from 'api/fetchCart';
+import * as achievementApi from 'api/fetchAchievements';
+import { getStore, addGameToStore, getDiscount } from 'store/cart/sagas';
+import { getDiscountSuccess, getCartSuccess, addGameSuccess } from 'store/cart/actions';
 
 import store from 'store';
 import { fetchGames } from 'api/fetchGames';
 import { fetchPreviewGames } from 'api/fetchPreviewGames';
 import { fetchGenres } from 'api/fetchGenres';
 import App from 'App';
-import { Store } from 'screen';
+import { authorization } from 'api/authorization';
+import userEvent from '@testing-library/user-event';
+import { fetchGame } from 'api/fetchGame';
+import { fetchOrders } from 'api/fetchOrders';
+import { fetchUserInfo } from 'api/fetchUser';
 
 const renderComponent = () =>
   render(
@@ -33,6 +33,11 @@ const renderComponent = () =>
 jest.mock('api/fetchGames');
 jest.mock('api/fetchPreviewGames');
 jest.mock('api/fetchGenres');
+jest.mock('api/authorization');
+jest.mock('api/fetchGame');
+jest.mock('api/fetchOrders');
+jest.mock('api/fetchUser');
+jest.mock('api/fetchAchievements');
 
 const games = {
   data: {
@@ -180,54 +185,297 @@ const games = {
   },
 };
 
-const genres = [
-  {
-    id: 1,
-    name: 'Action',
-  },
-  {
-    id: 2,
-    name: 'Adventure',
-  },
-  {
-    id: 3,
-    name: 'RPG',
-  },
-  {
-    id: 4,
-    name: 'Strategy',
-  },
-  {
-    id: 5,
-    name: 'Racing',
-  },
-];
+const genres = {
+  data: [
+    {
+      id: 1,
+      name: 'Action',
+    },
+    {
+      id: 2,
+      name: 'Adventure',
+    },
+    {
+      id: 3,
+      name: 'RPG',
+    },
+    {
+      id: 4,
+      name: 'Strategy',
+    },
+    {
+      id: 5,
+      name: 'Racing',
+    },
+  ],
+};
+
+const orders = {
+  data: [
+    {
+      formatedCreatedAt: '1.6.2022 0:24',
+      formatedUpdatedAt: '1.6.2022 0:24',
+      id: 3,
+      name: 'John Doe',
+      email: 'example@gmail.com',
+      address: null,
+      zipCode: null,
+      quantity: 1,
+      comment: null,
+      createdAt: '2022-05-31T21:24:51.063Z',
+      updatedAt: '2022-05-31T21:24:51.063Z',
+      userId: 2,
+      gameId: 1,
+      game: {
+        id: 1,
+        name: 'Teamfight Tactics',
+        price: 0,
+        image: 'https://res.cloudinary.com/game-shop/image/upload/v1646244501/tft_dmqgbx.jpg',
+        disk: false,
+        digital: true,
+      },
+    },
+  ],
+};
 
 describe('App', () => {
   it('Integration test of App', async () => {
-    fetchGames.mockResolvedValueOnce({...games});
-    fetchGames.mockResolvedValueOnce({...games});
-    fetchGames.mockResolvedValueOnce({...games});
-    fetchPreviewGames.mockResolvedValueOnce({ ...games });
-    renderComponent();
-    expect(await screen.findByText('Home')).toHaveClass('navbar__link  link active');
-    fireEvent.click(screen.getByText('Store'));
-    fetchGames.mockResolvedValueOnce({ ...games });
-    fetchGames.mockResolvedValueOnce({ ...games });
-    fetchGenres.mockResolvedValueOnce({ data: genres });
-    render(    
-    <Provider store={store}>
-      <BrowserRouter>
-        <ErrorBoundary>
-          <AuthProvider>
-            <ToastProvider>
-              <Store />
-            </ToastProvider>
-          </AuthProvider>
-        </ErrorBoundary>
-      </BrowserRouter>
-    </Provider>,
-    )
-    expect(await screen.findByText('Teamfight Tactics')).toBeVisible();
+    fetchGames.mockResolvedValueOnce(games);
+    fetchGames.mockResolvedValueOnce(games);
+    fetchGames.mockResolvedValueOnce(games);
+    fetchPreviewGames.mockResolvedValueOnce(games);
+    fetchGenres.mockResolvedValueOnce({ ...genres });
+    authorization.mockResolvedValueOnce({ data: { name: 'Test' } });
+    const { findByText, findByTestId, getByText, getByTestId } = renderComponent();
+    expect(await findByText('Home')).toHaveClass('navbar__link  link active');
+    expect(await findByTestId('Teamfight Tactics')).toBeVisible();
+    fetchGames.mockResolvedValueOnce(games);
+    fetchGames.mockResolvedValueOnce(games);
+    fetchGenres.mockResolvedValueOnce({ ...genres });
+    authorization.mockResolvedValueOnce({ data: { name: 'Test' } });
+    userEvent.click(getByText('Store'));
+    expect(await findByTestId('store')).toBeInTheDocument();
+    fetchGame.mockResolvedValueOnce({
+      data: {
+        id: 1,
+        name: 'Teamfight Tactics',
+        price: 0,
+        digital: true,
+        disk: false,
+        count: null,
+        popularity: 77,
+        image: 'https://res.cloudinary.com/game-shop/image/upload/v1646244501/tft_dmqgbx.jpg',
+        isNew: true,
+        isPreview: null,
+        preview:
+          'https://res.cloudinary.com/game-shop/image/upload/v1647096840/teamfight-tactics-champion-synergies-guide-800x400_he718b.jpg',
+        description:
+          'Teamfight Tactics (TFT) is an auto battler game developed and published by Riot Games. The game is a spinoff of League of Legends and is based on Dota Auto Chess, where players compete online against seven other opponents by building a team to be the last one standing.',
+        genreId: 4,
+        authorId: 6,
+        discountId: null,
+        genre: {
+          id: 4,
+          name: 'Strategy',
+        },
+        author: {
+          id: 6,
+          name: 'Riot Games',
+          image: 'https://res.cloudinary.com/game-shop/image/upload/v1646320595/riot_gawusz.png',
+          location: 'Los Angeles, US',
+          description:
+            'Riot Games, Inc. is an American video game developer, publisher and esports tournament organizer. Its headquarters are in West Los Angeles, California.',
+          popularity: 85,
+        },
+        discount: null,
+      },
+    });
+    userEvent.click(getByTestId('Teamfight Tactics'));
+    expect(await findByTestId('gamePage')).toBeInTheDocument();
+    expect(getByText('Teamfight Tactics')).toBeInTheDocument();
+    userEvent.click(getByText('Buy now'));
+    const dispatchedActions = [];
+
+    const mockedGame = {
+      data: {
+        id: 1,
+        name: 'Teamfight Tactics',
+        price: 0,
+        digital: true,
+        disk: false,
+        count: null,
+        popularity: 77,
+        image: 'https://res.cloudinary.com/game-shop/image/upload/v1646244501/tft_dmqgbx.jpg',
+        isNew: true,
+        isPreview: null,
+        preview:
+          'https://res.cloudinary.com/game-shop/image/upload/v1647096840/teamfight-tactics-champion-synergies-guide-800x400_he718b.jpg',
+        description:
+          'Teamfight Tactics (TFT) is an auto battler game developed and published by Riot Games. The game is a spinoff of League of Legends and is based on Dota Auto Chess, where players compete online against seven other opponents by building a team to be the last one standing.',
+        genreId: 4,
+        authorId: 6,
+        discountId: null,
+        genre: {
+          id: 4,
+          name: 'Strategy',
+        },
+        author: {
+          id: 6,
+          name: 'Riot Games',
+          image: 'https://res.cloudinary.com/game-shop/image/upload/v1646320595/riot_gawusz.png',
+          location: 'Los Angeles, US',
+          description:
+            'Riot Games, Inc. is an American video game developer, publisher and esports tournament organizer. Its headquarters are in West Los Angeles, California.',
+          popularity: 85,
+        },
+        discount: null,
+      },
+    };
+    cartApi.addGameToBasket = jest.fn(() => Promise.resolve(mockedGame));
+
+    const fakeStore = {
+      getState: () => ({ id: 1, value: 1 }),
+      dispatch: (action) => dispatchedActions.push(action),
+    };
+    await runSaga(fakeStore, addGameToStore, { payload: { id: 1 } }).done;
+    expect(cartApi.addGameToBasket.mock.calls.length).toBe(1);
+    expect(dispatchedActions).toContainEqual(
+      addGameSuccess({
+        id: 1,
+        name: 'Teamfight Tactics',
+        price: 0,
+        digital: true,
+        disk: false,
+        count: null,
+        popularity: 77,
+        image: 'https://res.cloudinary.com/game-shop/image/upload/v1646244501/tft_dmqgbx.jpg',
+        isNew: true,
+        isPreview: null,
+        preview:
+          'https://res.cloudinary.com/game-shop/image/upload/v1647096840/teamfight-tactics-champion-synergies-guide-800x400_he718b.jpg',
+        description:
+          'Teamfight Tactics (TFT) is an auto battler game developed and published by Riot Games. The game is a spinoff of League of Legends and is based on Dota Auto Chess, where players compete online against seven other opponents by building a team to be the last one standing.',
+        genreId: 4,
+        authorId: 6,
+        discountId: null,
+        genre: {
+          id: 4,
+          name: 'Strategy',
+        },
+        author: {
+          id: 6,
+          name: 'Riot Games',
+          image: 'https://res.cloudinary.com/game-shop/image/upload/v1646320595/riot_gawusz.png',
+          location: 'Los Angeles, US',
+          description:
+            'Riot Games, Inc. is an American video game developer, publisher and esports tournament organizer. Its headquarters are in West Los Angeles, California.',
+          popularity: 85,
+        },
+        discount: null,
+      }),
+    );
+
+    const mockedBasket = {
+      data: [
+        {
+          id: 906,
+          quantity: null,
+          gameId: 1,
+          userId: 2,
+          game: {
+            id: 1,
+            name: 'Teamfight Tactics',
+            count: null,
+            price: 0,
+            image: 'https://res.cloudinary.com/game-shop/image/upload/v1646244501/tft_dmqgbx.jpg',
+            disk: false,
+            digital: true,
+          },
+        },
+      ],
+    };
+    cartApi.getBasket = jest.fn(() => Promise.resolve(mockedBasket));
+    const fakeCart = {
+      getState: () => ({ cart: [] }),
+      dispatch: (action) => dispatchedActions.push(action),
+    };
+
+    await runSaga(fakeCart, getStore).done;
+    expect(cartApi.getBasket.mock.calls.length).toBe(1);
+    expect(dispatchedActions).toContainEqual(
+      getCartSuccess([
+        {
+          id: 906,
+          quantity: null,
+          gameId: 1,
+          userId: 2,
+          game: {
+            id: 1,
+            name: 'Teamfight Tactics',
+            count: null,
+            price: 0,
+            image: 'https://res.cloudinary.com/game-shop/image/upload/v1646244501/tft_dmqgbx.jpg',
+            disk: false,
+            digital: true,
+          },
+        },
+      ]),
+    );
+
+    const mockedAchievements = { data: [] };
+    achievementApi.fetchAchievement = jest.fn(() => Promise.resolve(mockedAchievements));
+
+    const fakeDiscount = {
+      getState: () => ({ discounts: [] }),
+      dispatch: (action) => dispatchedActions.push(action),
+    };
+
+    await runSaga(fakeDiscount, getDiscount).done;
+    expect(achievementApi.fetchAchievement.mock.calls.length).toBe(1);
+    expect(dispatchedActions).toContainEqual(getDiscountSuccess([]));
+
+    userEvent.click(getByText('Hi, Test'));
+    userEvent.click(getByText('Cart'));
+    expect(getByTestId('basket')).toBeInTheDocument();
+    expect(await findByText('Your personal discount: 0%')).toBeInTheDocument();
+    expect(await findByText('Teamfight Tactics')).toBeInTheDocument();
+    userEvent.click(getByText('Buy now'));
+    userEvent.click(getByText('Cart'));
+    fetchOrders.mockResolvedValueOnce({ ...orders });
+    const userInfo = {
+      data: {
+        id: 2,
+        email: 'example@gmail.com',
+        password: '$2b$05$u0UBvc6tybthdSs/D.ELueDmURiO4TnWMAvZGNyj7D83SS2OmkDyW',
+        role: 'USER',
+        photo:
+          'http://res.cloudinary.com/game-shop/image/upload/v1650803596/si5k4ipbg4zcbjr0trwc.jpg',
+        name: 'John',
+        lastName: 'Doe',
+        blocked: false,
+      },
+    };
+    fetchUserInfo.mockResolvedValueOnce(userInfo);
+    achievementApi.fetchAchievement.mockResolvedValueOnce({
+      data: [
+        {
+          id: 1,
+          name: 'Hello World!',
+          description: 'Sign Up on our website!',
+          trigger: null,
+          discount: 0.01,
+        },
+        {
+          id: 2,
+          name: 'Five in a row!',
+          description: 'Buy 5 games',
+          trigger: 5,
+          discount: 0.05,
+        },
+      ],
+    });
+    userEvent.click(getByText('Profile'));
+    userEvent.click(await findByText('Orders'));
+    expect(await findByText('Teamfight Tactics')).toBeInTheDocument();
   });
 });

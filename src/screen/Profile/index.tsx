@@ -76,6 +76,7 @@ export const Profile = () => {
   const getOrders = useCallback(async (params: IParams) => {
     try {
       const { data } = await fetchOrders({ params });
+      console.log(data);
       setOrders(data);
     } catch ({
       response: {

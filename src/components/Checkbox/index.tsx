@@ -11,7 +11,7 @@ interface ICheckbox {
 export const Checkbox: React.FC<ICheckbox> = ({ label, onClick, onChange }) => {
   return (
     <div className="checkbox">
-      <input type="checkbox" onClick={onClick} onChange={onChange} />
+      <input type="checkbox" data-testid={label} onClick={onClick} onChange={onChange} />
       <label className="checkbox__label">{label}</label>
     </div>
   );

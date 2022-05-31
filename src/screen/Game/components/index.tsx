@@ -60,7 +60,7 @@ export const GamePage: React.FC<IGamePage> = ({
   }, [gameError, isLoading]);
 
   return (
-    <div className="game">
+    <div className="game" data-testid="gamePage">
       <div className="game__container-btn">
         <Button text="«" onClick={() => history(-1)} style="back-btn" />
       </div>

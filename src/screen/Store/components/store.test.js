@@ -1,4 +1,7 @@
-import { render, screen, fireEvent, waitFor, rerender } from '@testing-library/react';
+import { render, screen, waitFor, cleanup } from '@testing-library/react';
+import '@testing-library/jest-dom';
+import '../../../../jest.env';
+
 import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 
@@ -9,6 +12,7 @@ import { AuthProvider } from 'hooks/useAuth';
 import { Store } from '.';
 import { fetchGames } from 'api/fetchGames';
 import { fetchGenres } from 'api/fetchGenres';
+import userEvent from '@testing-library/user-event';
 
 const renderComponent = () =>
   render(
@@ -27,7 +31,7 @@ const renderComponent = () =>
 
 const games = {
   data: {
-    count: 1,
+    count: 2,
     rows: [
       {
         id: 1,
@@ -101,49 +105,231 @@ const games = {
   },
 };
 
-const genres = [
-  {
-    id: 1,
-    name: 'Action',
-  },
-  {
-    id: 2,
-    name: 'Adventure',
-  },
-  {
-    id: 3,
-    name: 'RPG',
-  },
-  {
-    id: 4,
-    name: 'Strategy',
-  },
-  {
-    id: 5,
-    name: 'Racing',
-  },
-];
+const genres = {
+  data: [
+    {
+      id: 1,
+      name: 'Action',
+    },
+    {
+      id: 2,
+      name: 'Adventure',
+    },
+    {
+      id: 3,
+      name: 'RPG',
+    },
+    {
+      id: 4,
+      name: 'Strategy',
+    },
+    {
+      id: 5,
+      name: 'Racing',
+    },
+  ],
+};
 
 jest.mock('api/fetchGames');
 jest.mock('api/fetchGenres');
+
+afterEach(cleanup);
 
 describe('Store', () => {
   it('Should render store', async () => {
     fetchGames.mockResolvedValueOnce({ ...games });
     fetchGames.mockResolvedValueOnce({ ...games });
-    fetchGenres.mockResolvedValueOnce({ data: genres });
+    fetchGenres.mockResolvedValueOnce({ ...genres });
     renderComponent();
     expect(await screen.findByText('Teamfight Tactics')).toBeVisible();
     expect(await screen.findByText('The last of us: Part 1')).toBeVisible();
-    const input = screen.getByTestId('autocomplete');
-    const submit = screen.getByTestId('search');
-    fireEvent.change(input, { target: { value: 'Riot' } });
-    expect(screen.getByTestId('suggest')).toHaveTextContent('Riot Games');
-    fireEvent.click(screen.getByTestId('suggest'));
-    fireEvent.change(input, { target: { value: 'Riot Games' } });
-    expect(screen.getByTestId('autocomplete')).toHaveValue('Riot Games');
-    fireEvent.click(submit);
-    fetchGames.mockResolvedValueOnce({ ...games });
+  });
+  it('Should find game by author name', async () => {
+    fetchGames.mockResolvedValueOnce(games);
+    fetchGames.mockResolvedValueOnce(games);
+    fetchGenres.mockResolvedValueOnce({ ...genres });
+    const { getByTestId, queryByTestId, getByPlaceholderText } = renderComponent();
+    const input = getByPlaceholderText('Author');
+    const submit = getByTestId('search');
+    userEvent.type(input, 'Riot Games');
+    await waitFor(() => expect(queryByTestId('autocomplete')).toHaveValue('Riot Games'));
+    userEvent.click(submit);
+    fetchGames.mockResolvedValueOnce({
+      data: {
+        count: 1,
+        rows: [
+          {
+            id: 1,
+            name: 'Teamfight Tactics',
+            price: 0,
+            digital: true,
+            disk: false,
+            count: null,
+            popularity: 77,
+            image: 'https://res.cloudinary.com/game-shop/image/upload/v1646244501/tft_dmqgbx.jpg',
+            isNew: true,
+            isPreview: null,
+            preview:
+              'https://res.cloudinary.com/game-shop/image/upload/v1647096840/teamfight-tactics-champion-synergies-guide-800x400_he718b.jpg',
+            description:
+              'Teamfight Tactics (TFT) is an auto battler game developed and published by Riot Games. The game is a spinoff of League of Legends and is based on Dota Auto Chess, where players compete online against seven other opponents by building a team to be the last one standing.',
+            genreId: 4,
+            authorId: 6,
+            discountId: null,
+            genre: {
+              id: 4,
+              name: 'Strategy',
+            },
+            author: {
+              id: 6,
+              name: 'Riot Games',
+              image:
+                'https://res.cloudinary.com/game-shop/image/upload/v1646320595/riot_gawusz.png',
+              location: 'Los Angeles, US',
+              description:
+                'Riot Games, Inc. is an American video game developer, publisher and esports tournament organizer. Its headquarters are in West Los Angeles, California.',
+              popularity: 85,
+            },
+            discount: null,
+          },
+        ],
+      },
+    });
     expect(await screen.findByText('Teamfight Tactics')).toBeVisible();
+  });
+
+  it('Should find game by genre', async () => {
+    fetchGames.mockResolvedValueOnce(games);
+    fetchGames.mockResolvedValueOnce(games);
+    fetchGenres.mockResolvedValueOnce(genres);
+    const { getByTestId } = renderComponent();
+    const genreSelector = getByTestId('Genre');
+    userEvent.click(getByTestId('Genre__select__input'));
+    expect(genreSelector).toBeVisible();
+    await waitFor(() => expect(getByTestId('Strategy')).toBeInTheDocument());
+    userEvent.click(getByTestId('Strategy'));
+    await waitFor(() => expect(getByTestId('Genre__select__input')).toHaveTextContent('Strategy'));
+    const submit = getByTestId('search');
+    userEvent.click(submit);
+    fetchGames.mockResolvedValueOnce({
+      data: {
+        count: 1,
+        rows: [
+          {
+            id: 1,
+            name: 'Teamfight Tactics',
+            price: 0,
+            digital: true,
+            disk: false,
+            count: null,
+            popularity: 77,
+            image: 'https://res.cloudinary.com/game-shop/image/upload/v1646244501/tft_dmqgbx.jpg',
+            isNew: true,
+            isPreview: null,
+            preview:
+              'https://res.cloudinary.com/game-shop/image/upload/v1647096840/teamfight-tactics-champion-synergies-guide-800x400_he718b.jpg',
+            description:
+              'Teamfight Tactics (TFT) is an auto battler game developed and published by Riot Games. The game is a spinoff of League of Legends and is based on Dota Auto Chess, where players compete online against seven other opponents by building a team to be the last one standing.',
+            genreId: 4,
+            authorId: 6,
+            discountId: null,
+            genre: {
+              id: 4,
+              name: 'Strategy',
+            },
+            author: {
+              id: 6,
+              name: 'Riot Games',
+              image:
+                'https://res.cloudinary.com/game-shop/image/upload/v1646320595/riot_gawusz.png',
+              location: 'Los Angeles, US',
+              description:
+                'Riot Games, Inc. is an American video game developer, publisher and esports tournament organizer. Its headquarters are in West Los Angeles, California.',
+              popularity: 85,
+            },
+            discount: null,
+          },
+        ],
+      },
+    });
+    expect(await screen.findByText('Teamfight Tactics')).toBeVisible();
+  });
+
+  it('Should show game by its type', async () => {
+    fetchGames.mockResolvedValueOnce(games);
+    fetchGames.mockResolvedValueOnce(games);
+    fetchGenres.mockResolvedValueOnce({ ...genres });
+    const { getByTestId } = renderComponent();
+    const digitalCheckbox = getByTestId('Digital');
+    const submit = getByTestId('search');
+    userEvent.click(digitalCheckbox);
+    userEvent.click(submit);
+    fetchGames.mockResolvedValueOnce({
+      data: {
+        count: 1,
+        rows: [
+          {
+            id: 1,
+            name: 'Teamfight Tactics',
+            price: 0,
+            digital: true,
+            disk: false,
+            count: null,
+            popularity: 77,
+            image: 'https://res.cloudinary.com/game-shop/image/upload/v1646244501/tft_dmqgbx.jpg',
+            isNew: true,
+            isPreview: null,
+            preview:
+              'https://res.cloudinary.com/game-shop/image/upload/v1647096840/teamfight-tactics-champion-synergies-guide-800x400_he718b.jpg',
+            description:
+              'Teamfight Tactics (TFT) is an auto battler game developed and published by Riot Games. The game is a spinoff of League of Legends and is based on Dota Auto Chess, where players compete online against seven other opponents by building a team to be the last one standing.',
+            genreId: 4,
+            authorId: 6,
+            discountId: null,
+            genre: {
+              id: 4,
+              name: 'Strategy',
+            },
+            author: {
+              id: 6,
+              name: 'Riot Games',
+              image:
+                'https://res.cloudinary.com/game-shop/image/upload/v1646320595/riot_gawusz.png',
+              location: 'Los Angeles, US',
+              description:
+                'Riot Games, Inc. is an American video game developer, publisher and esports tournament organizer. Its headquarters are in West Los Angeles, California.',
+              popularity: 85,
+            },
+            discount: null,
+          },
+        ],
+      },
+    });
+    expect(await screen.findByText('Teamfight Tactics')).toBeVisible();
+  });
+
+  it('Should clean filter form after click Clean button', async () => {
+    fetchGames.mockResolvedValueOnce(games);
+    fetchGames.mockResolvedValueOnce(games);
+    fetchGenres.mockResolvedValueOnce({ ...genres });
+    const { getByTestId, getByPlaceholderText, findByTestId } = renderComponent();
+    const digitalCheckbox = getByTestId('Digital');
+    const genreSelector = getByTestId('Genre');
+    const input = getByPlaceholderText('Author');
+    const clearBtn = getByTestId('clear');
+    userEvent.click(getByTestId('Genre__select__input'));
+    expect(genreSelector).toBeVisible();
+    await waitFor(() => expect(getByTestId('Strategy')).toBeInTheDocument());
+    userEvent.click(getByTestId('Strategy'));
+    await waitFor(() => expect(getByTestId('Genre__select__input')).toHaveTextContent('Strategy'));
+    userEvent.type(input, 'Riot Games');
+    await waitFor(() => expect(getByTestId('autocomplete')).toHaveValue('Riot Games'));
+    userEvent.click(getByTestId('suggest'));
+    userEvent.click(digitalCheckbox);
+    fetchGames.mockResolvedValueOnce(games);
+    userEvent.click(clearBtn);
+    expect(await findByTestId('Genre__select__input')).toHaveTextContent('Genre↓');
+    expect(await findByTestId('autocomplete')).toHaveValue('');
+    expect(await findByTestId('Digital')).not.toBeChecked();
   });
 });

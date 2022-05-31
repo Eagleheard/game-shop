@@ -23,7 +23,6 @@ export const Basket = () => {
   const dispatch = useDispatch();
   const discountedPrice = useMemo(() => totalPrice - totalPrice * discount, [totalPrice, discount]);
   const { openToast } = useToast();
-
   const {
     register,
     handleSubmit,
@@ -63,7 +62,7 @@ export const Basket = () => {
   }, []);
 
   return (
-    <div className="basket">
+    <div className="basket" data-testid="basket">
       {!isLoading && (
         <div className="basket__container">
           <div className="basket__games">

@@ -29,7 +29,7 @@ export const Pagination: React.FC<PaginationProps> = ({
     <div className="pagination">
       <div className="component">
         {getPaginatedData.map((data) => (
-          <RenderComponent key={data.id} {...data} data-testid={`game-${data.id}`} />
+          <RenderComponent key={data.id} {...data} />
         ))}
       </div>
       <div className="pagination__group">

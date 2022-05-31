@@ -79,9 +79,8 @@ export const Store = () => {
     fillGames(params);
     setIsLoading(false);
   }, [currentPage, params, fillGames]);
-
   return (
-    <div className="store">
+    <div className="store" data-testid="store">
       <Filter games={games} fillGames={fillGames} />
       {isFilterVisible && (
         <ResponsiveFilter
