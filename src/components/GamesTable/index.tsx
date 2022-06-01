@@ -13,6 +13,8 @@ import {
   TableHead,
 } from '@mui/material';
 
+import { Edit, Delete, Clear } from '@mui/icons-material';
+
 import { addNewGameRequest } from 'toolkitStore/actions/games';
 import { ToastOptions } from 'types/enumerators';
 import { IGame } from 'types/interfaces';
@@ -27,8 +29,6 @@ import {
   ToastComponent,
   TablePaginationButtons,
 } from 'components';
-
-import { Edit, Delete, Clear } from '@mui/icons-material';
 
 import './styles.scss';
 

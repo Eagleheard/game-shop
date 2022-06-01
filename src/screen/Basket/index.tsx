@@ -75,7 +75,7 @@ export const Basket = () => {
         <div className="basket__games">
           {isTimerActive && <Timer />}
           {!isLoading && !cart.length && <h1>Cart is empty</h1>}
-          {cart && !isLoading ? (
+          {!isLoading ? (
             cart.map(({ game, quantity }) => (
               <Card cart key={game.id} {...game} quantity={quantity} />
             ))

@@ -31,11 +31,12 @@ interface IAuthor {
 interface INewGame {
   handleOpenNewAuthor: () => void;
   createMode: string;
+  isEditMode?: boolean;
 }
 
 const MAX_DESCRIPTION_COUNT = 300;
 
-export const NewGame: React.FC<INewGame> = ({ handleOpenNewAuthor, createMode }) => {
+export const NewGame: React.FC<INewGame> = ({ handleOpenNewAuthor, createMode, isEditMode }) => {
   const [genres, setGenres] = useState<IGenre[]>([]);
   const [authors, setAuthors] = useState<IAuthor[]>([]);
   const [isDiskChecked, setIsDiskChecked] = useState(false);
@@ -113,13 +114,13 @@ export const NewGame: React.FC<INewGame> = ({ handleOpenNewAuthor, createMode })
   };
 
   const submitForm: SubmitHandler<FieldValues> = (data) => {
-    if (createMode === 'New game') {
+    if (!isEditMode) {
       dispatch(addNewGame({ ...data, image: newGame.image, preview: newGame.preview }));
       if (!gameError && !isLoading) {
         openToast('Successfully created', ToastOptions.success);
       }
     }
-    if (createMode === 'Update game') {
+    if (isEditMode) {
       dispatch(
         updateSelectedGame({
           ...data,

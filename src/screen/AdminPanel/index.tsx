@@ -374,6 +374,7 @@ export const AdminPanel = () => {
                   {isUpdateGameVisible && (
                     <NewGame
                       createMode="Update game"
+                      isEditMode={true}
                       handleOpenNewAuthor={() => handleOpen(pageOptions.UPDATE_GAME)}
                     />
                   )}
