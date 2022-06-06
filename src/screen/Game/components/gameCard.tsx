@@ -1,27 +1,44 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
-import { decrementGameRequest, incrementGameRequest, removeGameRequest } from 'store/cart/actions';
+import {
+  addGameRequest,
+  decrementGameRequest,
+  incrementGameRequest,
+  removeGameRequest,
+} from 'store/cart/actions';
 import { IGame } from 'types/interfaces';
 import { Button } from 'components';
+import { useAuth } from 'hooks/useAuth';
+import { ToastOptions } from 'types/enumerators';
+import { useToast } from 'hooks';
+import { CartState } from 'store/cart/types';
 
 import grey_cross from 'assets/grey-cross.png';
 
 import {
   CardAdditionalInformation,
   CardAuthor,
+  CardBuyButton,
   CardComponent,
   CardDescription,
+  CardDiscount,
   CardGenre,
   CardImg,
   CardLabel,
   CardMainInformation,
   CardNavLink,
+  CardNavLinkToCart,
   CardParagraph,
+  CardPaymentInformation,
+  CardPrice,
+  CardPriceInformation,
   CardQuantity,
   CardQuantityValue,
   OrderTotalPrice,
 } from './styled-components';
+
+const quantityLimit = 10;
 
 export const Card = ({
   id,
@@ -37,11 +54,41 @@ export const Card = ({
   cart,
   order,
   search,
+  discount,
 }: IGame) => {
   const dispatch = useDispatch();
+  const { openToast } = useToast();
+  const { gameError, isLoading } = useSelector((state: CartState) => state.cartReducer || []);
+  const { user } = useAuth();
+  const discountedPrice = discount
+    ? price - (price * parseInt(discount.discountCount)) / 100
+    : null;
+
+  const handleBuy = () => {
+    dispatch(addGameRequest(id, 1));
+    if (!gameError && !isLoading) {
+      return openToast(
+        <>
+          Successfully added to cart
+          <CardNavLinkToCart to={`/cart/${user.id}`} className="link">
+            Go to cart?
+          </CardNavLinkToCart>
+        </>,
+        ToastOptions.success,
+      );
+    }
+    if (gameError) {
+      return openToast('Game already in cart', ToastOptions.error);
+    }
+  };
 
   return (
     <CardComponent search={search} cart={cart} order={order}>
+      {user && !purchaseDate && !quantity && !search && (
+        <CardBuyButton>
+          <Button disabled={count === 0} text="Buy now" onClick={handleBuy} style="card-buy" />
+        </CardBuyButton>
+      )}
       <CardImg search={search} order={order} cart={cart} src={image} alt="logo"></CardImg>
       <CardDescription search={search} order={order} cart={cart}>
         <CardMainInformation order={order} cart={cart}>
@@ -77,7 +124,7 @@ export const Card = ({
                 text="+"
                 onClick={() => dispatch(incrementGameRequest(id))}
                 style="cart-btn"
-                disabled={parseInt(count) === 0}
+                disabled={count === 0 || quantity === quantityLimit}
               />
             </CardQuantityValue>
           )}
@@ -91,7 +138,19 @@ export const Card = ({
               <img src={grey_cross} />
             </button>
           )}
-          {!purchaseDate && <CardLabel cart={cart}>Price: {price}$</CardLabel>}
+          <CardPaymentInformation>
+            {!purchaseDate && discount && (
+              <CardDiscount cart={cart}>-{discount.discountCount}%</CardDiscount>
+            )}
+            <CardPriceInformation>
+              {!purchaseDate && discount ? (
+                <CardPrice cart={cart}>{price}$</CardPrice>
+              ) : (
+                <CardLabel cart={cart}>{price}$</CardLabel>
+              )}
+              {!purchaseDate && discount && <CardLabel cart={cart}>{discountedPrice}$</CardLabel>}
+            </CardPriceInformation>
+          </CardPaymentInformation>
           {author && (
             <CardAuthor search={search}>
               <CardNavLink to={`/author/${author.id}`}>{author.name}</CardNavLink>

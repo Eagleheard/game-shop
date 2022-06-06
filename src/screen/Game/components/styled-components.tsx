@@ -5,6 +5,7 @@ const black = '#000000';
 const lato = 'Lato';
 const hoverLink = '#1ba8a8';
 const primary = '#ffffff';
+const lightGreen = '#90EE90';
 
 interface ICard {
   cart?: boolean;
@@ -12,12 +13,23 @@ interface ICard {
   search?: boolean;
 }
 
+export const CardBuyButton = styled.div`
+  display: flex;
+  align-self: flex-end;
+  justify-content: flex-end;
+  width: 10%;
+  position: absolute;
+  opacity: 0;
+  transition: opacity 0.3s;
+`;
+
 export const CardComponent = styled.div<ICard>`
   display: flex;
   flex-direction: ${({ cart, order, search }) => (search || cart || order ? 'row' : 'column')};
   align-items: center;
   justify-self: center;
   border-radius: 10px;
+  margin: 10px 0;
   width: ${({ cart, order }) => (cart || order ? '90%' : '100%')};
   box-shadow: ${({ search }) => (search ? 'none' : `0 0 10px ${black};`)}
   background: ${primary};
@@ -38,15 +50,20 @@ export const CardComponent = styled.div<ICard>`
   }
 
   @media (max-width: 500px) {
-    width: 100%;
+    width: ${({ cart, order }) => (cart || order ? '95%' : '100%')};
+  }
+
+  &:hover > ${CardBuyButton} {
+    opacity: 1;
+    transition: opacity 0.3s;
   }
 `;
 
 export const CardImg = styled.img<ICard>`
   border-radius: 25% 10%;
   margin: 10px;
-  width: 180px;
-  height: 180px;
+  width: 200px;
+  height: 200px;
   ${({ cart, order }) =>
     cart || order
       ? `
@@ -93,6 +110,14 @@ export const CardDescription = styled.div<ICard>`
          height: 15vh;`
       : null}
   ${({ search }) => search && `justify-content: space-between; width: 100%;`}
+
+  @media (max-width: 600px) {
+    height: ${({ cart }) => (cart ? '20vh' : '15vh')};
+  }
+
+  @media (max-width: 500px) {
+    height: ${({ order }) => (order ? '20vh' : '15vh')};
+  }
 `;
 
 export const CardMainInformation = styled.div<ICard>`
@@ -103,8 +128,7 @@ export const CardMainInformation = styled.div<ICard>`
       display: flex;
       flex-direction: column;
       padding: 10px 0; 
-      height: 15vh; 
-      width: 100%;
+      height: 15vh;
     `}
   ${({ order }) =>
     order &&
@@ -114,14 +138,43 @@ export const CardMainInformation = styled.div<ICard>`
       justify-content: space-around;
       height: 15vh;
     `}
+  
+  @media (max-width: 600px) {
+    height: ${({ cart }) => (cart ? '20vh' : '15vh')};
+  }
+
+  @media (max-width: 500px) {
+    height: ${({ order }) => (order ? '20vh' : '15vh')};
+  }
+`;
+
+export const CardPaymentInformation = styled.div<ICard>`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+`;
+
+export const CardPriceInformation = styled.div<ICard>`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `;
 
 export const CardAdditionalInformation = styled.div<ICard>`
   display: ${({ order }) => (order && 'none') || 'flex'};
   flex-direction: column;
   justify-content: space-between;
-  width: 40%;
+  align-items: flex-end;
   height: ${({ cart }) => (cart ? '13vh' : '100%')};
+
+  @media (max-width: 600px) {
+    height: ${({ cart }) => (cart ? '20vh' : '15vh')};
+  }
+
+  @media (max-width: 500px) {
+    height: ${({ order }) => (order ? '20vh' : '5vh')};
+    height: ${({ cart }) => (cart ? '13vh' : '5vh')};
+  }
 `;
 
 export const CardQuantity = styled.p<ICard>`
@@ -142,10 +195,15 @@ export const OrderTotalPrice = styled.div`
   font-size: 14px;
   align-self: flex-end;
   width: 35%;
+
+  @media (max-width: 500px) {
+    font-size: 12px;
+  }
 `;
 
 export const CardParagraph = styled.p<ICard>`
   font-size: 14px;
+  font-family: ${lato};
   padding: ${({ cart, order }) => (cart || order ? '0' : '0 7px')};
 
   @media (max-width: 500px) {
@@ -157,6 +215,17 @@ export const CardLabel = styled(CardParagraph)<ICard>`
   font-weight: bold;
 `;
 
+export const CardPrice = styled(CardLabel)<ICard>`
+  text-decoration: line-through;
+`;
+
+export const CardDiscount = styled(CardLabel)<ICard>`
+  background-color: ${lightGreen};
+  opacity: 0.9;
+  align-self: flex-end;
+  font-family: ${lato};
+`;
+
 export const CardNavLink = styled(NavLink)`
   text-decoration: none;
   color: ${black};
@@ -164,6 +233,10 @@ export const CardNavLink = styled(NavLink)`
   &:hover {
     color: ${hoverLink};
   }
+`;
+
+export const CardNavLinkToCart = styled(CardNavLink)`
+  text-decoration: underline;
 `;
 
 export const CardGenre = styled.p<ICard>`

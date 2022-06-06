@@ -1,4 +1,5 @@
-import React, { Children, useCallback, useEffect, useMemo, useState } from 'react';
+import { useClickOutside } from 'hooks';
+import React, { Children, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { Card } from 'screen';
 
@@ -8,6 +9,7 @@ interface IAutocomplete {
   options: string[];
   name: string;
   reset?: string;
+  style?: string;
   onChangeInput: (input: string) => void;
   children?: JSX.Element[];
 }
@@ -17,11 +19,19 @@ export const Autocomplete: React.FC<IAutocomplete> = ({
   name,
   onChangeInput,
   reset,
+  style,
   children,
 }) => {
   const [isShow, setIsShow] = useState<boolean>(false);
   const [filtered, setFiltered] = useState<string[]>([]);
   const [value, setValue] = useState<string>('');
+  const autocompleteRef = useRef(null);
+  const outsideClick = () => {
+    setIsShow(false);
+  };
+
+  useClickOutside(autocompleteRef, outsideClick);
+
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const input = e.currentTarget.value;
     const newFilteredSuggestions = options.filter(
@@ -63,11 +73,14 @@ export const Autocomplete: React.FC<IAutocomplete> = ({
     if (isShow && value) {
       if (filtered.length) {
         return (
-          <ul className="autocomplete__list" data-testid="autocomplete__list">
+          <ul
+            className={`autocomplete__list ${style}-autocomplete__list`}
+            data-testid="autocomplete__list"
+          >
             {filtered.map((suggestion) => {
               return children ? (
                 <div
-                  className="autocomplete__list-item"
+                  className={`autocomplete__list-item ${style}-autocomplete__list-item`}
                   key={suggestion}
                   onClick={() => onGameClick(suggestion)}
                 >
@@ -78,7 +91,7 @@ export const Autocomplete: React.FC<IAutocomplete> = ({
               ) : (
                 <li
                   data-testid="suggest"
-                  className="autocomplete__list-item"
+                  className={`autocomplete__list-item ${style}-autocomplete__list-item`}
                   key={suggestion}
                   onClick={onClick}
                 >
@@ -91,21 +104,21 @@ export const Autocomplete: React.FC<IAutocomplete> = ({
       }
 
       return (
-        <ul className="autocomplete__list">
-          <li className="autocomplete__list-item">Not found</li>
+        <ul className={`autocomplete__list ${style}-autocomplete__list`}>
+          <li>Not found</li>
         </ul>
       );
     }
     return <></>;
-  }, [filtered, isShow, value, children, onClick, onGameClick]);
+  }, [filtered, isShow, value, style, children, onClick, onGameClick]);
 
   return (
-    <div className="autocomplete">
+    <div className={`autocomplete ${style}-autocomplete`} ref={autocompleteRef}>
       <input
         type="text"
         data-testid="autocomplete"
         value={value}
-        className="autocomplete__input"
+        className={`autocomplete__input ${style}-autocomplete__input`}
         placeholder={name}
         onChange={onChange}
       />

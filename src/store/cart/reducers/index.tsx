@@ -35,6 +35,7 @@ const initialState = {
     },
   ],
   isLoading: null,
+  isTimerActive: false,
   cartError: null,
   gameError: null,
   achievements: [],
@@ -57,6 +58,7 @@ export function cartReducer(state = initialState, { type, payload }: CartActionT
       return {
         ...state,
         cart: [payload],
+        isTimerActive: true,
         isLoading: false,
       };
     case CHANGE_QUANTITY_SUCCESS:
@@ -74,6 +76,7 @@ export function cartReducer(state = initialState, { type, payload }: CartActionT
       return {
         ...state,
         cart: state.cart.filter(({ gameId }) => gameId !== payload.gameId),
+        isTimerActive: false,
       };
     case REMOVE_GAME_FAILURE:
       return {
@@ -124,6 +127,7 @@ export function cartReducer(state = initialState, { type, payload }: CartActionT
         ...state,
         cart: [],
         isLoading: false,
+        isTimerActive: false,
       };
     case CLEAR_CART_FAILURE:
       return {

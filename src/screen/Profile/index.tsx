@@ -1,14 +1,15 @@
 import React, { ChangeEvent, useCallback, useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
+import { userOptions, ToastOptions } from 'types/enumerators';
 import { useToast } from 'hooks';
 import { fetchUserInfo, uploadUserPhoto } from 'api/fetchUser';
 import { fetchOrders } from 'api/fetchOrders';
 import { fetchAchievement } from 'api/fetchAchievements';
 import { Card } from 'screen';
-import { Achievements, Button, Select } from 'components';
+import { Achievements, Button, Loader, Select } from 'components';
 import { IAchievement, IOrder, IUser } from 'types/interfaces';
-import { ToastOptions } from 'types/enumerators';
+
 import { ToastComponent } from 'components/Toast';
 
 import userImg from 'assets/userPhoto.png';
@@ -22,6 +23,7 @@ import {
   ProfileLabel,
   ProfileName,
   ProfileNavigation,
+  ProfileOrders,
   ProfilePhoto,
   ProfileUploadPhoto,
   ProfileUploadPhotoButton,
@@ -40,11 +42,13 @@ export const Profile = () => {
   const { id } = useParams<string>();
   const [userInfo, setUserInfo] = useState<IUser>({});
   const [isLoading, setIsLoading] = useState(false);
+  const [isPhotoLoading, setIsPhotoLoading] = useState(false);
   const [achievements, setAchievements] = useState<IAchievement[]>([]);
   const [orders, setOrders] = useState<IOrder[]>([]);
   const [params, setParams] = useState<IParams>({ order: 'Newest' });
   const [isAchievementsVisible, setIsAchievementsVisible] = useState(true);
   const [isOrdersVisible, setOrdersVisible] = useState(false);
+  const navigate = useNavigate();
   const { openToast } = useToast();
 
   const fetchUser = useCallback(async () => {
@@ -117,8 +121,10 @@ export const Profile = () => {
       const formData = new FormData();
       files ? formData.append('file', files[0]) : undefined;
       formData.append('upload_preset', 'fabra5gx');
+      setIsPhotoLoading(true);
       const { data } = await uploadUserPhoto(formData, id);
       setUserInfo(data);
+      setIsPhotoLoading(false);
     } catch ({
       response: {
         data: { message },
@@ -146,11 +152,18 @@ export const Profile = () => {
           disabled={isAchievementsVisible}
         />
         <Button text="Orders" onClick={handleSwitch} style="profile" disabled={isOrdersVisible} />
+        {(userInfo.role === userOptions.ADMIN || userInfo.role === userOptions.MANAGER) && (
+          <Button text="Admin panel" onClick={() => navigate('/admin')} style="profile" />
+        )}
       </ProfileNavigation>
       {!isLoading && (
         <ProfileContainer>
           <ProfileInfo>
-            <ProfilePhoto src={userInfo.photo ? userInfo.photo : userImg} alt="profile photo" />
+            {isPhotoLoading ? (
+              <Loader />
+            ) : (
+              <ProfilePhoto src={userInfo.photo ? userInfo.photo : userImg} alt="profile photo" />
+            )}
             <ProfileUploadPhoto htmlFor="file-upload">Upload new photo</ProfileUploadPhoto>
             <ProfileUploadPhotoButton
               id="file-upload"
@@ -176,28 +189,36 @@ export const Profile = () => {
             )}
             {isOrdersVisible && (
               <>
-                <ProfileLabel>Orders</ProfileLabel>
-                <Select
-                  placeholder="Newest orders"
-                  options={[
-                    { id: 0, label: 'Newest orders', value: 'Newest' },
-                    { id: 1, label: 'Oldest orders', value: 'Oldest' },
-                  ]}
-                  style="profile"
-                  handleSelect={handleSelect}
-                />
-                {orders && !isLoading ? (
-                  orders.map(({ id, game, formatedCreatedAt, quantity }) => (
-                    <Card
-                      order
-                      key={id}
-                      purchaseDate={formatedCreatedAt}
-                      quantity={quantity}
-                      {...game}
-                    />
-                  ))
+                {orders.length === 0 ? (
+                  <ProfileLabel>You don&apos;t have orders yet</ProfileLabel>
                 ) : (
-                  <p>Loading</p>
+                  <>
+                    <ProfileLabel>Orders</ProfileLabel>
+                    <Select
+                      placeholder="Newest orders"
+                      options={[
+                        { id: 0, label: 'Newest orders', value: 'Newest' },
+                        { id: 1, label: 'Oldest orders', value: 'Oldest' },
+                      ]}
+                      style="profile"
+                      handleSelect={handleSelect}
+                    />
+                    <ProfileOrders>
+                      {orders && !isLoading ? (
+                        orders.map(({ id, game, formatedCreatedAt, quantity }) => (
+                          <Card
+                            order
+                            key={id}
+                            purchaseDate={formatedCreatedAt}
+                            quantity={quantity}
+                            {...game}
+                          />
+                        ))
+                      ) : (
+                        <Loader />
+                      )}
+                    </ProfileOrders>
+                  </>
                 )}
               </>
             )}

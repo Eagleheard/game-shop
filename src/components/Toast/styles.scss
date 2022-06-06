@@ -11,9 +11,9 @@
   right: 30px;
   bottom: 30px;
 
-  &__show {
-    display: block;
-    animation: fadein 0.5s, fadeout 0.5s 2.5s;
+    &__show {
+        display: block;
+        animation: fadein 0.5s, fadeout 0.5s 4.5s;
 
     &--error {
       background-color: $error;

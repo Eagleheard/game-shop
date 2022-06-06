@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState } from 'react';
 
-const toastTimeout = 3000;
+const toastTimeout = 5000;
 
 export const ToastContext = createContext();
 
@@ -25,6 +25,7 @@ export const ToastProvider = ({ children }) => {
         toastType,
         isToastVisible,
         openToast,
+        setIsToastVisible,
       }}
     >
       {children}

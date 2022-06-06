@@ -305,6 +305,7 @@ export interface CartState {
       };
     }[];
     isLoading: boolean;
+    isTimerActive: boolean;
     gameError: string;
     cartError: string;
     achievements: {

@@ -5,7 +5,8 @@ import { ToastOptions } from 'types/enumerators';
 import { ToastComponent } from 'components/Toast';
 import { Card } from 'screen';
 import { usePagination, useToast } from 'hooks';
-import { Pagination, Select, Preview } from 'components';
+import { Pagination, Select, Preview, Loader } from 'components';
+
 import { IGame } from 'types/interfaces';
 
 import './style.scss';
@@ -87,7 +88,7 @@ export const Home = () => {
           handleSelect={handleSelect}
         />
         {isLoading || !games.length ? (
-          <h1>Games not found</h1>
+          <Loader />
         ) : (
           <Pagination
             RenderComponent={Card}

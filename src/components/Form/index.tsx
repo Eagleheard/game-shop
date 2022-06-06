@@ -113,7 +113,7 @@ export const Form: React.FC<IForm> = ({ games, fillGames }) => {
               matchesMaxPrice: (value) => {
                 const { minPrice } = getValues();
                 return value
-                  ? parseInt(value) >= parseInt(minPrice) ||
+                  ? parseInt(value) >= (parseInt(minPrice) ? minPrice : 0) ||
                       'Max price should be bigger then min price'
                   : undefined;
               },

@@ -38,6 +38,7 @@ import {
   removeGameFailure,
   clearCartSuccess,
   clearCartFailure,
+  addGameRequest,
 } from '../actions';
 
 export function* getStore() {
@@ -70,6 +71,7 @@ export function* getDiscount() {
 
 export function* addGameToStore({ payload }: AddGameSuccessAction) {
   try {
+    yield put(addGameRequest());
     const { data } = yield call(addGameToBasket, { ...payload });
     yield socket.emit('buyingGame', { id: payload.gameId });
     yield put(addGameSuccess(data));

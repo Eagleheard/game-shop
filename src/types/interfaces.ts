@@ -14,14 +14,17 @@ export interface IGame {
   preview?: string;
   isPreview?: boolean;
   new?: boolean;
-  popularity: number;
+  popularity?: number;
   description?: string;
   purchaseDate?: string;
   quantity?: number;
   disk?: boolean;
-  count: string;
+  count: number;
   cart?: boolean;
   order?: boolean;
+  discount?: {
+    discountCount: string;
+  };
   search?: boolean;
 }
 
@@ -56,11 +59,21 @@ export interface ISign {
 }
 
 export interface IUser {
+  id?: string;
   email?: string;
   name?: string;
   lastName?: string;
   password?: string;
   photo?: string;
+  role?: string;
+  blocked?: boolean;
+}
+
+export interface IUserParams {
+  id?: string;
+  blocked?: boolean;
+}
+{
 }
 
 export interface IAchievement {
@@ -85,4 +98,39 @@ export interface IOrder {
   quantity?: string;
   game?: IGame;
   formatedCreatedAt?: string;
+}
+
+export interface IOrderParams {
+  order?: string;
+}
+
+export interface INewGameParams {
+  id?: number;
+  name?: string;
+  price?: string;
+  count?: string;
+  image?: string;
+  authorName?: string;
+  genreName?: string;
+  disk?: boolean;
+  digital?: boolean;
+  popularity?: string;
+  isPreview?: boolean;
+  preview?: string;
+  isNew?: boolean;
+  description?: string;
+}
+
+export interface INewAuthorParams {
+  name?: string;
+  image?: string;
+  description?: string;
+  popularity?: string;
+  location?: string;
+}
+
+export interface IDiscountParams {
+  startDiscount?: string;
+  endDiscount?: string;
+  gameName?: string;
 }
