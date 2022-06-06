@@ -12,11 +12,18 @@ interface ISelect {
     label: string;
   }[];
   style: string;
-  selectedValue?: string;
+  isHeaderMode?: boolean;
   handleSelect: (value: string) => void;
 }
 
-export const Select: React.FC<ISelect> = ({ placeholder, options, style, handleSelect, reset }) => {
+export const Select: React.FC<ISelect> = ({
+  placeholder,
+  options,
+  style,
+  handleSelect,
+  reset,
+  isHeaderMode,
+}) => {
   const [isListHidden, setIsListHidden] = useState<boolean>(true);
   const [value, setValue] = useState<string>('');
   const selectRef = useRef(null);
@@ -27,7 +34,9 @@ export const Select: React.FC<ISelect> = ({ placeholder, options, style, handleS
   useClickOutside(selectRef, outsideClick);
 
   const handleChange = (label: string) => {
-    setValue(label);
+    if (!isHeaderMode) {
+      setValue(label);
+    }
     handleSelect(label);
     setIsListHidden(true);
   };

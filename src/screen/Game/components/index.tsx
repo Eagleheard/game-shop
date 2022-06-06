@@ -26,7 +26,7 @@ interface IGamePage {
     name: string;
   };
   description?: string;
-  count?: number;
+  count?: string;
 }
 
 export const GamePage: React.FC<IGamePage> = ({
@@ -69,7 +69,9 @@ export const GamePage: React.FC<IGamePage> = ({
           <img src={preview} className="game__logo" />
           <div className="about">
             <div className="about__property">
-              <p className="about__name" data-testid="gameName">{name}</p>
+              <p className="about__name" data-testid="gameName">
+                {name}
+              </p>
               <p className="about__genre">Genre: {genre?.name}</p>
               <p className="about__author">
                 Author:
@@ -87,12 +89,14 @@ export const GamePage: React.FC<IGamePage> = ({
                     style="cart-btn"
                     disabled={buyingCount === 1}
                   />
-                  <p className="card__quantity" data-testid="gameCount">{buyingCount}</p>
+                  <p className="card__quantity" data-testid="gameCount">
+                    {buyingCount}
+                  </p>
                   <Button
                     text="+"
                     onClick={() => setBuyingCount((prevValue) => prevValue + 1)}
                     style="cart-btn"
-                    disabled={buyingCount === count}
+                    disabled={buyingCount === parseInt(count)}
                   />
                 </div>
               )}

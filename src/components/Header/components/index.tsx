@@ -6,7 +6,7 @@ import { useToast } from 'hooks';
 import { ToastComponent } from 'components/Toast';
 import { fetchGames } from 'api/fetchGames';
 import { ResponsiveHeader } from './responsive';
-import { SignIn, SignUp, Portal, Select, Autocomplete, Search } from 'components';
+import { SignIn, SignUp, Portal, Select, Search } from 'components';
 import { authorization, logout } from 'api/authorization';
 import { useAuth } from 'hooks/useAuth';
 import { IGame } from 'types/interfaces';
@@ -144,6 +144,7 @@ export const Header = () => {
               { id: 2, label: 'Logout', value: 'Logout' },
             ]}
             style="header"
+            isHeaderMode={true}
             handleSelect={handleSelect}
           />
         ) : (
