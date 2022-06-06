@@ -1,7 +1,7 @@
-import { cleanup, render, screen, waitFor, act, fireEvent } from '@testing-library/react';
+import { render, screen, act, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import React from 'react';
-import axios from 'axios';
+import '../../../jest.env';
 
 import ErrorBoundary from 'components/ErrorBoundary';
 import { BrowserRouter } from 'react-router-dom';

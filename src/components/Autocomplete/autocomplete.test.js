@@ -1,25 +1,27 @@
-import { cleanup, fireEvent, render, waitFor } from '@testing-library/react';
+import { render, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 
 import { Autocomplete } from '.';
 
-afterEach(cleanup);
-
 const optionsList = ['abc', 'Vlad', 'Game', 'It Takes Two'];
 describe('Autocomplete', () => {
-  const { getByTestId, getByText } = render(<Autocomplete options={optionsList} name="Games" />);
-  const input = getByTestId('autocomplete');
-  it('Should open list if user start writting', () => {
-    fireEvent.change(input, { target: { value: '23' } });
-    waitFor(() => expect(input.value).toBe('$23'));
+  it('Should open list if user start writting', async () => {
+    const { getByTestId, getByText } = render(
+      <Autocomplete options={optionsList} name="Games" />,
+    );
+    const input = getByTestId('autocomplete');
+    userEvent.type(input, '23');
+    await waitFor(() => expect(input.value).toBe('23'));
     expect(getByText('Not found')).toBeInTheDocument();
   });
 
-  it('Should open list with suggestion if user start write corrent word', () => {
-    fireEvent.change(input, { target: { value: 'abc' } });
-    waitFor(() => {
-      expect(input.value).toBe('$abc');
-      expect(getByText('abc')).toBeInTheDocument();
-      expect(getByText('Not found')).toBeInTheDocument();
-    });
+  it('Should open suggest options with right suggest', async () => {
+    const { getByTestId } = render(
+      <Autocomplete options={optionsList} name="Games" />,
+    );
+    const input = getByTestId('autocomplete');
+    userEvent.type(input, 'ab');
+    await waitFor(() => expect(input.value).toBe('ab'));
+    expect(getByTestId('suggest')).toHaveTextContent('abc');
   });
 });
