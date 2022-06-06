@@ -144,7 +144,7 @@ export const Header = () => {
               { id: 2, label: 'Logout', value: 'Logout' },
             ]}
             style="header"
-            isHeaderMode={true}
+            isHeaderMode
             handleSelect={handleSelect}
           />
         ) : (
