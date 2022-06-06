@@ -3,10 +3,9 @@ import { NavLink, useNavigate } from 'react-router-dom';
 
 import { ToastOptions } from 'types/enumerators';
 import { useToast } from 'hooks';
-import { ToastComponent } from 'components/Toast';
 import { fetchGames } from 'api/fetchGames';
 import { ResponsiveHeader } from './responsive';
-import { SignIn, SignUp, Portal, Select, Search } from 'components';
+import { SignIn, SignUp, Portal, Select, Search, ToastComponent } from 'components';
 import { authorization, logout } from 'api/authorization';
 import { useAuth } from 'hooks/useAuth';
 import { IGame } from 'types/interfaces';

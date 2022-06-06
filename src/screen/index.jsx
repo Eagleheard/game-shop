@@ -5,3 +5,4 @@ export { Card } from 'screen/Game/components/gameCard.tsx';
 export { GamePage } from 'screen/Game/components/index.tsx';
 export { Profile } from 'screen/Profile';
 export { Basket } from 'screen/Basket';
+export { AdminPanel } from 'screen/AdminPanel';

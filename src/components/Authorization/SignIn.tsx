@@ -10,7 +10,7 @@ import './styles.scss';
 
 export const SignIn: React.FC<ISign> = ({ handleSwitch }) => {
   const { setUser } = useAuth();
-  const [error, setError] = useState<boolean>(false);
+  const [error, setError] = useState<string>();
   const {
     handleSubmit,
     register,
@@ -21,8 +21,12 @@ export const SignIn: React.FC<ISign> = ({ handleSwitch }) => {
     try {
       const { data } = await login(params);
       setUser(data);
-    } catch (error) {
-      setError(true);
+    } catch ({
+      response: {
+        data: { message },
+      },
+    }) {
+      setError(String(message));
     }
   };
 
@@ -33,7 +37,7 @@ export const SignIn: React.FC<ISign> = ({ handleSwitch }) => {
   return (
     <div className="login">
       <form onSubmit={handleSubmit(submitForm)} className="login__form">
-        {(error || errors.email) && <p className="login__error">Wrong password or email</p>}
+        {(error || errors.email) && <p className="login__error">{error || errors.email}</p>}
         <div className="login__group">
           <input
             {...register('email', {

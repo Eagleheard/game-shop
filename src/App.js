@@ -4,7 +4,7 @@ import { Route, Routes } from 'react-router-dom';
 import ErrorBoundary from 'components/ErrorBoundary';
 import { AuthProvider } from 'hooks/useAuth';
 import { ToastProvider } from 'hooks/useToast';
-import { About, Store, Home, Profile, Basket } from 'screen';
+import { About, Store, Home, Profile, Basket, AdminPanel } from 'screen';
 import { Header, Footer } from 'components';
 import { AuthorContainer } from 'screen/Author/components/container';
 import { GamePageContainer } from 'screen/Game/components/container';
@@ -30,6 +30,7 @@ function App() {
                     <Route path="/author/:id" element={<AuthorContainer />} />
                     <Route path="/user/:id" element={<Profile />} />
                     <Route path="/cart/:id" element={<Basket />} />
+                    <Route path="/admin" element={<AdminPanel />} />
                   </Routes>
                 </div>
                 <Footer />

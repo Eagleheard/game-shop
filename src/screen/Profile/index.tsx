@@ -1,6 +1,7 @@
 import React, { ChangeEvent, useCallback, useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
+import { userOptions, ToastOptions } from 'types/enumerators';
 import { useToast } from 'hooks';
 import { fetchUserInfo, uploadUserPhoto } from 'api/fetchUser';
 import { fetchOrders } from 'api/fetchOrders';
@@ -8,7 +9,7 @@ import { fetchAchievement } from 'api/fetchAchievements';
 import { Card } from 'screen';
 import { Achievements, Button, Loader, Select } from 'components';
 import { IAchievement, IOrder, IUser } from 'types/interfaces';
-import { ToastOptions } from 'types/enumerators';
+
 import { ToastComponent } from 'components/Toast';
 
 import userImg from 'assets/userPhoto.png';
@@ -47,6 +48,7 @@ export const Profile = () => {
   const [params, setParams] = useState<IParams>({ order: 'Newest' });
   const [isAchievementsVisible, setIsAchievementsVisible] = useState(true);
   const [isOrdersVisible, setOrdersVisible] = useState(false);
+  const navigate = useNavigate();
   const { openToast } = useToast();
 
   const fetchUser = useCallback(async () => {
@@ -150,6 +152,9 @@ export const Profile = () => {
           disabled={isAchievementsVisible}
         />
         <Button text="Orders" onClick={handleSwitch} style="profile" disabled={isOrdersVisible} />
+        {(userInfo.role === userOptions.ADMIN || userInfo.role === userOptions.MANAGER) && (
+          <Button text="Admin panel" onClick={() => navigate('/admin')} style="profile" />
+        )}
       </ProfileNavigation>
       {!isLoading && (
         <ProfileContainer>

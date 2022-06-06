@@ -22,6 +22,7 @@ import {
   CardBuyButton,
   CardComponent,
   CardDescription,
+  CardDiscount,
   CardGenre,
   CardImg,
   CardLabel,
@@ -29,6 +30,9 @@ import {
   CardNavLink,
   CardNavLinkToCart,
   CardParagraph,
+  CardPaymentInformation,
+  CardPrice,
+  CardPriceInformation,
   CardQuantity,
   CardQuantityValue,
   OrderTotalPrice,
@@ -50,11 +54,15 @@ export const Card = ({
   cart,
   order,
   search,
+  discount,
 }: IGame) => {
   const dispatch = useDispatch();
   const { openToast } = useToast();
   const { gameError, isLoading } = useSelector((state: CartState) => state.cartReducer || []);
   const { user } = useAuth();
+  const discountedPrice = discount
+    ? price - (price * parseInt(discount.discountCount)) / 100
+    : null;
 
   const handleBuy = () => {
     dispatch(addGameRequest(id, 1));
@@ -76,7 +84,7 @@ export const Card = ({
 
   return (
     <CardComponent search={search} cart={cart} order={order}>
-      {user && !purchaseDate && !quantity && (
+      {user && !purchaseDate && !quantity && !search && (
         <CardBuyButton>
           <Button disabled={count === 0} text="Buy now" onClick={handleBuy} style="card-buy" />
         </CardBuyButton>
@@ -128,11 +136,19 @@ export const Card = ({
               <img src={grey_cross} />
             </button>
           )}
-          {!purchaseDate && (
-            <CardLabel order={order} cart={cart}>
-              Price: {price}$
-            </CardLabel>
-          )}
+          <CardPaymentInformation>
+            {!purchaseDate && discount && (
+              <CardDiscount cart={cart}>-{discount.discountCount}%</CardDiscount>
+            )}
+            <CardPriceInformation>
+              {!purchaseDate && discount ? (
+                <CardPrice cart={cart}>{price}$</CardPrice>
+              ) : (
+                <CardLabel cart={cart}>{price}$</CardLabel>
+              )}
+              {!purchaseDate && discount && <CardLabel cart={cart}>{discountedPrice}$</CardLabel>}
+            </CardPriceInformation>
+          </CardPaymentInformation>
           {author && (
             <CardAuthor search={search}>
               <CardNavLink to={`/author/${author.id}`}>{author.name}</CardNavLink>

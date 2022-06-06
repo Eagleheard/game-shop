@@ -6,12 +6,13 @@ interface ICheckbox {
   label: string;
   onClick?: () => void;
   onChange?: () => void;
+  value?: boolean;
 }
 
-export const Checkbox: React.FC<ICheckbox> = ({ label, onClick, onChange }) => {
+export const Checkbox: React.FC<ICheckbox> = ({ label, value, onClick, onChange }) => {
   return (
     <div className="checkbox">
-      <input type="checkbox" onClick={onClick} onChange={onChange} />
+      <input defaultChecked={value} type="checkbox" onClick={onClick} onChange={onChange} />
       <label className="checkbox__label">{label}</label>
     </div>
   );
