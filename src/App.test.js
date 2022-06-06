@@ -439,8 +439,8 @@ describe('App', () => {
     expect(getByTestId('basket')).toBeInTheDocument();
     expect(await findByText('Your personal discount: 0%')).toBeInTheDocument();
     expect(await findByText('Teamfight Tactics')).toBeInTheDocument();
-    userEvent.click(getByText('Buy now'));
-    userEvent.click(getByText('Cart'));
+    userEvent.click(getByTestId('search'));
+    userEvent.click(getByText('Hi, Test'));
     fetchOrders.mockResolvedValueOnce({ ...orders });
     const userInfo = {
       data: {
