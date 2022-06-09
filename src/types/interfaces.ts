@@ -32,6 +32,7 @@ export interface IGame {
     lastName: string;
     photo: string;
   };
+  formatedCreatedAt?: string;
 }
 
 export interface IAuthor {

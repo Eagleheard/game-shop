@@ -37,4 +37,18 @@
         font-family: $lato;
         font-size: 14px;
     }
+
+    &__data {
+        width: 15%;
+        font-family: $lato;
+        opacity: 0.7;
+        font-size: 14px;
+        align-self: flex-end;
+    }
+    
+    @include media-mobile-large {
+        &__data {
+            width: 30%;
+        }
+    }
 }

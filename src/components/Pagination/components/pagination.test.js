@@ -156,8 +156,6 @@ const games = {
     },
   ],
 };
-const pageCount = Math.ceil(games.count / dataLimit);
-const page = Array.from({ length: pageCount }, (v, i) => i + 1);
 
 const renderComponent = () =>
   render(

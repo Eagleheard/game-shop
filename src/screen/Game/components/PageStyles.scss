@@ -146,6 +146,24 @@
       margin: 20px 0 10px;
       align-self: flex-start;
     }
+
+    &__notification {
+      display: flex;
+      font-family: $lato;
+      box-shadow: 0 0 10px $black;
+      margin-top: 20px;
+      padding: 20px;
+
+      &--link {
+        color: $search-primary;
+        font-weight: bold;
+        text-decoration: underline;
+
+        &:hover {
+          color: $hover-link;
+        }
+      }
+    }
   }
 
   @include media-table-large {

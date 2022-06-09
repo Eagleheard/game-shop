@@ -2,10 +2,7 @@ import React, { useEffect, useState } from 'react';
 import classNames from 'classnames';
 import { NavLink } from 'react-router-dom';
 
-import { fetchPreviewGames } from 'api/fetchPreviewGames';
-import { ToastOptions } from 'types/enumerators';
-import { useToast } from 'hooks';
-import { Button, Loader } from 'components';
+import { Button } from 'components';
 import { IGame } from 'types/interfaces';
 
 import './styles.scss';

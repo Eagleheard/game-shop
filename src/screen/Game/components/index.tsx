@@ -93,7 +93,9 @@ export const GamePage: React.FC<IGamePage> = ({
         data: { message },
       },
     }) {
-      openToast(String(message), ToastOptions.error);
+      if (message !== 'Need authorization') {
+        openToast(String(message), ToastOptions.error);
+      }
     }
   };
 
@@ -115,7 +117,7 @@ export const GamePage: React.FC<IGamePage> = ({
     if (gameError && !isLoading) {
       return openToast('Something wrong', ToastOptions.error);
     }
-  }, [gameError, isLoading, currentPage]);
+  }, [gameError, isLoading, currentPage, user]);
 
   useEffect(() => {
     socket.connect();
@@ -189,7 +191,7 @@ export const GamePage: React.FC<IGamePage> = ({
                   />
                 )
               ) : (
-                <Button text="Sign In" onClick={() => setIsSignInVisible(true)} style="buy" />
+                <Button text="Buy now" onClick={() => setIsSignInVisible(true)} style="buy" />
               )}
               <p className="game__price">Price: {price}$</p>
             </div>
@@ -216,19 +218,29 @@ export const GamePage: React.FC<IGamePage> = ({
           handleClose={() => setIsSignUpVisible(false)}
         />
       )}
-      <div className="comments">
-        <h1 className="comments__label">Comments</h1>
-        <Input id={id} sendMessage={sendMessage} />
-        <Pagination
-          RenderComponent={Comment}
-          getPaginatedData={gameComments}
-          currentPage={currentPage}
-          totalCount={commentsCount}
-          pageSize={DATA_LIMIT}
-          onPageChange={(page: number) => setCurrentPage(page)}
-          style="game"
-        />
-      </div>
+      {user ? (
+        <div className="comments">
+          <h1 className="comments__label">Comments</h1>
+          <Input id={id} sendMessage={sendMessage} />
+          <Pagination
+            RenderComponent={Comment}
+            getPaginatedData={gameComments}
+            currentPage={currentPage}
+            totalCount={commentsCount}
+            pageSize={DATA_LIMIT}
+            onPageChange={(page: number) => setCurrentPage(page)}
+            style="game"
+          />
+        </div>
+      ) : (
+        <div className="comments__notification">
+          <p>You need to&nbsp;</p>
+          <p className="comments__notification--link" onClick={() => setIsSignInVisible(true)}>
+            Sign in
+          </p>
+          <p>&nbsp;to see or leave comments</p>
+        </div>
+      )}
     </div>
   );
 };
