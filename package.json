@@ -76,7 +76,6 @@
     "husky": "^7.0.4",
     "jest": "^28.1.0",
     "lint-staged": "^12.2.0",
-    "msw": "^0.41.0",
     "prettier": "^2.5.1",
     "react-router-dom": "^6.2.1",
     "tsc-files": "^1.1.3"

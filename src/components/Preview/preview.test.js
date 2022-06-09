@@ -3,13 +3,9 @@ import '@testing-library/jest-dom/extend-expect';
 import React from 'react';
 import '../../../jest.env';
 
-import ErrorBoundary from 'components/ErrorBoundary';
-import { BrowserRouter } from 'react-router-dom';
-import { AuthProvider } from 'hooks/useAuth';
-
 import { Preview } from 'components';
-import { ToastProvider } from 'hooks/useToast';
 import { fetchPreviewGames } from 'api/fetchPreviewGames';
+import { TestComponent } from 'components/Testing';
 
 const previewGames = {
   count: 3,
@@ -123,15 +119,9 @@ const previewGames = {
 
 const renderComponent = () =>
   render(
-    <BrowserRouter>
-      <ErrorBoundary>
-        <AuthProvider>
-          <ToastProvider>
-            <Preview />
-          </ToastProvider>
-        </AuthProvider>
-      </ErrorBoundary>
-    </BrowserRouter>,
+    <TestComponent>
+      <Preview />
+    </TestComponent>,
   );
 
 const doAsync = (c) => {

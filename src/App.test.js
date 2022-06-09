@@ -3,23 +3,22 @@ import '@testing-library/jest-dom';
 import '../jest.env';
 import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
-
 import { runSaga } from 'redux-saga';
+import userEvent from '@testing-library/user-event';
+
 import * as cartApi from 'api/fetchCart';
 import * as achievementApi from 'api/fetchAchievements';
-import { getStore, addGameToStore, getDiscount } from 'store/cart/sagas';
-import { getDiscountSuccess, getCartSuccess, addGameSuccess } from 'store/cart/actions';
-
-import store from 'store';
-import { fetchGames } from 'api/fetchGames';
-import { fetchPreviewGames } from 'api/fetchPreviewGames';
-import { fetchGenres } from 'api/fetchGenres';
-import App from 'App';
-import { authorization } from 'api/authorization';
-import userEvent from '@testing-library/user-event';
 import { fetchGame } from 'api/fetchGame';
 import { fetchOrders } from 'api/fetchOrders';
 import { fetchUserInfo } from 'api/fetchUser';
+import { authorization } from 'api/authorization';
+import { fetchGames } from 'api/fetchGames';
+import { fetchPreviewGames } from 'api/fetchPreviewGames';
+import { fetchGenres } from 'api/fetchGenres';
+import { getStore, addGameToStore, getDiscount } from 'store/cart/sagas';
+import { getDiscountSuccess, getCartSuccess, addGameSuccess } from 'store/cart/actions';
+import store from 'store';
+import App from 'App';
 
 const renderComponent = () =>
   render(

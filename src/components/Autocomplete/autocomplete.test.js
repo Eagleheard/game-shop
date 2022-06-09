@@ -5,7 +5,7 @@ import { Autocomplete } from '.';
 
 const optionsList = ['abc', 'Vlad', 'Game', 'It Takes Two'];
 describe('Autocomplete', () => {
-  it('Should open list if user start writting', async () => {
+  it('Should open list if user starts typing', async () => {
     const { getByTestId, getByText } = render(<Autocomplete options={optionsList} name="Games" />);
     const input = getByTestId('autocomplete');
     userEvent.type(input, '23');

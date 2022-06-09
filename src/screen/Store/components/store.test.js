@@ -1,32 +1,18 @@
 import { render, screen, waitFor, cleanup } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import '../../../../jest.env';
+import userEvent from '@testing-library/user-event';
 
-import { BrowserRouter } from 'react-router-dom';
-import { Provider } from 'react-redux';
-
-import store from 'store';
-import { ToastProvider } from 'hooks/useToast';
-import ErrorBoundary from 'components/ErrorBoundary';
-import { AuthProvider } from 'hooks/useAuth';
 import { Store } from '.';
 import { fetchGames } from 'api/fetchGames';
 import { fetchGenres } from 'api/fetchGenres';
-import userEvent from '@testing-library/user-event';
+import { TestComponent } from 'components/Testing';
 
 const renderComponent = () =>
   render(
-    <Provider store={store}>
-      <BrowserRouter>
-        <ErrorBoundary>
-          <AuthProvider>
-            <ToastProvider>
-              <Store />
-            </ToastProvider>
-          </AuthProvider>
-        </ErrorBoundary>
-      </BrowserRouter>
-    </Provider>,
+    <TestComponent>
+      <Store />
+    </TestComponent>,
   );
 
 const games = {

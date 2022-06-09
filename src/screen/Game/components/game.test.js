@@ -1,32 +1,18 @@
 import { render, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import '../../../../jest.env';
+import userEvent from '@testing-library/user-event';
 
-import { BrowserRouter } from 'react-router-dom';
-import { Provider } from 'react-redux';
-
-import store from 'store';
-import { ToastProvider } from 'hooks/useToast';
-import ErrorBoundary from 'components/ErrorBoundary';
-import { AuthProvider } from 'hooks/useAuth';
 import { fetchGame } from 'api/fetchGame';
 import { GamePageContainer } from './container';
-import userEvent from '@testing-library/user-event';
+import { TestComponent } from 'components/Testing';
 
 jest.mock('api/fetchGame');
 const renderComponent = () =>
   render(
-    <Provider store={store}>
-      <BrowserRouter>
-        <ErrorBoundary>
-          <AuthProvider>
-            <ToastProvider>
-              <GamePageContainer />
-            </ToastProvider>
-          </AuthProvider>
-        </ErrorBoundary>
-      </BrowserRouter>
-    </Provider>,
+    <TestComponent>
+      <GamePageContainer />
+    </TestComponent>,
   );
 
 const game = {

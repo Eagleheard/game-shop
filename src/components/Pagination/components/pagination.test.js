@@ -1,15 +1,10 @@
 import { cleanup, render, waitFor, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
-import { Provider } from 'react-redux';
 
-import store from 'store';
 import { fetchGames } from 'api/fetchGames';
 import { Pagination } from '.';
-import ErrorBoundary from 'components/ErrorBoundary';
-import { BrowserRouter } from 'react-router-dom';
-import { AuthProvider } from 'hooks/useAuth';
-import { ToastProvider } from 'hooks/useToast';
 import { Card } from 'screen';
+import { TestComponent } from 'components/Testing';
 
 const dataLimit = 4;
 let currentPage = 1;
@@ -179,25 +174,17 @@ const page = Array.from({ length: pageCount }, (v, i) => i + 1);
 
 const renderComponent = () =>
   render(
-    <Provider store={store}>
-      <BrowserRouter>
-        <ErrorBoundary>
-          <AuthProvider>
-            <ToastProvider>
-              <Pagination
-                RenderComponent={Card}
-                goToNextPage={goToNextPage}
-                goToPreviousPage={goToPreviousPage}
-                currentPage={currentPage}
-                page={page}
-                getPaginatedData={games.rows}
-                changePage={changePage}
-              />
-            </ToastProvider>
-          </AuthProvider>
-        </ErrorBoundary>
-      </BrowserRouter>
-    </Provider>,
+    <TestComponent>
+      <Pagination
+        RenderComponent={Card}
+        goToNextPage={goToNextPage}
+        goToPreviousPage={goToPreviousPage}
+        currentPage={currentPage}
+        page={page}
+        getPaginatedData={games.rows}
+        changePage={changePage}
+      />
+    </TestComponent>,
   );
 describe('Pagination', () => {
   const { getByText, getByTestId } = renderComponent();
