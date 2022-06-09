@@ -93,7 +93,9 @@ export const Card = ({
       <CardDescription search={search} order={order} cart={cart}>
         <CardMainInformation order={order} cart={cart}>
           <CardLabel order={order} cart={cart}>
-            <CardNavLink to={`/game/${id}`}>{name}</CardNavLink>
+            <CardNavLink data-testid={name} to={`/game/${id}`}>
+              {name}
+            </CardNavLink>
           </CardLabel>
           {genre && <CardGenre search={search}>{genre.name}</CardGenre>}
           {purchaseDate && (

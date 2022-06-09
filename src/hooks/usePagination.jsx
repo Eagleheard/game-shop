@@ -16,8 +16,12 @@ export const usePagination = (dataLimit, params) => {
     try {
       const { data } = await fetchGames(currentPage, dataLimit, { params });
       setPageValue(data.count);
-    } catch (e) {
-      console.log(e);
+    } catch ({
+      response: {
+        data: { message },
+      },
+    }) {
+      openToast(message, ToastOptions.error);
     }
   };
 

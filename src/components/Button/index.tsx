@@ -15,6 +15,7 @@ export const Button: React.FC<IButton> = ({ text, onClick, style, disabled, type
     <button
       type={type}
       onClick={onClick}
+      data-testid={style}
       className={`navigation navigation__${style}`}
       disabled={disabled}
     >

@@ -70,7 +70,7 @@ export const Basket = () => {
   }, [cart.length]);
 
   return (
-    <div className="basket">
+    <div className="basket" data-testid="basket">
       <div className="basket__container">
         <div className="basket__games">
           {isTimerActive && <Timer />}

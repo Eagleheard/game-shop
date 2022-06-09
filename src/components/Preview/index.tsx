@@ -3,7 +3,6 @@ import classNames from 'classnames';
 import { NavLink } from 'react-router-dom';
 
 import { fetchPreviewGames } from 'api/fetchPreviewGames';
-
 import { ToastOptions } from 'types/enumerators';
 import { useToast } from 'hooks';
 import { Button } from 'components/Button';
@@ -52,10 +51,11 @@ export const Preview = () => {
   }, [previewPage, previewGames.length]);
 
   return (
-    <div className="preview">
+    <div className="preview" data-testid="container">
       {previewGames.map(({ id, name, genre, price, preview }, index) => (
         <div
           key={id}
+          data-testid="preview"
           className={classNames('preview__container', {
             'preview__container--active': index === previewPage,
             'preview__container--prev': index === previewPage - 1,
@@ -64,6 +64,7 @@ export const Preview = () => {
         >
           <img
             src={preview}
+            data-testid={`preview-${index}`}
             alt="preview logo"
             className={classNames('preview__img', {
               'preview__img--active': index === previewPage,
@@ -82,18 +83,22 @@ export const Preview = () => {
           </div>
         </div>
       ))}
-      <Button
-        text="«"
-        onClick={setPreviousPreviewPage}
-        style="prev-btn"
-        disabled={previewPage === 0}
-      />
-      <Button
-        text="»"
-        onClick={setNextPreviewPage}
-        style="next-btn"
-        disabled={previewPage === previewGames.length - 1}
-      />
+      {previewGames.length !== 0 && (
+        <>
+          <Button
+            text="«"
+            onClick={setPreviousPreviewPage}
+            style="prev-btn"
+            disabled={previewPage === 0}
+          />
+          <Button
+            text="»"
+            onClick={setNextPreviewPage}
+            style="next-btn"
+            disabled={previewPage === previewGames.length - 1}
+          />
+        </>
+      )}
     </div>
   );
 };

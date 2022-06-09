@@ -35,6 +35,7 @@ export const Pagination: React.FC<PaginationProps> = ({
       <div className="pagination__group">
         <Button
           text="«"
+          data-testid="prev-btn"
           onClick={goToPreviousPage}
           style="pagination-btn"
           disabled={currentPage === 1}
@@ -42,6 +43,7 @@ export const Pagination: React.FC<PaginationProps> = ({
         {page.map((item: number) => (
           <button
             key={item}
+            data-testid={`page-${item}`}
             onClick={() => changePage(item)}
             className={classNames('pagination__btn', {
               'pagination__btn--active': currentPage === item,
@@ -52,6 +54,7 @@ export const Pagination: React.FC<PaginationProps> = ({
         ))}
         <Button
           text="»"
+          data-testid="next-btn"
           onClick={goToNextPage}
           style="pagination-btn"
           disabled={currentPage === page.length}

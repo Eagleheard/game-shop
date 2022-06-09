@@ -83,7 +83,7 @@ export const GamePage: React.FC<IGamePage> = ({
   }, [gameError, isLoading]);
 
   return (
-    <div className="game">
+    <div className="game" data-testid="gamePage">
       <div className="game__container-btn">
         <Button text="«" onClick={() => history(-1)} style="back-btn" />
       </div>
@@ -92,7 +92,9 @@ export const GamePage: React.FC<IGamePage> = ({
           <img src={preview} className="game__logo" />
           <div className="about">
             <div className="about__property">
-              <p className="about__name">{name}</p>
+              <p className="about__name" data-testid="gameName">
+                {name}
+              </p>
               <p className="about__genre">Genre: {genre?.name}</p>
               <p className="about__author">
                 Author:
@@ -110,7 +112,9 @@ export const GamePage: React.FC<IGamePage> = ({
                     style="cart-btn"
                     disabled={buyingCount === 1}
                   />
-                  <p className="about__buying-value">{buyingCount}</p>
+                  <p className="about__buying-value" data-testid="gameCount">
+                    {buyingCount}
+                  </p>
                   <Button
                     text="+"
                     onClick={() => setBuyingCount((prevValue) => prevValue + 1)}

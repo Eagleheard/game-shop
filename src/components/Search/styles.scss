@@ -2,18 +2,18 @@
 @import 'constants/media-queries';
 
 .search {
-    width: 25%;
-    margin-bottom: 10px;
+  width: 25%;
+  margin-bottom: 10px;
 
-    &__input {
-      border-radius: 5px;
+  &__input {
+    border-radius: 5px;
+  }
+
+  @include media-table-large {
+    width: 40%;
+
+    .autocomplete {
+      width: 100%;
     }
-
-    @include media-table-large {
-      width: 40%;
-
-      .autocomplete {
-        width: 100%;
-      }
-    }
+  }
 }

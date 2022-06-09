@@ -41,7 +41,7 @@ import {
   addGameRequest,
 } from '../actions';
 
-function* getStore() {
+export function* getStore() {
   try {
     yield put(getCartRequest());
     const { data } = yield call(getBasket);
@@ -55,7 +55,7 @@ function* getStore() {
   }
 }
 
-function* getDiscount() {
+export function* getDiscount() {
   try {
     yield put(getDiscountRequest());
     const { data } = yield call(fetchAchievement);
@@ -69,7 +69,7 @@ function* getDiscount() {
   }
 }
 
-function* addGameToStore({ payload }: AddGameSuccessAction) {
+export function* addGameToStore({ payload }: AddGameSuccessAction) {
   try {
     yield put(addGameRequest());
     const { data } = yield call(addGameToBasket, { ...payload });
@@ -97,7 +97,7 @@ function* decrementGameFromStore({ payload }: DecrementGameSuccessAction) {
   }
 }
 
-function* incrementGameToStore({ payload }: IncrementGameSuccessAction) {
+export function* incrementGameToStore({ payload }: IncrementGameSuccessAction) {
   try {
     const { data } = yield call(incrementGameToBasket, { ...payload });
     yield put(changeQuantitySuccess(data));
@@ -123,7 +123,7 @@ function* removeGameFromStore({ payload }: RemoveGameSuccessAction) {
   }
 }
 
-function* clearStore() {
+export function* clearStore() {
   try {
     yield call(clearBasket);
     yield put(clearCartSuccess());
