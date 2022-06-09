@@ -1,6 +1,5 @@
 import { render } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import '../jest.env';
 import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 import { runSaga } from 'redux-saga';
@@ -19,6 +18,7 @@ import { getStore, addGameToStore, getDiscount } from 'store/cart/sagas';
 import { getDiscountSuccess, getCartSuccess, addGameSuccess } from 'store/cart/actions';
 import store from 'store';
 import App from 'App';
+import '../jest.env';
 
 const renderComponent = () =>
   render(
