@@ -162,14 +162,14 @@ const page = Array.from({ length: pageCount }, (v, i) => i + 1);
 const renderComponent = () =>
   render(
     <TestComponent>
-          <Pagination
-            RenderComponent={Card}
-            getPaginatedData={games.rows}
-            currentPage={currentPage}
-            totalCount={games.count}
-            pageSize={dataLimit}
-            onPageChange={(page) => currentPage = page}
-          />
+      <Pagination
+        RenderComponent={Card}
+        getPaginatedData={games.rows}
+        currentPage={currentPage}
+        totalCount={games.count}
+        pageSize={dataLimit}
+        onPageChange={(page) => (currentPage = page)}
+      />
     </TestComponent>,
   );
 describe('Pagination', () => {

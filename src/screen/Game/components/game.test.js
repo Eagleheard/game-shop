@@ -3,8 +3,7 @@ import '@testing-library/jest-dom';
 import userEvent from '@testing-library/user-event';
 
 import '../../../../jest.env';
-import { fetchGame } from 'api/fetchGame';
-import { fetchGameComments } from 'api/fetchGame';
+import { fetchGame, fetchGameComments } from 'api/fetchGame';
 import { authorization } from 'api/authorization';
 import { GamePageContainer } from './container';
 import { TestComponent } from 'components/Testing';
@@ -61,27 +60,28 @@ const gameComments = {
     count: 1,
     rows: [
       {
+        id: 1,
+        comment: '123',
+        gameId: 1,
+        userId: 1,
+        user: {
           id: 1,
-          comment: "123",
-          gameId: 1,
-          userId: 1,
-          user: {
-              id: 1,
-              name: "Vlad",
-              photo: "http://res.cloudinary.com/game-shop/image/upload/v1652685563/jdrsuc2gvaeorx5u5ayx.png",
-              lastName: "Krutikov"
-          }
-      }
-  ]
-  }
-}
+          name: 'Vlad',
+          photo:
+            'http://res.cloudinary.com/game-shop/image/upload/v1652685563/jdrsuc2gvaeorx5u5ayx.png',
+          lastName: 'Krutikov',
+        },
+      },
+    ],
+  },
+};
 
 const user = {
   data: {
     name: 'Test',
     lastName: 'Test',
-  }
-}
+  },
+};
 
 describe('Game Page', () => {
   it('Should render game page with selected game', async () => {

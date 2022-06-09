@@ -7,14 +7,13 @@ import userEvent from '@testing-library/user-event';
 
 import * as cartApi from 'api/fetchCart';
 import * as achievementApi from 'api/fetchAchievements';
-import { fetchGame } from 'api/fetchGame';
+import { fetchGame, fetchGameComments } from 'api/fetchGame';
 import { fetchOrders } from 'api/fetchOrders';
 import { fetchUserInfo } from 'api/fetchUser';
 import { authorization } from 'api/authorization';
 import { fetchGames } from 'api/fetchGames';
 import { fetchPreviewGames } from 'api/fetchPreviewGames';
 import { fetchGenres } from 'api/fetchGenres';
-import { fetchGameComments } from 'api/fetchGame';
 import { getStore, addGameToStore, getDiscount } from 'store/cart/sagas';
 import { getDiscountSuccess, getCartSuccess, addGameSuccess } from 'store/cart/actions';
 import store from 'store';
@@ -244,20 +243,21 @@ const gameComments = {
     count: 8,
     rows: [
       {
+        id: 1,
+        comment: '123',
+        gameId: 1,
+        userId: 1,
+        user: {
           id: 1,
-          comment: "123",
-          gameId: 1,
-          userId: 1,
-          user: {
-              id: 1,
-              name: "Vlad",
-              photo: "http://res.cloudinary.com/game-shop/image/upload/v1652685563/jdrsuc2gvaeorx5u5ayx.png",
-              lastName: "Krutikov"
-          }
-      }
-  ]
-  }
-}
+          name: 'Vlad',
+          photo:
+            'http://res.cloudinary.com/game-shop/image/upload/v1652685563/jdrsuc2gvaeorx5u5ayx.png',
+          lastName: 'Krutikov',
+        },
+      },
+    ],
+  },
+};
 
 describe('App', () => {
   it('Integration test of App', async () => {

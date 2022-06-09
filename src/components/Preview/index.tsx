@@ -5,15 +5,17 @@ import { NavLink } from 'react-router-dom';
 import { fetchPreviewGames } from 'api/fetchPreviewGames';
 import { ToastOptions } from 'types/enumerators';
 import { useToast } from 'hooks';
-import { Button } from 'components/Button';
+import { Button, Loader } from 'components';
 import { IGame } from 'types/interfaces';
 
 import './styles.scss';
 
-export const Preview = () => {
+interface IPreview {
+  games: IGame[];
+}
+
+export const Preview: React.FC<IPreview> = ({ games }) => {
   const [previewPage, setPreviewPage] = useState(0);
-  const [previewGames, setPreviewGames] = useState<IGame[]>([]);
-  const { openToast } = useToast();
 
   const setPreviousPreviewPage = () => {
     setPreviewPage((prevValue) => prevValue - 1);
@@ -23,36 +25,19 @@ export const Preview = () => {
     setPreviewPage((prevValue) => prevValue + 1);
   };
 
-  const fillPreviewGames = async () => {
-    try {
-      const { data } = await fetchPreviewGames();
-      setPreviewGames(data.rows);
-    } catch ({
-      response: {
-        data: { message },
-      },
-    }) {
-      openToast(String(message), ToastOptions.error);
-    }
-  };
-
-  useEffect(() => {
-    fillPreviewGames();
-  }, []);
-
   useEffect(() => {
     const timer = setInterval(() => {
-      if (previewPage === previewGames.length - 1) {
+      if (previewPage === games.length - 1) {
         return setPreviewPage(0);
       }
       setPreviewPage((prevValue) => prevValue + 1);
     }, 3000);
     return () => clearInterval(timer);
-  }, [previewPage, previewGames.length]);
+  }, [previewPage, games.length]);
 
   return (
     <div className="preview" data-testid="container">
-      {previewGames.map(({ id, name, genre, price, preview }, index) => (
+      {games.map(({ id, name, genre, price, preview }, index) => (
         <div
           key={id}
           data-testid="preview"
@@ -83,7 +68,7 @@ export const Preview = () => {
           </div>
         </div>
       ))}
-      {previewGames.length !== 0 && (
+      {games.length !== 0 && (
         <>
           <Button
             text="«"
@@ -95,7 +80,7 @@ export const Preview = () => {
             text="»"
             onClick={setNextPreviewPage}
             style="next-btn"
-            disabled={previewPage === previewGames.length - 1}
+            disabled={previewPage === games.length - 1}
           />
         </>
       )}
