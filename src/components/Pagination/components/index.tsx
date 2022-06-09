@@ -26,13 +26,11 @@ export const Pagination: React.FC<PaginationProps> = ({
   currentPage,
   RenderComponent,
   style,
-  siblingCount = 1,
   pageSize,
 }) => {
   const paginationRange = usePagination({
     currentPage,
     totalCount,
-    siblingCount,
     pageSize,
   });
 
@@ -47,7 +45,6 @@ export const Pagination: React.FC<PaginationProps> = ({
   const onPrevious = () => {
     onPageChange(currentPage - 1);
   };
-
   const lastPage = paginationRange[paginationRange.length - 1];
   return (
     <div className="pagination">
@@ -58,18 +55,17 @@ export const Pagination: React.FC<PaginationProps> = ({
       </div>
       <div className={`pagination__group--${style} pagination__group`}>
         <Button text="«" onClick={onPrevious} style="pagination-btn" disabled={currentPage === 1} />
-        {paginationRange.map((pageNumber) => {
+        {paginationRange.map((pageNumber, index) => {
           if (pageNumber === PaginationOptions.dots) {
             return (
-              <li key={pageNumber} className="pagination__dots">
+              <li key={index} className="pagination__dots">
                 &#8230;
               </li>
             );
           }
-
           return (
             <button
-              key={pageNumber}
+              key={index}
               onClick={() => onPageChange(pageNumber)}
               className={classNames('pagination__btn', {
                 'pagination__btn--active': currentPage === pageNumber,

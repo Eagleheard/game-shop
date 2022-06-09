@@ -1,39 +1,10 @@
-/*import { useState } from 'react';
-
-export const usePagination = (dataLimit, totalPages) => {
-  const [currentPage, setCurrentPage] = useState(1);
-  const pageCount = Math.ceil(totalPages / dataLimit);
-  const page = Array.from({ length: pageCount }, (v, i) => i + 1);
-
-  const changePage = (page) => {
-    setCurrentPage(page);
-  };
-
-  const goToNextPage = () => {
-    setCurrentPage((prevPage) => prevPage + 1);
-  };
-
-  const goToPreviousPage = () => {
-    setCurrentPage((prevPage) => prevPage - 1);
-  };
-
-  return {
-    goToNextPage,
-    goToPreviousPage,
-    changePage,
-    currentPage,
-    page,
-  };
-};*/
-
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 
 import { PaginationOptions } from 'types/enumerators';
 
 interface IUsePagination {
   totalCount: number;
   pageSize: number;
-  siblingCount: number;
   currentPage: number;
 }
 
@@ -42,12 +13,8 @@ const range = (start: number, end: number) => {
   return Array.from({ length }, (_, idx) => idx + start);
 };
 
-export const usePagination = ({
-  totalCount,
-  pageSize,
-  siblingCount = 1,
-  currentPage,
-}: IUsePagination) => {
+export const usePagination = ({ totalCount, pageSize, currentPage }: IUsePagination) => {
+  const siblingCount = 1;
   const paginationRange = useMemo(() => {
     const totalPageCount = Math.ceil(totalCount / pageSize);
     const totalPageNumbers = siblingCount + 5;
@@ -88,7 +55,7 @@ export const usePagination = ({
         lastPageIndex,
       ];
     }
-  }, [totalCount, pageSize, siblingCount, currentPage]);
+  }, [totalCount, pageSize, currentPage]);
 
   return paginationRange;
 };

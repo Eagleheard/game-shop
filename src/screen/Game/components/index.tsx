@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
+import { socket } from 'config';
 import { ICommentParams, IGame } from 'types/interfaces';
 import { fetchGameComments, sendComment } from 'api/fetchGame';
 import { useAuth } from 'hooks/useAuth';
@@ -12,7 +13,6 @@ import { useToast } from 'hooks';
 import { CartState } from 'store/cart/types';
 
 import './PageStyles.scss';
-import { socket } from 'config';
 
 interface IGamePage {
   id: number;
@@ -51,7 +51,6 @@ export const GamePage: React.FC<IGamePage> = ({
   const history = useNavigate();
   const dispatch = useDispatch();
   const [gameComments, setGameComments] = useState<IGame[]>([]);
-  const [newComments, setNewComments] = useState<IGame[]>([]);
   const [commentsCount, setCommentsCount] = useState(0);
   const [buyingCount, setBuyingCount] = useState(count !== 0 ? 1 : 0);
   const [isSignInVisible, setIsSignInVisible] = useState<boolean>(false);
@@ -113,19 +112,21 @@ export const GamePage: React.FC<IGamePage> = ({
 
   useEffect(() => {
     fetchComments();
-    socket.connect();
-    socket.on('newComments', (data) => {
-      setNewComments(data.rows);
-      setCommentsCount((prevValue) => data.count - prevValue);
-    });
     if (gameError && !isLoading) {
       return openToast('Something wrong', ToastOptions.error);
     }
-    return () => {
-      socket.disconnect();
-    };
   }, [gameError, isLoading, currentPage]);
 
+  useEffect(() => {
+    socket.connect();
+    socket.on('newComments', (data) => {
+      setGameComments(data.rows);
+      setCommentsCount(data.count);
+      return () => {
+        socket.disconnect();
+      };
+    });
+  }, []);
   return (
     <div className="game">
       <div className="game__container-btn">
@@ -213,7 +214,6 @@ export const GamePage: React.FC<IGamePage> = ({
       <div className="comments">
         <h1 className="comments__label">Comments</h1>
         <Input id={id} sendMessage={sendMessage} />
-        {newComments.length !== 0 && <p>{commentsCount} unreaded comments</p>}
         <Pagination
           RenderComponent={Comment}
           getPaginatedData={gameComments}

@@ -140,7 +140,6 @@
     border-radius: 5px;
     width: 15%;
     height: 30px;
-    margin-top: 15px;
   }
 
   &__sign-in {
@@ -215,6 +214,11 @@
     &__profile {
       width: 45%;
     }
+
+    &__send {
+      margin-top: 0;
+      width: 20%;
+    }
   }
 
   @include media-table-small {
@@ -263,6 +267,13 @@
       width: 40%;
       font-size: 12px;
       padding: 0;
+    }
+
+    &__send {
+      width: 20%;
+      height: 20px;
+      font-size: 12px;
+      padding: 3px;
     }
   }
 }
