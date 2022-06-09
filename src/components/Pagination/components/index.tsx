@@ -34,7 +34,7 @@ export const Pagination: React.FC<PaginationProps> = ({
     pageSize,
   });
 
-  if (paginationRange === undefined || currentPage === 0 || paginationRange.length < 2) {
+  if (paginationRange === undefined || currentPage === 0 || paginationRange.length < 1) {
     return null;
   }
 
