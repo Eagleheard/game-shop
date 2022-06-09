@@ -6,7 +6,7 @@ import './styles.scss';
 
 export const Loader = () => {
   return (
-    <div className="loader">
+    <div className="loader" data-testid="loader">
       <img className="loader__image" src={loader} />
     </div>
   );
