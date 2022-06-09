@@ -1,8 +1,8 @@
 import { render, screen, waitFor, cleanup } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import '../../../../jest.env';
 import userEvent from '@testing-library/user-event';
 
+import '../../../../jest.env';
 import { Store } from '.';
 import { fetchGames } from 'api/fetchGames';
 import { fetchGenres } from 'api/fetchGenres';

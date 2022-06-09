@@ -1,8 +1,8 @@
 import { render, screen, act, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import React from 'react';
-import '../../../jest.env';
 
+import '../../../jest.env';
 import { Preview } from 'components';
 import { fetchPreviewGames } from 'api/fetchPreviewGames';
 import { TestComponent } from 'components/Testing';

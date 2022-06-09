@@ -1,8 +1,8 @@
 import { render, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import '../../../../jest.env';
 import userEvent from '@testing-library/user-event';
 
+import '../../../../jest.env';
 import { fetchGame } from 'api/fetchGame';
 import { GamePageContainer } from './container';
 import { TestComponent } from 'components/Testing';
