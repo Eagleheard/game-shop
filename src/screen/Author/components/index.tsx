@@ -1,8 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { Button, Pagination } from 'components';
-import { usePagination } from 'hooks';
 import { Card } from 'screen';
 import { IGame } from 'types/interfaces';
 
@@ -15,6 +14,7 @@ interface IAuthor {
   popularity?: number;
   image?: string;
   authorGames: IGame[];
+  totalPages: number;
 }
 
 const DATA_LIMIT = 4;
@@ -26,9 +26,9 @@ export const Author: React.FC<IAuthor> = ({
   authorGames,
   location,
   popularity,
+  totalPages,
 }) => {
-  const { goToNextPage, goToPreviousPage, changePage, currentPage, page } =
-    usePagination(DATA_LIMIT);
+  const [currentPage, setCurrentPage] = useState(1);
   const history = useNavigate();
   return (
     <div className="author">
@@ -52,12 +52,11 @@ export const Author: React.FC<IAuthor> = ({
       <div className="author__games">
         <Pagination
           RenderComponent={Card}
-          goToNextPage={goToNextPage}
-          goToPreviousPage={goToPreviousPage}
-          currentPage={currentPage}
-          page={page}
           getPaginatedData={authorGames}
-          changePage={changePage}
+          currentPage={currentPage}
+          totalCount={totalPages}
+          pageSize={DATA_LIMIT}
+          onPageChange={(page: number) => setCurrentPage(page)}
         />
       </div>
     </div>

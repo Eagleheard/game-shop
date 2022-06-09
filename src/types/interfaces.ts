@@ -26,6 +26,12 @@ export interface IGame {
     discountCount: string;
   };
   search?: boolean;
+  comment: string;
+  user: {
+    name: string;
+    lastName: string;
+    photo: string;
+  };
 }
 
 export interface IAuthor {
@@ -73,7 +79,10 @@ export interface IUserParams {
   id?: string;
   blocked?: boolean;
 }
-{
+
+export interface ICommentParams {
+  id: number;
+  comment: string;
 }
 
 export interface IAchievement {
@@ -133,4 +142,14 @@ export interface IDiscountParams {
   startDiscount?: string;
   endDiscount?: string;
   gameName?: string;
+}
+
+export interface IGameComments {
+  id: number;
+  comment: string;
+  user: {
+    name: string;
+    lastName: string;
+    photo: string;
+  };
 }

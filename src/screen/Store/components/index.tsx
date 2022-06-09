@@ -7,7 +7,7 @@ import { Card } from 'screen';
 import { Pagination, Select, ResponsiveFilter, Loader } from 'components';
 import { Filter } from 'components/Filter';
 import { IGame } from 'types/interfaces';
-import { usePagination, useToast } from 'hooks';
+import { useToast } from 'hooks';
 
 import filter from 'assets/filter.png';
 
@@ -31,10 +31,10 @@ interface IParams {
 export const Store = () => {
   const [games, setGames] = useState<IGame[]>([]);
   const [params, setParams] = useState<IParams>();
+  const [totalPages, setTotalPages] = useState(0);
   const [error, setError] = useState('');
   const [isFilterVisible, setIsFilterVisible] = useState<boolean>(false);
-  const { goToNextPage, goToPreviousPage, changePage, currentPage, page } =
-    usePagination(DATA_LIMIT);
+  const [currentPage, setCurrentPage] = useState(1);
   const { openToast } = useToast();
 
   const fillGames = useCallback(
@@ -42,6 +42,7 @@ export const Store = () => {
       try {
         const { data } = await fetchGames(currentPage, DATA_LIMIT, { params });
         setGames(data.rows);
+        setTotalPages(data.count);
         setError('');
         if (data.count === 0) {
           setError('Games not found');
@@ -82,7 +83,7 @@ export const Store = () => {
       default:
         fillGames();
     }
-    changePage(1);
+    setCurrentPage(1);
   };
 
   useEffect(() => {
@@ -131,12 +132,11 @@ export const Store = () => {
         ) : (
           <Pagination
             RenderComponent={Card}
-            goToNextPage={goToNextPage}
-            goToPreviousPage={goToPreviousPage}
-            currentPage={currentPage}
-            page={page}
             getPaginatedData={games}
-            changePage={changePage}
+            currentPage={currentPage}
+            totalCount={totalPages}
+            pageSize={DATA_LIMIT}
+            onPageChange={(page: number) => setCurrentPage(page)}
           />
         )}
       </div>

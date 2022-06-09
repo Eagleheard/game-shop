@@ -17,6 +17,12 @@
     width: 100%;
     margin-top: 20px;
 
+    &--game {
+      grid-template-areas: 'comment';
+      grid-template-columns: 1fr;
+      align-items: center;
+    }
+
     @include media-desktop-large {
       grid-template-rows: auto auto;
       grid-template-columns: repeat(auto-fit, 30%);
@@ -38,8 +44,20 @@
   }
 
   &__group {
+    display: flex;
     margin-top: 20px;
     flex-direction: row;
+    list-style-type: none;
+
+    &--game {
+      margin: 20px;
+    }
+  }
+
+  &__dots {
+    align-self: flex-end;
+    font-size: 18px;
+    margin: 0 10px;
   }
 
   &__btn {

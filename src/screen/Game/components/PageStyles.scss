@@ -129,6 +129,17 @@
     }
   }
 
+  .comments {
+    width: 65%;
+
+    &__label {
+      font-family: $lato;
+      font-size: 24px;
+      margin: 20px 0 10px;
+      align-self: flex-start;
+    }
+  }
+
   @include media-table-large {
     &__container,
     &__container-btn {

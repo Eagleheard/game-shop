@@ -13,6 +13,7 @@ export const AuthorContainer = () => {
   const { id } = useParams<string>();
   const [authorInfo, setAuthorInfo] = useState<IAuthor>();
   const [authorGames, setAuthorGames] = useState<IGame[]>([]);
+  const [totalPages, setTotalPages] = useState(0);
   const { openToast } = useToast();
   const navigate = useNavigate();
 
@@ -34,6 +35,7 @@ export const AuthorContainer = () => {
     try {
       const { data } = await fetchGameByAuthor(id);
       setAuthorGames(data.rows);
+      setTotalPages(data.count);
     } catch ({
       response: {
         data: { message },
@@ -51,6 +53,6 @@ export const AuthorContainer = () => {
   return !authorInfo || !authorGames ? (
     <Loader />
   ) : (
-    <Author {...authorInfo} authorGames={authorGames} />
+    <Author {...authorInfo} authorGames={authorGames} totalPages={totalPages} />
   );
 };
