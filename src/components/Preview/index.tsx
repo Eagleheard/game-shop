@@ -2,17 +2,18 @@ import React, { useEffect, useState } from 'react';
 import classNames from 'classnames';
 import { NavLink } from 'react-router-dom';
 
+import { ToastOptions } from 'types/enumerators';
 import { Button } from 'components';
 import { IGame } from 'types/interfaces';
+import { fetchPreviewGames } from 'api/fetchPreviewGames';
+import { useToast } from 'hooks';
 
 import './styles.scss';
 
-interface IPreview {
-  games: IGame[];
-}
-
-export const Preview: React.FC<IPreview> = ({ games }) => {
+export const Preview = () => {
   const [previewPage, setPreviewPage] = useState(0);
+  const [previewGames, setPreviewGames] = useState<IGame[]>([]);
+  const { openToast } = useToast();
 
   const setPreviousPreviewPage = () => {
     setPreviewPage((prevValue) => prevValue - 1);
@@ -22,19 +23,36 @@ export const Preview: React.FC<IPreview> = ({ games }) => {
     setPreviewPage((prevValue) => prevValue + 1);
   };
 
+  const getPreviewGames = async () => {
+    try {
+      const { data } = await fetchPreviewGames();
+      setPreviewGames(data.rows);
+    } catch ({
+      response: {
+        data: { message },
+      },
+    }) {
+      openToast(message, ToastOptions.error);
+    }
+  };
+
+  useEffect(() => {
+    getPreviewGames();
+  }, []);
+
   useEffect(() => {
     const timer = setInterval(() => {
-      if (previewPage === games.length - 1) {
+      if (previewPage === previewGames.length - 1) {
         return setPreviewPage(0);
       }
       setPreviewPage((prevValue) => prevValue + 1);
     }, 3000);
     return () => clearInterval(timer);
-  }, [previewPage, games.length]);
+  }, [previewPage, previewGames.length]);
 
   return (
     <div className="preview" data-testid="container">
-      {games.map(({ id, name, genre, price, preview }, index) => (
+      {previewGames.map(({ id, name, genre, price, preview }, index) => (
         <div
           key={id}
           data-testid="preview"
@@ -65,7 +83,7 @@ export const Preview: React.FC<IPreview> = ({ games }) => {
           </div>
         </div>
       ))}
-      {games.length !== 0 && (
+      {previewGames.length !== 0 && (
         <>
           <Button
             text="«"
@@ -77,7 +95,7 @@ export const Preview: React.FC<IPreview> = ({ games }) => {
             text="»"
             onClick={setNextPreviewPage}
             style="next-btn"
-            disabled={previewPage === games.length - 1}
+            disabled={previewPage === previewGames.length - 1}
           />
         </>
       )}

@@ -75,7 +75,7 @@ export const Home = () => {
   return (
     <div className="home">
       <div className="home__container">
-        <Preview games={games.filter(({ isPreview }) => isPreview === true)} />
+        <Preview />
         <Select
           placeholder="Our games"
           options={[
