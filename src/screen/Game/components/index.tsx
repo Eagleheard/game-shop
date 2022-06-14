@@ -16,7 +16,7 @@ interface IGamePage {
   name?: string;
   preview?: string;
   popularity?: number;
-  price?: number;
+  price: number;
   genre?: {
     id: number;
     name: string;
@@ -28,6 +28,9 @@ interface IGamePage {
   description?: string;
   count: number;
   disk?: boolean;
+  discount?: {
+    discountCount: string;
+  };
 }
 
 const quantityLimit = 10;
@@ -43,6 +46,7 @@ export const GamePage: React.FC<IGamePage> = ({
   description,
   count,
   disk,
+  discount,
 }) => {
   const history = useNavigate();
   const dispatch = useDispatch();
@@ -51,6 +55,9 @@ export const GamePage: React.FC<IGamePage> = ({
   const [isSignUpVisible, setIsSignUpVisible] = useState<boolean>(false);
   const [isGameBuyed, setIsGameBuyed] = useState<boolean>(false);
   const { user } = useAuth();
+  const discountedPrice = discount
+    ? price - (price * parseInt(discount.discountCount)) / 100
+    : null;
 
   const handleSwitch = () => {
     if (isSignInVisible) {
@@ -143,7 +150,17 @@ export const GamePage: React.FC<IGamePage> = ({
               ) : (
                 <Button text="Sign In" onClick={() => setIsSignInVisible(true)} style="buy" />
               )}
-              <p className="game__price">Price: {price}$</p>
+              <div className="game__price-block">
+                {discount && <p className="game__discount">-{discount.discountCount}%</p>}
+                <div className="game__price-information">
+                  {discount ? (
+                    <p className="game__price--old">{price}$</p>
+                  ) : (
+                    <p className="game__price">{price}$</p>
+                  )}
+                  {discount && <p className="game__price--new">{discountedPrice}$</p>}
+                </div>
+              </div>
             </div>
           </div>
         </div>

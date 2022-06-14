@@ -127,6 +127,7 @@
     &__description {
       height: 20vh;
       resize: none;
+      padding: 5px 10px;
     }
 
     &__upload-label {
@@ -143,8 +144,9 @@
     &__submit {
       display: flex;
       align-self: flex-end;
-      justify-content: space-around;
-      width: 40%;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
       padding: 10px 0;
     }
 }

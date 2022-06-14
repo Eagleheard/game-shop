@@ -152,6 +152,7 @@ export const CardPaymentInformation = styled.div<ICard>`
   display: flex;
   flex-direction: row;
   align-items: center;
+  margin-right: 5px;
 `;
 
 export const CardPriceInformation = styled.div<ICard>`
@@ -222,8 +223,9 @@ export const CardPrice = styled(CardLabel)<ICard>`
 export const CardDiscount = styled(CardLabel)<ICard>`
   background-color: ${lightGreen};
   opacity: 0.9;
-  align-self: flex-end;
+  align-self: center;
   font-family: ${lato};
+  margin-right: 5px;
 `;
 
 export const CardNavLink = styled(NavLink)`

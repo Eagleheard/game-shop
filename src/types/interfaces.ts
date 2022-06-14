@@ -8,6 +8,9 @@ export interface IGame {
   author: {
     name: string;
     id: number;
+    location: string;
+    description: string;
+    popularity: number;
   };
   price: number;
   image?: string;
@@ -56,6 +59,7 @@ export interface ICart {
 
 export interface ISign {
   handleSwitch: () => void;
+  style?: string;
 }
 
 export interface IUser {
@@ -122,6 +126,7 @@ export interface INewGameParams {
 }
 
 export interface INewAuthorParams {
+  id?: number;
   name?: string;
   image?: string;
   description?: string;

@@ -5,6 +5,8 @@ const initialState = {
     {
       startDiscount: '',
       endDiscount: '',
+      gameId: 0,
+      discountCount: '',
       gameName: '',
     },
   ],
@@ -22,10 +24,21 @@ export const discountsSlice = createSlice({
     },
     addDiscountsSuccess: (state, { payload }) => {
       state.isLoading = false;
-      state.discount = payload;
+      state.discount = [payload];
       state.discountError = '';
     },
     addDiscountsFailure: (state, { payload }) => {
+      state.isLoading = false;
+      state.discountError = payload;
+    },
+    getDiscountsRequest: (state) => {
+      state.isLoading = true;
+    },
+    getDiscountsSuccess: (state, { payload }) => {
+      state.isLoading = false;
+      state.discount = payload;
+    },
+    getDiscountsFailure: (state, { payload }) => {
       state.isLoading = false;
       state.discountError = payload;
     },

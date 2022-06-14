@@ -112,8 +112,64 @@ export interface UsersReducerState {
 
 export interface GamesReducerState {
   gamesReducer: {
+    games: {
+      id: number;
+      name: string;
+      price: number;
+      image: string;
+      disk?: boolean;
+      digital?: boolean;
+      description: string;
+      isNew?: boolean;
+      isPreview?: boolean;
+      preview?: string;
+      count: number;
+      popularity: number;
+      authorName?: string;
+      genreName?: string;
+      location?: string;
+      author: {
+        id: number;
+        name: string;
+        location: string;
+        description: string;
+        popularity: number;
+      };
+      genre: {
+        id: number;
+        name: string;
+      };
+    }[];
+    selectedGame: {
+      id: number;
+      name: string;
+      price: number;
+      image: string;
+      disk?: boolean;
+      digital?: boolean;
+      description: string;
+      isNew?: boolean;
+      isPreview?: boolean;
+      preview?: string;
+      count: number;
+      popularity: number;
+      authorName?: string;
+      genreName?: string;
+      location?: string;
+      author: {
+        id: number;
+        name: string;
+        location: string;
+        description: string;
+        popularity: number;
+      };
+      genre: {
+        id: number;
+        name: string;
+      };
+    }[];
     newGame: {
-      id?: number;
+      id: number;
       name?: string;
       price?: number;
       image?: string;
@@ -136,6 +192,33 @@ export interface GamesReducerState {
         name: string;
       };
     };
+    updateGame: {
+      id?: number;
+      name?: string;
+      price?: number;
+      image?: string;
+      disk?: boolean;
+      digital?: boolean;
+      description?: string;
+      isNew?: boolean;
+      isPreview?: boolean;
+      preview?: string;
+      count?: string;
+      popularity?: string;
+      authorName?: string;
+      genreName?: string;
+      author: {
+        id: number;
+        name: string;
+        location: string;
+        description: string;
+        popularity: number;
+      };
+      genre: {
+        id: number;
+        name: string;
+      };
+    };
     isLoading: boolean;
     gameError: string;
   };
@@ -143,14 +226,78 @@ export interface GamesReducerState {
 
 export interface AuthorsReducerState {
   authorsReducer: {
+    authors: {
+      id: number;
+      name: string;
+      description: string;
+      location: string;
+      popularity: number;
+      price: number;
+      count: number;
+      author: {
+        id: number;
+        name: string;
+        location: string;
+        description: string;
+        popularity: number;
+      };
+      genre: {
+        id: number;
+        name: string;
+      };
+    }[];
+    selectedAuthor: {
+      id: number;
+      name: string;
+      description: string;
+      location: string;
+      popularity: number;
+      price: number;
+      count: number;
+      author: {
+        id: number;
+        name: string;
+        location: string;
+        description: string;
+        popularity: number;
+      };
+      genre: {
+        id: number;
+        name: string;
+      };
+    }[];
     authorError: string;
     isLoading: boolean;
+    newAuthor: {
+      id: number;
+      name: string;
+      description: string;
+      location: string;
+      popularity: number;
+      image: string;
+    };
+    updatedAuthor: {
+      id: number;
+      name: string;
+      description: string;
+      location: string;
+      popularity: number;
+      image: string;
+    };
   };
 }
 
 export interface DiscountsReducerState {
-  discountReducer: {
+  discountsReducer: {
     discountError: string;
     isLoading: boolean;
+    discount: {
+      id: number;
+      discountCount: number;
+      formatedStartDiscount: string;
+      formatedEndDiscount: string;
+      gameId: number;
+      gameName: string;
+    }[];
   };
 }

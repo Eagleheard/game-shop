@@ -26,8 +26,16 @@ export const updateGame = (params: INewGameParams) => {
   return axios.put(`/game/${params.id}`, params);
 };
 
+export const updateAuthor = (params: INewAuthorParams) => {
+  return axios.put(`/author/${params.id}`, params);
+};
+
 export const createNewAuthor = (params: INewAuthorParams) => {
   return axios.post('/author/', params);
+};
+
+export const getDiscounts = () => {
+  return axios.get('/discount/');
 };
 
 export const createDiscounts = (params: IDiscountParams) => {
@@ -44,4 +52,12 @@ export const blockUser = ({ params }: AxiosRequestConfig<IUserParams>) => {
 
 export const deleteGame = (id: number) => {
   return axios.delete(`/game/${id}`);
+};
+
+export const deleteAuthor = (id: number) => {
+  return axios.delete(`/author/${id}`);
+};
+
+export const deleteDiscount = (id: number) => {
+  return axios.delete(`/discount/${id}`);
 };

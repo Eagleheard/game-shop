@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import {
   Discount,
-  GamesTable,
+  InfoTable,
   Loader,
   NewAuthor,
   NewGame,
@@ -11,6 +11,7 @@ import {
   SignUp,
   Users,
   ToastComponent,
+  DiscountsTable,
 } from 'components';
 import { OrdersReducerState } from 'toolkitStore/types';
 import { fetchAllOrders } from 'toolkitStore/thunk';
@@ -46,12 +47,7 @@ import {
   CssBaseline,
 } from '@mui/material';
 
-import ListAltIcon from '@mui/icons-material/ListAlt';
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import FiberNewIcon from '@mui/icons-material/FiberNew';
-import LocalOfferIcon from '@mui/icons-material/LocalOffer';
-import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt';
+import { People, PersonAddAlt, ChevronLeft, ChevronRight, ListAlt } from '@mui/icons-material';
 
 import { styled, createTheme, ThemeProvider } from '@mui/material/styles';
 
@@ -66,9 +62,12 @@ enum pageOptions {
   NEW_GAME = 'New game',
   UPDATE_GAME = 'Update game',
   NEW_AUTHOR = 'New author',
+  UPDATE_AUTHOR = 'Update author',
   USERS = 'Users',
   DISCOUNT = 'Discount',
   SIGN_UP = 'Sign up',
+  AUTHORS = 'Authors',
+  DISCOUNT_TABLE = 'Discount table',
 }
 
 const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(
@@ -107,17 +106,19 @@ export const AdminPanel = () => {
   const { user } = useAuth();
   const [isNewGameVisible, setIsNewGameVisible] = useState(false);
   const [isUpdateGameVisible, setIsUpdateGameVisible] = useState(false);
+  const [isUpdateAuthorVisible, setIsUpdateAuthorVisible] = useState(false);
   const [isNewAuthorVisible, setIsNewAuthorVisible] = useState(false);
   const [isOrdersVisible, setIsOrdersVisible] = useState(true);
   const [isDiscountsVisible, setIsDiscountsVisible] = useState(false);
+  const [isDiscountTableVisible, setIsDiscountTableVisible] = useState(false);
   const [isGamesVisible, setIsGamesVisible] = useState(false);
   const [isUsersVisible, setIsUsersVisible] = useState(false);
   const [isSignUpVisible, setIsSignUpVisible] = useState(false);
+  const [isAuthorsVisible, setIsAuthorsVisible] = useState(false);
   const dispatch = useDispatch();
   const { orders, isLoading, ordersError } = useSelector(
     (state: OrdersReducerState) => state.ordersReducer || [],
   );
-
   const { openToast } = useToast();
 
   const toggleDrawer = () => {
@@ -148,6 +149,9 @@ export const AdminPanel = () => {
       setIsUsersVisible(false);
       setIsSignUpVisible(false);
       setIsDiscountsVisible(false);
+      setIsAuthorsVisible(false);
+      setIsUpdateAuthorVisible(false);
+      setIsDiscountTableVisible(false);
     }
     if (page === pageOptions.ORDERS) {
       dispatch(fetchAllOrders({ params }));
@@ -159,6 +163,9 @@ export const AdminPanel = () => {
       setIsUsersVisible(false);
       setIsSignUpVisible(false);
       setIsDiscountsVisible(false);
+      setIsAuthorsVisible(false);
+      setIsUpdateAuthorVisible(false);
+      setIsDiscountTableVisible(false);
     }
     if (page === pageOptions.USERS) {
       setIsUsersVisible(true);
@@ -169,6 +176,9 @@ export const AdminPanel = () => {
       setIsUpdateGameVisible(false);
       setIsSignUpVisible(false);
       setIsDiscountsVisible(false);
+      setIsAuthorsVisible(false);
+      setIsUpdateAuthorVisible(false);
+      setIsDiscountTableVisible(false);
     }
     if (page === pageOptions.NEW_GAME) {
       setIsNewGameVisible(true);
@@ -179,6 +189,9 @@ export const AdminPanel = () => {
       setIsUsersVisible(false);
       setIsSignUpVisible(false);
       setIsDiscountsVisible(false);
+      setIsAuthorsVisible(false);
+      setIsUpdateAuthorVisible(false);
+      setIsDiscountTableVisible(false);
     }
     if (page === pageOptions.UPDATE_GAME) {
       setIsNewGameVisible(false);
@@ -189,6 +202,9 @@ export const AdminPanel = () => {
       setIsUsersVisible(false);
       setIsSignUpVisible(false);
       setIsDiscountsVisible(false);
+      setIsAuthorsVisible(false);
+      setIsUpdateAuthorVisible(false);
+      setIsDiscountTableVisible(false);
     }
     if (page === pageOptions.NEW_AUTHOR) {
       setIsNewGameVisible(false);
@@ -199,6 +215,9 @@ export const AdminPanel = () => {
       setIsUsersVisible(false);
       setIsSignUpVisible(false);
       setIsDiscountsVisible(false);
+      setIsAuthorsVisible(false);
+      setIsUpdateAuthorVisible(false);
+      setIsDiscountTableVisible(false);
     }
     if (page === pageOptions.DISCOUNT) {
       setIsNewGameVisible(false);
@@ -209,6 +228,9 @@ export const AdminPanel = () => {
       setIsUsersVisible(false);
       setIsDiscountsVisible(true);
       setIsSignUpVisible(false);
+      setIsAuthorsVisible(false);
+      setIsUpdateAuthorVisible(false);
+      setIsDiscountTableVisible(false);
     }
     if (page === pageOptions.SIGN_UP) {
       setIsNewGameVisible(false);
@@ -219,6 +241,48 @@ export const AdminPanel = () => {
       setIsUsersVisible(false);
       setIsDiscountsVisible(false);
       setIsSignUpVisible(true);
+      setIsAuthorsVisible(false);
+      setIsUpdateAuthorVisible(false);
+      setIsDiscountTableVisible(false);
+    }
+    if (page === pageOptions.AUTHORS) {
+      setIsNewGameVisible(false);
+      setIsNewAuthorVisible(false);
+      setIsOrdersVisible(false);
+      setIsGamesVisible(false);
+      setIsUpdateGameVisible(false);
+      setIsUsersVisible(false);
+      setIsDiscountsVisible(false);
+      setIsSignUpVisible(false);
+      setIsAuthorsVisible(true);
+      setIsUpdateAuthorVisible(false);
+      setIsDiscountTableVisible(false);
+    }
+    if (page === pageOptions.UPDATE_AUTHOR) {
+      setIsNewGameVisible(false);
+      setIsNewAuthorVisible(false);
+      setIsOrdersVisible(false);
+      setIsGamesVisible(false);
+      setIsUpdateGameVisible(false);
+      setIsUsersVisible(false);
+      setIsDiscountsVisible(false);
+      setIsSignUpVisible(false);
+      setIsAuthorsVisible(false);
+      setIsUpdateAuthorVisible(true);
+      setIsDiscountTableVisible(false);
+    }
+    if (page === pageOptions.DISCOUNT_TABLE) {
+      setIsNewGameVisible(false);
+      setIsNewAuthorVisible(false);
+      setIsOrdersVisible(false);
+      setIsGamesVisible(false);
+      setIsUpdateGameVisible(false);
+      setIsUsersVisible(false);
+      setIsDiscountsVisible(false);
+      setIsSignUpVisible(false);
+      setIsAuthorsVisible(false);
+      setIsUpdateAuthorVisible(false);
+      setIsDiscountTableVisible(true);
     }
   };
 
@@ -243,53 +307,47 @@ export const AdminPanel = () => {
             }}
           >
             <IconButton onClick={toggleDrawer}>
-              {open ? <ChevronLeftIcon /> : <ChevronRightIcon />}
+              {open ? <ChevronLeft /> : <ChevronRight />}
             </IconButton>
           </Toolbar>
           <Divider />
           <List>
             <ListItem button key="Orders" onClick={() => handleOpen(pageOptions.ORDERS)}>
               <ListItemIcon>
-                <ListAltIcon />
+                <ListAlt />
               </ListItemIcon>
               <ListItemText primary="Orders" />
             </ListItem>
             {user?.role === userOptions.ADMIN && (
               <ListItem button key="Users" onClick={() => handleOpen(pageOptions.USERS)}>
                 <ListItemIcon>
-                  <ListAltIcon />
+                  <People />
                 </ListItemIcon>
                 <ListItemText primary="Users" />
               </ListItem>
             )}
-            <ListItem button key="All games" onClick={() => handleOpen(pageOptions.ALL_GAMES)}>
+            <ListItem button key="Games" onClick={() => handleOpen(pageOptions.ALL_GAMES)}>
               <ListItemIcon>
-                <ListAltIcon />
+                <ListAlt />
               </ListItemIcon>
-              <ListItemText primary="All games" />
+              <ListItemText primary="Games" />
             </ListItem>
-            <ListItem button key="New game" onClick={() => handleOpen(pageOptions.NEW_GAME)}>
+            <ListItem button key="Authors" onClick={() => handleOpen(pageOptions.AUTHORS)}>
               <ListItemIcon>
-                <FiberNewIcon />
+                <ListAlt />
               </ListItemIcon>
-              <ListItemText primary="New game" />
+              <ListItemText primary="Authors" />
             </ListItem>
-            <ListItem button key="New author" onClick={() => handleOpen(pageOptions.NEW_AUTHOR)}>
+            <ListItem button key="Discounts" onClick={() => handleOpen(pageOptions.DISCOUNT_TABLE)}>
               <ListItemIcon>
-                <FiberNewIcon />
-              </ListItemIcon>
-              <ListItemText primary="New author" />
-            </ListItem>
-            <ListItem button key="Discounts" onClick={() => handleOpen(pageOptions.DISCOUNT)}>
-              <ListItemIcon>
-                <LocalOfferIcon />
+                <ListAlt />
               </ListItemIcon>
               <ListItemText primary="Discounts" />
             </ListItem>
             {user?.role === userOptions.ADMIN && (
               <ListItem button key="Create manager" onClick={() => handleOpen(pageOptions.SIGN_UP)}>
                 <ListItemIcon>
-                  <PersonAddAltIcon />
+                  <PersonAddAlt />
                 </ListItemIcon>
                 <ListItemText primary="Create manager" />
               </ListItem>
@@ -302,7 +360,7 @@ export const AdminPanel = () => {
             backgroundColor: (theme) =>
               theme.palette.mode === 'light' ? theme.palette.grey[100] : theme.palette.grey[900],
             flexGrow: 1,
-            height: '105vh',
+            height: '105.5vh',
           }}
         >
           <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
@@ -314,7 +372,7 @@ export const AdminPanel = () => {
                     display: 'flex',
                     flexDirection: 'column',
                     overflow: 'auto',
-                    height: '100vh',
+                    maxHeight: '100vh',
                   }}
                 >
                   {isOrdersVisible && (
@@ -378,28 +436,34 @@ export const AdminPanel = () => {
                       handleOpenNewAuthor={() => handleOpen(pageOptions.UPDATE_GAME)}
                     />
                   )}
+                  {isUpdateAuthorVisible && <NewAuthor isEditMode />}
                   {isGamesVisible && (
-                    <GamesTable handleOpenNewGame={() => handleOpen(pageOptions.UPDATE_GAME)} />
+                    <InfoTable
+                      handleOpenDiscounts={() => handleOpen(pageOptions.DISCOUNT)}
+                      handleOpenNewOption={() => handleOpen(pageOptions.NEW_GAME)}
+                      handleOpenUpdateOption={() => handleOpen(pageOptions.UPDATE_GAME)}
+                    />
+                  )}
+                  {isAuthorsVisible && (
+                    <InfoTable
+                      authorMode
+                      handleOpenNewOption={() => handleOpen(pageOptions.NEW_AUTHOR)}
+                      handleOpenUpdateOption={() => handleOpen(pageOptions.UPDATE_AUTHOR)}
+                    />
                   )}
                   {isUsersVisible && <Users />}
                   {isDiscountsVisible && <Discount />}
+                  {isDiscountTableVisible && <DiscountsTable />}
                   {isSignUpVisible && user.role === userOptions.ADMIN && (
-                    <SignUp handleSwitch={() => setIsSignUpVisible(false)} />
+                    <SignUp
+                      style="admin"
+                      handleSwitch={() =>
+                        openToast('Successfully registered', ToastOptions.success)
+                      }
+                    />
                   )}
                 </Paper>
               </Grid>
-              {isOrdersVisible && (
-                <Grid item xs={12} md={4} lg={3}>
-                  <Paper
-                    sx={{
-                      p: 2,
-                      display: 'flex',
-                      flexDirection: 'column',
-                      height: '100vh',
-                    }}
-                  ></Paper>
-                </Grid>
-              )}
             </Grid>
           </Container>
         </Box>

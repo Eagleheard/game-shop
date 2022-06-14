@@ -302,6 +302,9 @@ export interface CartState {
         image: string;
         disk: boolean;
         digital: boolean;
+        discount: {
+          discountCount: string;
+        };
       };
     }[];
     isLoading: boolean;

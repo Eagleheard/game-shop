@@ -138,7 +138,7 @@ export const Card = ({
               <img src={grey_cross} />
             </button>
           )}
-          <CardPaymentInformation>
+          <CardPaymentInformation cart={cart}>
             {!purchaseDate && discount && (
               <CardDiscount cart={cart}>-{discount.discountCount}%</CardDiscount>
             )}

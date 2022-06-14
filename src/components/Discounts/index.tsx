@@ -16,13 +16,14 @@ export const Discount: React.FC = () => {
   const [games, setGames] = useState<IGame[]>([]);
   const { openToast } = useToast();
   const { discountError, isLoading } = useSelector(
-    (state: DiscountsReducerState) => state.discountReducer || [],
+    (state: DiscountsReducerState) => state.discountsReducer || [],
   );
 
   const dispatch = useDispatch();
   const {
     handleSubmit,
     register,
+    reset,
     control,
     formState: { errors },
   } = useForm();
@@ -40,16 +41,20 @@ export const Discount: React.FC = () => {
     }
   };
 
-  useEffect(() => {
-    fillGames();
-    if (discountError && !isLoading) {
-      openToast(discountError, ToastOptions.error);
-    }
-  }, []);
-
   const submitForm: SubmitHandler<FieldValues> = (data) => {
     dispatch(addDiscounts(data));
+    reset();
+    if (!discountError && !isLoading) {
+      openToast('Successfully created', ToastOptions.success);
+    }
   };
+
+  useEffect(() => {
+    fillGames();
+    if (discountError) {
+      openToast(discountError, ToastOptions.error);
+    }
+  }, [discountError, isLoading]);
 
   return (
     <div className="discount">
@@ -88,7 +93,7 @@ export const Discount: React.FC = () => {
             className="discount__price"
           />
           <label htmlFor="date" className="discount__label">
-            Date
+            Start discount
           </label>
         </div>
         <div className="discount__group">
@@ -102,11 +107,11 @@ export const Discount: React.FC = () => {
             className="discount__price"
           />
           <label htmlFor="date" className="discount__label">
-            Date
+            End discount
           </label>
         </div>
         <div className="discount__submit">
-          <Button text="Create discount" onClick={() => submitForm} style="sign-in" />
+          <Button text="Create discount" onClick={() => submitForm} style="discount" />
         </div>
       </form>
       <ToastComponent />
