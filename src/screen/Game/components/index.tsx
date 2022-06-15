@@ -6,7 +6,7 @@ import { socket } from 'config';
 import { ICommentParams, IGame } from 'types/interfaces';
 import { fetchGameComments, sendComment } from 'api/fetchGame';
 import { useAuth } from 'hooks/useAuth';
-import { Button, Portal, SignUp, SignIn, Comment, Pagination, Input } from 'components';
+import { Button, Portal, SignUp, SignIn, Comment, Pagination, CommentForm } from 'components';
 import { addGameRequest } from 'store/cart/actions';
 import { ToastOptions } from 'types/enumerators';
 import { useToast } from 'hooks';
@@ -124,9 +124,6 @@ export const GamePage: React.FC<IGamePage> = ({
     socket.on('newComments', (data) => {
       setGameComments(data.rows);
       setCommentsCount(data.count);
-      return () => {
-        socket.disconnect();
-      };
     });
   }, []);
 
@@ -221,7 +218,7 @@ export const GamePage: React.FC<IGamePage> = ({
       {user ? (
         <div className="comments">
           <h1 className="comments__label">Comments</h1>
-          <Input id={id} sendMessage={sendMessage} />
+          <CommentForm id={id} sendMessage={sendMessage} />
           <Pagination
             RenderComponent={Comment}
             getPaginatedData={gameComments}

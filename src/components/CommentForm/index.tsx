@@ -13,7 +13,7 @@ interface IInput {
   sendMessage: (params: ICommentParams) => void;
 }
 
-export const Input: React.FC<IInput> = ({ id, sendMessage }) => {
+export const CommentForm: React.FC<IInput> = ({ id, sendMessage }) => {
   const [commentCount, setCommentCount] = useState(0);
   const {
     register,
