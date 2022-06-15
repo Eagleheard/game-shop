@@ -2,8 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
+import { socket } from 'config';
+import { ICommentParams, IGame } from 'types/interfaces';
+import { fetchGameComments, sendComment } from 'api/fetchGame';
 import { useAuth } from 'hooks/useAuth';
-import { Button, Portal, SignUp, SignIn } from 'components';
+import { Button, Portal, SignUp, SignIn, Comment, Pagination, CommentForm } from 'components';
 import { addGameRequest } from 'store/cart/actions';
 import { ToastOptions } from 'types/enumerators';
 import { useToast } from 'hooks';
@@ -33,7 +36,8 @@ interface IGamePage {
   };
 }
 
-const quantityLimit = 10;
+const QUANTITY_LIMIT = 10;
+const DATA_LIMIT = 4;
 
 export const GamePage: React.FC<IGamePage> = ({
   id,
@@ -50,10 +54,13 @@ export const GamePage: React.FC<IGamePage> = ({
 }) => {
   const history = useNavigate();
   const dispatch = useDispatch();
+  const [gameComments, setGameComments] = useState<IGame[]>([]);
+  const [commentsCount, setCommentsCount] = useState(0);
   const [buyingCount, setBuyingCount] = useState(count !== 0 ? 1 : 0);
   const [isSignInVisible, setIsSignInVisible] = useState<boolean>(false);
   const [isSignUpVisible, setIsSignUpVisible] = useState<boolean>(false);
   const [isGameBuyed, setIsGameBuyed] = useState<boolean>(false);
+  const [currentPage, setCurrentPage] = useState(1);
   const { user } = useAuth();
   const discountedPrice = discount
     ? price - (price * parseInt(discount.discountCount)) / 100
@@ -83,11 +90,49 @@ export const GamePage: React.FC<IGamePage> = ({
     }
   };
 
+  const fetchComments = async () => {
+    try {
+      const { data } = await fetchGameComments(id, currentPage, DATA_LIMIT);
+      setGameComments(data.rows);
+      setCommentsCount(data.count);
+    } catch ({
+      response: {
+        data: { message },
+      },
+    }) {
+      if (message !== 'Need authorization') {
+        openToast(String(message), ToastOptions.error);
+      }
+    }
+  };
+
+  const sendMessage = async (params: ICommentParams) => {
+    try {
+      await sendComment(params);
+      socket.emit('addNewComment', { gameId: id, dataLimit: DATA_LIMIT, currentPage: currentPage });
+    } catch ({
+      response: {
+        data: { message },
+      },
+    }) {
+      openToast(String(message), ToastOptions.error);
+    }
+  };
+
   useEffect(() => {
+    fetchComments();
     if (gameError && !isLoading) {
       return openToast('Something wrong', ToastOptions.error);
     }
-  }, [gameError, isLoading]);
+  }, [gameError, isLoading, currentPage, user]);
+
+  useEffect(() => {
+    socket.connect();
+    socket.on('newComments', (data) => {
+      setGameComments(data.rows);
+      setCommentsCount(data.count);
+    });
+  }, []);
 
   return (
     <div className="game" data-testid="gamePage">
@@ -126,7 +171,9 @@ export const GamePage: React.FC<IGamePage> = ({
                     text="+"
                     onClick={() => setBuyingCount((prevValue) => prevValue + 1)}
                     style="cart-btn"
-                    disabled={buyingCount === count || buyingCount === quantityLimit || count === 0}
+                    disabled={
+                      buyingCount === count || buyingCount === QUANTITY_LIMIT || count === 0
+                    }
                   />
                 </div>
               )}
@@ -148,9 +195,10 @@ export const GamePage: React.FC<IGamePage> = ({
                   />
                 )
               ) : (
-                <Button text="Sign In" onClick={() => setIsSignInVisible(true)} style="buy" />
+                <Button text="Buy now" onClick={() => setIsSignInVisible(true)} style="buy" />
               )}
               <div className="game__price-block">
+                <p className="game__price-label">Price: </p>
                 {discount && <p className="game__discount">-{discount.discountCount}%</p>}
                 <div className="game__price-information">
                   {discount ? (
@@ -184,6 +232,35 @@ export const GamePage: React.FC<IGamePage> = ({
           text="Sign Up"
           handleClose={() => setIsSignUpVisible(false)}
         />
+      )}
+      {user ? (
+        <div className="comments">
+          <h1 className="comments__label">Comments</h1>
+          <CommentForm id={id} sendMessage={sendMessage} />
+          {gameComments.length !== 0 ? (
+            <Pagination
+              RenderComponent={Comment}
+              getPaginatedData={gameComments}
+              currentPage={currentPage}
+              totalCount={commentsCount}
+              pageSize={DATA_LIMIT}
+              onPageChange={(page: number) => setCurrentPage(page)}
+              style="game"
+            />
+          ) : (
+            <div className="comments__notification">
+              <p>No comments yet</p>
+            </div>
+          )}
+        </div>
+      ) : (
+        <div className="comments__notification">
+          <p>You need to&nbsp;</p>
+          <p className="comments__notification--link" onClick={() => setIsSignInVisible(true)}>
+            Sign in
+          </p>
+          <p>&nbsp;to see or leave comments</p>
+        </div>
       )}
     </div>
   );

@@ -7,7 +7,7 @@ import userEvent from '@testing-library/user-event';
 
 import * as cartApi from 'api/fetchCart';
 import * as achievementApi from 'api/fetchAchievements';
-import { fetchGame } from 'api/fetchGame';
+import { fetchGame, fetchGameComments } from 'api/fetchGame';
 import { fetchOrders } from 'api/fetchOrders';
 import { fetchUserInfo } from 'api/fetchUser';
 import { authorization } from 'api/authorization';
@@ -37,6 +37,7 @@ jest.mock('api/fetchGame');
 jest.mock('api/fetchOrders');
 jest.mock('api/fetchUser');
 jest.mock('api/fetchAchievements');
+jest.mock('api/fetchGame');
 
 const games = {
   data: {
@@ -237,9 +238,29 @@ const orders = {
   ],
 };
 
+const gameComments = {
+  data: {
+    count: 8,
+    rows: [
+      {
+        id: 1,
+        comment: '123',
+        gameId: 1,
+        userId: 1,
+        user: {
+          id: 1,
+          name: 'Vlad',
+          photo:
+            'http://res.cloudinary.com/game-shop/image/upload/v1652685563/jdrsuc2gvaeorx5u5ayx.png',
+          lastName: 'Krutikov',
+        },
+      },
+    ],
+  },
+};
+
 describe('App', () => {
   it('Integration test of App', async () => {
-    fetchGames.mockResolvedValueOnce(games);
     fetchGames.mockResolvedValueOnce(games);
     fetchGames.mockResolvedValueOnce(games);
     fetchPreviewGames.mockResolvedValueOnce(games);
@@ -289,9 +310,12 @@ describe('App', () => {
         discount: null,
       },
     });
+    fetchGameComments.mockResolvedValueOnce(gameComments);
+    fetchGameComments.mockResolvedValueOnce(gameComments);
     userEvent.click(getByTestId('Teamfight Tactics'));
     expect(await findByTestId('gamePage')).toBeInTheDocument();
     expect(getByText('Teamfight Tactics')).toBeInTheDocument();
+    expect(getByTestId('page-1')).toHaveClass('pagination__btn--active');
     userEvent.click(getByText('Buy now'));
     const dispatchedActions = [];
 
@@ -435,12 +459,12 @@ describe('App', () => {
 
     userEvent.click(getByText('Hi, Test'));
     userEvent.click(getByText('Cart'));
-    expect(getByTestId('basket')).toBeInTheDocument();
+    expect(await findByTestId('basket')).toBeInTheDocument();
     expect(await findByText('Your personal discount: 0%')).toBeInTheDocument();
     expect(await findByText('Teamfight Tactics')).toBeInTheDocument();
     userEvent.click(getByTestId('search'));
     userEvent.click(getByText('Hi, Test'));
-    fetchOrders.mockResolvedValueOnce({ ...orders });
+    fetchOrders.mockResolvedValueOnce(orders);
     const userInfo = {
       data: {
         id: 2,

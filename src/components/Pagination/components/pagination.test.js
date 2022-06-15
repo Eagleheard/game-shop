@@ -157,32 +157,16 @@ const games = {
   ],
 };
 
-const goToNextPage = () => {
-  currentPage += 1;
-};
-
-const goToPreviousPage = () => {
-  currentPage -= 1;
-};
-
-const changePage = () => {
-  currentPage = 2;
-};
-
-const pageCount = Math.ceil(games.count / dataLimit);
-const page = Array.from({ length: pageCount }, (v, i) => i + 1);
-
 const renderComponent = () =>
   render(
     <TestComponent>
       <Pagination
         RenderComponent={Card}
-        goToNextPage={goToNextPage}
-        goToPreviousPage={goToPreviousPage}
-        currentPage={currentPage}
-        page={page}
         getPaginatedData={games.rows}
-        changePage={changePage}
+        currentPage={currentPage}
+        totalCount={games.count}
+        pageSize={dataLimit}
+        onPageChange={(page) => (currentPage = page)}
       />
     </TestComponent>,
   );

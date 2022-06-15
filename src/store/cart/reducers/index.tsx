@@ -76,7 +76,7 @@ export function cartReducer(state = initialState, { type, payload }: CartActionT
       return {
         ...state,
         cart: state.cart.filter(({ gameId }) => gameId !== payload.gameId),
-        isTimerActive: false,
+        isTimerActive: state.cart.length === 1 ? false : true,
       };
     case REMOVE_GAME_FAILURE:
       return {

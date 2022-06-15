@@ -21,7 +21,7 @@ import { AuthorsReducerState, GamesReducerState } from 'toolkitStore/types';
 import { fetchAllGames, getAllAuthors } from 'toolkitStore/thunk';
 import { resetSelectedGame, setSelectedGame, updateGameRequest } from 'toolkitStore/actions/games';
 import { ToastOptions } from 'types/enumerators';
-import { IGame } from 'types/interfaces';
+import { IAuthor, IGame } from 'types/interfaces';
 import { deleteGame, deleteAuthor } from 'api/adminRequests';
 import { useToast } from 'hooks';
 import {
@@ -56,7 +56,7 @@ export const InfoTable: React.FC<ITable> = ({
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [isConfirmVisible, setIsConfirmVisible] = useState(false);
-  const [deletedGameId, setDeletedGameId] = useState(0);
+  const [deletedItemId, setDeletedItemId] = useState(0);
   const [isMenuVisible, setIsMenuVisible] = useState(false);
   const dispatch = useDispatch();
   const { selectedGame } = useSelector((state: GamesReducerState) => state.gamesReducer || []);
@@ -67,7 +67,7 @@ export const InfoTable: React.FC<ITable> = ({
   const { authors, selectedAuthor } = useSelector(
     (state: AuthorsReducerState) => state.authorsReducer || [],
   );
-  const handleDeleteGame = async (id: number) => {
+  const handleDeleteItem = async (id: number) => {
     try {
       if (!authorMode) {
         await deleteGame(id);
@@ -90,7 +90,7 @@ export const InfoTable: React.FC<ITable> = ({
 
   const handleOpenConfirm = (id: number) => {
     setIsConfirmVisible(true);
-    setDeletedGameId(id);
+    setDeletedItemId(id);
   };
 
   const emptyRows =
@@ -121,7 +121,7 @@ export const InfoTable: React.FC<ITable> = ({
     setPage(0);
   };
 
-  const handleEditGame = (game: IGame) => {
+  const handleEditItem = (game: IGame | IAuthor) => {
     if (authorMode) {
       dispatch(updateAuthorRequest(game));
     }
@@ -218,7 +218,7 @@ export const InfoTable: React.FC<ITable> = ({
                     {authorMode ? item.popularity : item.price + '$'}
                   </TableCell>
                   <TableCell className="table__cell" style={{ width: 40 }} align="center">
-                    <Edit className="table__cell--icon" onClick={() => handleEditGame(item)} />
+                    <Edit className="table__cell--icon" onClick={() => handleEditItem(item)} />
                   </TableCell>
                   <TableCell className="table__cell" style={{ width: 40 }} align="center">
                     <Delete
@@ -230,7 +230,7 @@ export const InfoTable: React.FC<ITable> = ({
                     <Portal
                       Component={() => (
                         <ConfirmDialog
-                          confirmDeleting={() => handleDeleteGame(deletedGameId)}
+                          confirmDeleting={() => handleDeleteItem(deletedItemId)}
                           handleClose={() => setIsConfirmVisible(false)}
                         />
                       )}

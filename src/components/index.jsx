@@ -25,3 +25,5 @@ export { Timer } from 'components/Timer';
 export { Search } from 'components/Search';
 export { ToastComponent } from 'components/Toast';
 export { TablePaginationButtons } from 'components/TablePagination';
+export { Comment } from 'components/Comment';
+export { CommentForm } from 'components/CommentForm';
