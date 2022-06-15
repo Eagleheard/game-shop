@@ -129,6 +129,43 @@
     }
   }
 
+  .comments {
+    width: 65%;
+
+    @include media-table-large {
+      width: 90%;
+    }
+
+    @include media-mobile-small {
+      width: 90%;
+    }
+
+    &__label {
+      font-family: $lato;
+      font-size: 24px;
+      margin: 20px 0 10px;
+      align-self: flex-start;
+    }
+
+    &__notification {
+      display: flex;
+      font-family: $lato;
+      box-shadow: 0 0 10px $black;
+      margin-top: 20px;
+      padding: 20px;
+
+      &--link {
+        color: $search-primary;
+        font-weight: bold;
+        text-decoration: underline;
+
+        &:hover {
+          color: $hover-link;
+        }
+      }
+    }
+  }
+
   @include media-table-large {
     &__container,
     &__container-btn {

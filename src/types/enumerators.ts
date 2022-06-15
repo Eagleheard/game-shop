@@ -15,3 +15,7 @@ export enum ToastOptions {
   error = 'error',
   success = 'success',
 }
+
+export enum PaginationOptions {
+  dots = '...',
+}

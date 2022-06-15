@@ -4,7 +4,7 @@ import { fetchGames } from 'api/fetchGames';
 import { ToastOptions } from 'types/enumerators';
 import { ToastComponent } from 'components/Toast';
 import { Card } from 'screen';
-import { usePagination, useToast } from 'hooks';
+import { useToast } from 'hooks';
 import { Pagination, Select, Preview, Loader } from 'components';
 
 import { IGame } from 'types/interfaces';
@@ -28,10 +28,8 @@ export const Home = () => {
   const [games, setGames] = useState<IGame[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [params, setParams] = useState<IParams>();
-  const { goToNextPage, goToPreviousPage, changePage, currentPage, page } = usePagination(
-    DATA_LIMIT,
-    params,
-  );
+  const [totalPages, setTotalPages] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
   const { openToast } = useToast();
 
   const fillGames = useCallback(
@@ -39,6 +37,7 @@ export const Home = () => {
       try {
         const { data } = await fetchGames(currentPage, DATA_LIMIT, { params });
         setGames(data.rows);
+        setTotalPages(data.count);
       } catch ({
         response: {
           data: { message },
@@ -64,7 +63,7 @@ export const Home = () => {
       default:
         setParams({});
     }
-    changePage(1);
+    setCurrentPage(1);
   };
 
   useEffect(() => {
@@ -92,12 +91,11 @@ export const Home = () => {
         ) : (
           <Pagination
             RenderComponent={Card}
-            goToNextPage={goToNextPage}
-            goToPreviousPage={goToPreviousPage}
-            currentPage={currentPage}
-            page={page}
             getPaginatedData={games}
-            changePage={changePage}
+            currentPage={currentPage}
+            totalCount={totalPages}
+            pageSize={DATA_LIMIT}
+            onPageChange={(page: number) => setCurrentPage(page)}
           />
         )}
       </div>

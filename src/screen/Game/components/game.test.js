@@ -3,11 +3,14 @@ import '@testing-library/jest-dom';
 import userEvent from '@testing-library/user-event';
 
 import '../../../../jest.env';
-import { fetchGame } from 'api/fetchGame';
+import { fetchGame, fetchGameComments } from 'api/fetchGame';
+import { authorization } from 'api/authorization';
 import { GamePageContainer } from './container';
 import { TestComponent } from 'components/Testing';
 
 jest.mock('api/fetchGame');
+jest.mock('api/fetchGame');
+jest.mock('api/authorization');
 const renderComponent = () =>
   render(
     <TestComponent>
@@ -52,17 +55,51 @@ const game = {
   },
 };
 
+const gameComments = {
+  data: {
+    count: 1,
+    rows: [
+      {
+        id: 1,
+        comment: '123',
+        gameId: 1,
+        userId: 1,
+        user: {
+          id: 1,
+          name: 'Vlad',
+          photo:
+            'http://res.cloudinary.com/game-shop/image/upload/v1652685563/jdrsuc2gvaeorx5u5ayx.png',
+          lastName: 'Krutikov',
+        },
+      },
+    ],
+  },
+};
+
+const user = {
+  data: {
+    name: 'Test',
+    lastName: 'Test',
+  },
+};
+
 describe('Game Page', () => {
   it('Should render game page with selected game', async () => {
     fetchGame.mockResolvedValueOnce(game);
+    fetchGameComments.mockResolvedValueOnce(gameComments);
+    authorization.mockResolvedValueOnce(user);
     const { getByTestId, findByTestId } = renderComponent();
+    expect(await findByTestId('loader')).not.toBeInTheDocument();
     expect(await findByTestId('gamePage')).toBeInTheDocument();
     expect(getByTestId('gameName')).toHaveTextContent('The last of us: Part 1');
   });
 
   it('Should render count and change it if clicked increase or decrease button', async () => {
     fetchGame.mockResolvedValueOnce(game);
+    fetchGameComments.mockResolvedValueOnce(gameComments);
+    authorization.mockResolvedValueOnce(user);
     const { getByText, getByTestId, findByTestId } = renderComponent();
+    expect(await findByTestId('loader')).not.toBeInTheDocument();
     expect(await findByTestId('gamePage')).toBeInTheDocument();
     const decreaseBtn = getByText('-');
     const increaseBtn = getByText('+');

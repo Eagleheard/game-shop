@@ -2,11 +2,11 @@ import React, { useEffect, useState } from 'react';
 import classNames from 'classnames';
 import { NavLink } from 'react-router-dom';
 
-import { fetchPreviewGames } from 'api/fetchPreviewGames';
 import { ToastOptions } from 'types/enumerators';
-import { useToast } from 'hooks';
-import { Button } from 'components/Button';
+import { Button } from 'components';
 import { IGame } from 'types/interfaces';
+import { fetchPreviewGames } from 'api/fetchPreviewGames';
+import { useToast } from 'hooks';
 
 import './styles.scss';
 
@@ -23,7 +23,7 @@ export const Preview = () => {
     setPreviewPage((prevValue) => prevValue + 1);
   };
 
-  const fillPreviewGames = async () => {
+  const getPreviewGames = async () => {
     try {
       const { data } = await fetchPreviewGames();
       setPreviewGames(data.rows);
@@ -32,12 +32,12 @@ export const Preview = () => {
         data: { message },
       },
     }) {
-      openToast(String(message), ToastOptions.error);
+      openToast(message, ToastOptions.error);
     }
   };
 
   useEffect(() => {
-    fillPreviewGames();
+    getPreviewGames();
   }, []);
 
   useEffect(() => {
