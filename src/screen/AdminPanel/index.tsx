@@ -425,7 +425,7 @@ export const AdminPanel = () => {
                   {isNewGameVisible && (
                     <NewGame
                       createMode="New game"
-                      handleOpenNewAuthor={() => handleOpen(pageOptions.NEW_GAME)}
+                      handleOpenNewAuthor={() => handleOpen(pageOptions.NEW_AUTHOR)}
                     />
                   )}
                   {isNewAuthorVisible && <NewAuthor />}
