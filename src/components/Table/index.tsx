@@ -234,8 +234,9 @@ export const InfoTable: React.FC<ITable> = ({
                           handleClose={() => setIsConfirmVisible(false)}
                         />
                       )}
+                      style="admin-panel"
                       isOpen={isConfirmVisible}
-                      text="Delete selected game?"
+                      text={authorMode ? 'Delete selected author?' : 'Delete selected game?'}
                       handleClose={() => setIsConfirmVisible(false)}
                     />
                   )}

@@ -106,6 +106,7 @@ export function cartReducer(state = initialState, { type, payload }: CartActionT
         ...state,
         cart: payload,
         isLoading: false,
+        isTimerActive: state.cart.length === 0 ? false : true,
       };
     case GET_CART_REQUEST:
       return {

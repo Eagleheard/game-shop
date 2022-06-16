@@ -295,7 +295,7 @@ export const AdminPanel = () => {
 
   return (
     <ThemeProvider theme={mdTheme}>
-      <Box sx={{ display: 'flex', height: '100vh' }}>
+      <Box sx={{ display: 'flex', height: '125vh' }}>
         <CssBaseline />
         <Drawer variant="permanent" open={open}>
           <Toolbar
@@ -360,7 +360,7 @@ export const AdminPanel = () => {
             backgroundColor: (theme) =>
               theme.palette.mode === 'light' ? theme.palette.grey[100] : theme.palette.grey[900],
             flexGrow: 1,
-            height: '105.5vh',
+            height: '125vh',
           }}
         >
           <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>

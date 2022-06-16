@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import classNames from 'classnames';
 
 import { useToast } from 'hooks';
@@ -8,7 +8,12 @@ import success from 'assets/success.svg';
 import './styles.scss';
 
 export const ToastComponent = () => {
-  const { isToastVisible, toastType, message } = useToast();
+  const { setIsToastVisible, isToastVisible, toastType, message } = useToast();
+
+  useEffect(() => {
+    setIsToastVisible(false);
+  }, []);
+
   return (
     <div
       className={classNames('snackbar', {
