@@ -185,13 +185,14 @@ export const NewAuthor: React.FC<INewAuthor> = ({ isEditMode }) => {
               {...register('popularity', {
                 required: true,
               })}
-              type="text"
               id="popularity"
               defaultValue={
                 isEditMode ? updatedAuthor.popularity ?? '' : newAuthor.popularity ?? ''
               }
               onChange={handleChange}
               placeholder="Popularity"
+              type="number"
+              max="100"
               className="new-author__location"
               onKeyPress={(e) => !/[0-9]/.test(e.key) && e.preventDefault()}
             />

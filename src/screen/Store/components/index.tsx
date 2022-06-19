@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { fetchGames } from 'api/fetchGames';
 
+import { useIsUnmounted } from 'hooks/useIsUnmounted';
 import { ToastComponent } from 'components/Toast';
 import { ToastOptions } from 'types/enumerators';
 import { Card } from 'screen';
@@ -36,14 +37,17 @@ export const Store = () => {
   const [isFilterVisible, setIsFilterVisible] = useState<boolean>(false);
   const [currentPage, setCurrentPage] = useState(1);
   const { openToast } = useToast();
+  const isUnmouted = useIsUnmounted();
 
   const fillGames = useCallback(
     async (params?: IParams) => {
       try {
         const { data } = await fetchGames(currentPage, DATA_LIMIT, { params });
-        setGames(data.rows);
-        setTotalPages(data.count);
-        setError('');
+        if (!isUnmouted.current) {
+          setGames(data.rows);
+          setTotalPages(data.count);
+          setError('');
+        }
         if (data.count === 0) {
           setError('Games not found');
         }

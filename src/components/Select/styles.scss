@@ -29,4 +29,24 @@
       }
     }
   }
+
+  @include media-table-small {
+
+    &__menu {
+
+      &-item {
+        font-size: 14px;
+      }
+    }
+  }
+
+  @include media-mobile-large {
+    
+    &__menu {
+
+      &-item {
+        font-size: 12px;
+      }
+    }
+  }
 }

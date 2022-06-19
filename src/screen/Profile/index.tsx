@@ -1,6 +1,7 @@
 import React, { ChangeEvent, useCallback, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
+import { useIsUnmounted } from 'hooks/useIsUnmounted';
 import { userOptions, ToastOptions } from 'types/enumerators';
 import { useToast } from 'hooks';
 import { fetchUserInfo, uploadUserPhoto } from 'api/fetchUser';
@@ -50,11 +51,14 @@ export const Profile = () => {
   const [isOrdersVisible, setOrdersVisible] = useState(false);
   const navigate = useNavigate();
   const { openToast } = useToast();
+  const isUnmouted = useIsUnmounted();
 
   const fetchUser = useCallback(async () => {
     try {
       const { data } = await fetchUserInfo(id);
-      setUserInfo(data);
+      if (!isUnmouted.current) {
+        setUserInfo(data);
+      }
     } catch ({
       response: {
         data: { message },
@@ -67,7 +71,9 @@ export const Profile = () => {
   const getAchievements = async () => {
     try {
       const { data } = await fetchAchievement();
-      setAchievements(data);
+      if (!isUnmouted.current) {
+        setAchievements(data);
+      }
     } catch ({
       response: {
         data: { message },
@@ -80,7 +86,9 @@ export const Profile = () => {
   const getOrders = useCallback(async (params: IParams) => {
     try {
       const { data } = await fetchOrders({ params });
-      setOrders(data);
+      if (!isUnmouted.current) {
+        setOrders(data);
+      }
     } catch ({
       response: {
         data: { message },

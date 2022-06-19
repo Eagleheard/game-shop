@@ -22,6 +22,11 @@
     font-size: 20px;
   }
 
+  .loader {
+    position: relative;
+    top: 200px;
+  }
+
   @include media-desktop {
     &__select {
       font-size: 20px;

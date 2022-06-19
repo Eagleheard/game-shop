@@ -233,8 +233,9 @@
     }
 
     &__buy {
-      width: 80%;
-      height: 5vh;
+      width: 50%;
+      height: 4vh;
+      align-self: center;
     }
 
     &__profile {
@@ -250,7 +251,7 @@
 
   @include media-table-small {
     &__buy {
-      width: 60%;
+      width: 50%;
       font-size: 12px;
     }
   }
@@ -285,9 +286,10 @@
     }
 
     &__buy {
-      width: 15vw;
-      height: 5vh;
+      width: 16vw;
+      height: 3vh;
       font-size: 12px;
+      align-self: flex-start;
     }
 
     &__profile {

@@ -10,6 +10,8 @@ import { useToast } from 'hooks';
 import { ToastComponent, Search, Button } from 'components';
 import { fetchGames } from 'api/fetchGames';
 
+import gameIcon from 'assets/gameIcon.png';
+
 import './styles.scss';
 
 export const Discount: React.FC = () => {
@@ -18,6 +20,30 @@ export const Discount: React.FC = () => {
   const { discountError, isLoading } = useSelector(
     (state: DiscountsReducerState) => state.discountsReducer || [],
   );
+  const allGames = {
+    name: 'All',
+    image: gameIcon,
+    id: games.length + 1,
+    genre: {
+      name: '',
+      id: 0,
+    },
+    author: {
+      name: '',
+      id: 0,
+      location: '',
+      description: '',
+      popularity: 0,
+    },
+    price: 0,
+    count: 0,
+    comment: '',
+    user: {
+      name: '',
+      lastName: '',
+      photo: '',
+    },
+  };
 
   const dispatch = useDispatch();
   const {
@@ -64,7 +90,11 @@ export const Discount: React.FC = () => {
           name="gameName"
           control={control}
           render={({ field: { onChange, value } }) => (
-            <Search games={games} onChangeSearch={onChange} reset={value} />
+            <Search
+              games={games.map((game) => game, (games[games.length - 1] = allGames))}
+              onChangeSearch={onChange}
+              reset={value}
+            />
           )}
         />
         <div className="discount__group">

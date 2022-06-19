@@ -3,6 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 const initialState = {
   games: [
     {
+      id: 0,
       name: null,
       price: null,
       count: 0,

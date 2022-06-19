@@ -113,10 +113,12 @@ export const CardDescription = styled.div<ICard>`
 
   @media (max-width: 600px) {
     height: ${({ cart }) => (cart ? '20vh' : '15vh')};
+    height: ${({ search }) => search && '5vh'};
   }
 
   @media (max-width: 500px) {
     height: ${({ order }) => (order ? '20vh' : '15vh')};
+    height: ${({ search }) => search && '5vh'};
   }
 `;
 
@@ -222,7 +224,6 @@ export const CardPrice = styled(CardLabel)<ICard>`
 
 export const CardDiscount = styled(CardLabel)<ICard>`
   background-color: ${lightGreen};
-  opacity: 0.9;
   align-self: center;
   font-family: ${lato};
   margin-right: 5px;

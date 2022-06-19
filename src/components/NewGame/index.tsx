@@ -420,6 +420,8 @@ export const NewGame: React.FC<INewGame> = ({ handleOpenNewAuthor, createMode, i
                 id="popularity"
                 defaultValue={isEditMode ? updateGame.popularity : newGame.popularity ?? ''}
                 onChange={handleChange}
+                type="number"
+                max="100"
                 placeholder="Popularity"
                 className="new-game__popularity"
               />

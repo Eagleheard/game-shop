@@ -2,18 +2,17 @@ import React, { useEffect, useState } from 'react';
 import classNames from 'classnames';
 import { NavLink } from 'react-router-dom';
 
-import { ToastOptions } from 'types/enumerators';
-import { Button } from 'components';
 import { IGame } from 'types/interfaces';
-import { fetchPreviewGames } from 'api/fetchPreviewGames';
-import { useToast } from 'hooks';
+import { Button } from 'components';
 
 import './styles.scss';
 
-export const Preview = () => {
+interface IPreview {
+  previewGames: IGame[];
+}
+
+export const Preview: React.FC<IPreview> = ({ previewGames }) => {
   const [previewPage, setPreviewPage] = useState(0);
-  const [previewGames, setPreviewGames] = useState<IGame[]>([]);
-  const { openToast } = useToast();
 
   const setPreviousPreviewPage = () => {
     setPreviewPage((prevValue) => prevValue - 1);
@@ -22,23 +21,6 @@ export const Preview = () => {
   const setNextPreviewPage = () => {
     setPreviewPage((prevValue) => prevValue + 1);
   };
-
-  const getPreviewGames = async () => {
-    try {
-      const { data } = await fetchPreviewGames();
-      setPreviewGames(data.rows);
-    } catch ({
-      response: {
-        data: { message },
-      },
-    }) {
-      openToast(message, ToastOptions.error);
-    }
-  };
-
-  useEffect(() => {
-    getPreviewGames();
-  }, []);
 
   useEffect(() => {
     const timer = setInterval(() => {

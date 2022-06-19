@@ -453,7 +453,9 @@ export const AdminPanel = () => {
                   )}
                   {isUsersVisible && <Users />}
                   {isDiscountsVisible && <Discount />}
-                  {isDiscountTableVisible && <DiscountsTable />}
+                  {isDiscountTableVisible && (
+                    <DiscountsTable handleOpenDiscounts={() => handleOpen(pageOptions.DISCOUNT)} />
+                  )}
                   {isSignUpVisible && user.role === userOptions.ADMIN && (
                     <SignUp
                       style="admin"

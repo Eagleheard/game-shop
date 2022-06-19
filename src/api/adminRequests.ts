@@ -38,6 +38,10 @@ export const getDiscounts = () => {
   return axios.get('/discount/');
 };
 
+export const deleteDiscounts = () => {
+  return axios.delete('/discount/');
+};
+
 export const createDiscounts = (params: IDiscountParams) => {
   return axios.post('/discount/', params);
 };
