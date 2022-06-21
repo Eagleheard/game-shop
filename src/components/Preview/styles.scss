@@ -124,6 +124,13 @@
     &__description {
       font-size: 12px;
     }
+
+    &__price {
+
+      &-label {
+        font-size: 12px;
+      }
+    }
   }
 
   @include media-mobile-large {
@@ -140,6 +147,13 @@
     &__description {
       font-size: 6px;
       right: 30px;
+    }
+
+    &__price {
+
+      &-label {
+        font-size: 6px;
+      }
     }
   }
 }
