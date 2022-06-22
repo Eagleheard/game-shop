@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { NavLink } from 'react-router-dom';
 
 import {
   Table,
@@ -17,6 +18,11 @@ import {
 
 import { Edit, Delete, Clear, AddBox, FiberNew, Discount } from '@mui/icons-material';
 
+import {
+  resetSelectedAuthor,
+  setSelectedAuthor,
+  updateAuthorRequest,
+} from 'toolkitStore/actions/authors';
 import { AuthorsReducerState, GamesReducerState } from 'toolkitStore/types';
 import { fetchAllGames, getAllAuthors } from 'toolkitStore/thunk';
 import { resetSelectedGame, setSelectedGame, updateGameRequest } from 'toolkitStore/actions/games';
@@ -34,25 +40,12 @@ import {
 } from 'components';
 
 import './styles.scss';
-import {
-  resetSelectedAuthor,
-  setSelectedAuthor,
-  updateAuthorRequest,
-} from 'toolkitStore/actions/authors';
 
 interface ITable {
   authorMode?: boolean;
-  handleOpenUpdateOption: () => void;
-  handleOpenNewOption: () => void;
-  handleOpenDiscounts?: () => void;
 }
 
-export const InfoTable: React.FC<ITable> = ({
-  authorMode,
-  handleOpenDiscounts,
-  handleOpenUpdateOption,
-  handleOpenNewOption,
-}) => {
+export const InfoTable: React.FC<ITable> = ({ authorMode }) => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [isConfirmVisible, setIsConfirmVisible] = useState(false);
@@ -64,9 +57,10 @@ export const InfoTable: React.FC<ITable> = ({
   const { games, gameError, isLoading } = useSelector(
     (state: GamesReducerState) => state.gamesReducer || [],
   );
-  const { authors, selectedAuthor } = useSelector(
+  const { authors, authorError, selectedAuthor } = useSelector(
     (state: AuthorsReducerState) => state.authorsReducer || [],
   );
+  const tableType = authorMode ? authors : games;
   const handleDeleteItem = async (id: number) => {
     try {
       if (!authorMode) {
@@ -93,10 +87,7 @@ export const InfoTable: React.FC<ITable> = ({
     setDeletedItemId(id);
   };
 
-  const emptyRows =
-    page > 0
-      ? Math.max(0, (1 + page) * rowsPerPage - (authorMode ? authors.length : games.length))
-      : 0;
+  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - tableType.length) : 0;
 
   const handleChangePage = (event: React.MouseEvent<HTMLButtonElement> | null, newPage: number) => {
     setPage(newPage);
@@ -109,7 +100,7 @@ export const InfoTable: React.FC<ITable> = ({
     setPage(0);
   };
 
-  const handleSelectGame = (input: string) => {
+  const handleSelectItem = (input: string) => {
     if (authorMode) {
       const author = authors.filter(({ name }) => name === input);
       dispatch(setSelectedAuthor(author));
@@ -128,21 +119,29 @@ export const InfoTable: React.FC<ITable> = ({
     if (!authorMode) {
       dispatch(updateGameRequest(game));
     }
-    handleOpenUpdateOption();
   };
 
   const handleReset = () => {
-    dispatch(fetchAllGames());
-    dispatch(getAllAuthors());
-    dispatch(resetSelectedAuthor());
-    dispatch(resetSelectedGame());
+    if (!authorMode) {
+      dispatch(fetchAllGames());
+      dispatch(resetSelectedGame());
+    }
+    if (authorMode) {
+      dispatch(getAllAuthors());
+      dispatch(resetSelectedAuthor());
+    }
   };
 
   useEffect(() => {
-    dispatch(fetchAllGames());
-    dispatch(getAllAuthors());
-    dispatch(resetSelectedGame());
-    if (gameError && !isLoading) {
+    if (!authorMode) {
+      dispatch(fetchAllGames());
+      dispatch(resetSelectedGame());
+    }
+    if (authorMode) {
+      dispatch(getAllAuthors());
+      dispatch(resetSelectedAuthor());
+    }
+    if ((authorError || gameError) && !isLoading) {
       openToast('Something wrong', ToastOptions.error);
     }
   }, []);
@@ -156,24 +155,31 @@ export const InfoTable: React.FC<ITable> = ({
         </IconButton>
         {isMenuVisible && (
           <div>
-            <Button onClick={handleOpenNewOption} color="inherit" startIcon={<FiberNew />}>
-              {authorMode ? 'New author' : 'New game'}
+            <Button color="inherit" startIcon={<FiberNew />}>
+              <NavLink
+                className="admin__link"
+                to={`/admin/${authorMode ? 'new-author' : 'new-game'}`}
+              >
+                {authorMode ? 'New author' : 'New game'}
+              </NavLink>
             </Button>
             {!authorMode && (
-              <Button onClick={handleOpenDiscounts} color="inherit" startIcon={<Discount />}>
-                Discount
+              <Button color="inherit" startIcon={<Discount />}>
+                <NavLink className="admin__link" to="/admin/discount">
+                  Discount
+                </NavLink>
               </Button>
             )}
           </div>
         )}
       </div>
-      {games && !isLoading ? (
+      {tableType && !isLoading ? (
         <TableContainer className="table" component={Paper}>
           <Clear className="table__close-btn" onClick={handleReset} />
           <Autocomplete
-            options={authorMode ? authors.map(({ name }) => name) : games.map(({ name }) => name)}
+            options={tableType.map(({ name }) => name)}
             name={authorMode ? 'Author' : 'Game'}
-            onChangeInput={handleSelectGame}
+            onChangeInput={handleSelectItem}
           />
           <Table sx={{ minWidth: 500 }} aria-label="custom pagination table">
             <TableHead>
@@ -218,7 +224,13 @@ export const InfoTable: React.FC<ITable> = ({
                     {authorMode ? item.popularity : item.price + '$'}
                   </TableCell>
                   <TableCell className="table__cell" style={{ width: 40 }} align="center">
-                    <Edit className="table__cell--icon" onClick={() => handleEditItem(item)} />
+                    <NavLink
+                      className="admin__button"
+                      to={`/admin/${authorMode ? 'update-author' : 'update-game'}`}
+                      onClick={() => handleEditItem(item)}
+                    >
+                      <Edit className="table__cell--icon" />
+                    </NavLink>
                   </TableCell>
                   <TableCell className="table__cell" style={{ width: 40 }} align="center">
                     <Delete
@@ -253,7 +265,7 @@ export const InfoTable: React.FC<ITable> = ({
                 <TablePagination
                   rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
                   colSpan={3}
-                  count={authorMode ? authors.length : games.length}
+                  count={tableType.length}
                   rowsPerPage={rowsPerPage}
                   page={page}
                   SelectProps={{

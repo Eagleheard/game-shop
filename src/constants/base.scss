@@ -17,3 +17,28 @@
     color: $hover-link;
   }
 }
+
+.admin {
+  &__link {
+    color: $light-gray;
+    font-family: $lato;
+    font-size: 16px;
+    text-decoration: none;
+
+    &.active {
+      color: $secondary;
+    }
+
+    &:hover {
+      color: $search-primary;
+    }
+  }
+
+  &__button {
+    color: $black;
+
+    &.active {
+      color: $secondary;
+    }
+  }
+}

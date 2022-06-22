@@ -30,7 +30,7 @@ function App() {
                     <Route path="/author/:id" element={<AuthorContainer />} />
                     <Route path="/user/:id" element={<Profile />} />
                     <Route path="/cart/:id" element={<Basket />} />
-                    <Route path="/admin" element={<AdminPanel />} />
+                    <Route path="/admin/*" element={<AdminPanel />} />
                   </Routes>
                 </div>
                 <Footer />
