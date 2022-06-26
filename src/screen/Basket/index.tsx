@@ -24,7 +24,7 @@ export const Basket = () => {
   const discount = useSelector(cartSelector.cartDiscount);
   const dispatch = useDispatch();
   const discountedPrice = useMemo(() => totalPrice - totalPrice * discount, [totalPrice, discount]);
-  const { openToast, setIsToastVisible } = useToast();
+  const { openToast } = useToast();
 
   const {
     register,
@@ -36,6 +36,7 @@ export const Basket = () => {
   const fillOrder = async (params: IOrder) => {
     try {
       await createOrder(params);
+      dispatch(getCartRequest());
       openToast('Successfully buyed', ToastOptions.success);
     } catch ({
       response: {
@@ -49,7 +50,6 @@ export const Basket = () => {
   const submitForm = (params: IOrder) => {
     fillOrder(params);
     reset();
-    dispatch(clearCartRequest());
   };
 
   const resetCart = () => {
@@ -57,7 +57,6 @@ export const Basket = () => {
   };
 
   useEffect(() => {
-    setIsToastVisible(false);
     dispatch(getCartRequest());
     dispatch(getDiscountRequest());
     if (cartError && !isLoading) {
@@ -87,7 +86,7 @@ export const Basket = () => {
           <div className="basket__payment">
             <h1>Payment</h1>
             <p className="basket__payment-price">Total price: {totalPrice}$</p>
-            <p>Your personal discount: {discount * 100 ?? 0}%</p>
+            <p>Your personal discount: {Math.floor(discount * 100 ?? 0)}%</p>
           </div>
           <div className="basket__delivery"></div>
           {cart.find(({ game }) => game.disk === true) && (
@@ -135,10 +134,18 @@ export const Basket = () => {
             </>
           )}
           <div className="basket__order">
-            <h3 className="basket__total-price">You will pay: {discountedPrice ?? 0}$</h3>
+            <h3 className="basket__total-price">
+              You will pay: {discountedPrice.toFixed(2) ?? 0}$
+            </h3>
             <div className="basket__order-btn">
               <Button text="Clear cart" type="reset" onClick={resetCart} style="clear" />
-              <Button text="Buy now" type="submit" onClick={() => submitForm} style="search" />
+              <Button
+                disabled={cart.length === 0}
+                text="Buy now"
+                type="submit"
+                onClick={() => submitForm}
+                style="search"
+              />
             </div>
           </div>
         </form>

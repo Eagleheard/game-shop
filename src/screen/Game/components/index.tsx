@@ -19,7 +19,7 @@ interface IGamePage {
   name?: string;
   preview?: string;
   popularity?: number;
-  price?: number;
+  price: number;
   genre?: {
     id: number;
     name: string;
@@ -31,6 +31,9 @@ interface IGamePage {
   description?: string;
   count: number;
   disk?: boolean;
+  discount?: {
+    discountCount: string;
+  };
 }
 
 const QUANTITY_LIMIT = 10;
@@ -47,6 +50,7 @@ export const GamePage: React.FC<IGamePage> = ({
   description,
   count,
   disk,
+  discount,
 }) => {
   const history = useNavigate();
   const dispatch = useDispatch();
@@ -58,6 +62,9 @@ export const GamePage: React.FC<IGamePage> = ({
   const [isGameBuyed, setIsGameBuyed] = useState<boolean>(false);
   const [currentPage, setCurrentPage] = useState(1);
   const { user } = useAuth();
+  const discountedPrice = discount
+    ? price - (price * parseInt(discount.discountCount)) / 100
+    : null;
 
   const handleSwitch = () => {
     if (isSignInVisible) {
@@ -190,7 +197,18 @@ export const GamePage: React.FC<IGamePage> = ({
               ) : (
                 <Button text="Buy now" onClick={() => setIsSignInVisible(true)} style="buy" />
               )}
-              <p className="game__price">Price: {price}$</p>
+              <div className="game__price-block">
+                <p className="game__price-label">Price: </p>
+                {discount && <p className="game__discount">-{discount.discountCount}%</p>}
+                <div className="game__price-information">
+                  {discount ? (
+                    <p className="game__price--old">{price}$</p>
+                  ) : (
+                    <p className="game__price">{price}$</p>
+                  )}
+                  {discount && <p className="game__price--new">{discountedPrice}$</p>}
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -219,15 +237,21 @@ export const GamePage: React.FC<IGamePage> = ({
         <div className="comments">
           <h1 className="comments__label">Comments</h1>
           <CommentForm id={id} sendMessage={sendMessage} />
-          <Pagination
-            RenderComponent={Comment}
-            getPaginatedData={gameComments}
-            currentPage={currentPage}
-            totalCount={commentsCount}
-            pageSize={DATA_LIMIT}
-            onPageChange={(page: number) => setCurrentPage(page)}
-            style="game"
-          />
+          {gameComments.length !== 0 ? (
+            <Pagination
+              RenderComponent={Comment}
+              getPaginatedData={gameComments}
+              currentPage={currentPage}
+              totalCount={commentsCount}
+              pageSize={DATA_LIMIT}
+              onPageChange={(page: number) => setCurrentPage(page)}
+              style="game"
+            />
+          ) : (
+            <div className="comments__notification">
+              <p>No comments yet</p>
+            </div>
+          )}
         </div>
       ) : (
         <div className="comments__notification">

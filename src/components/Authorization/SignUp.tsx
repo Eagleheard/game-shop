@@ -8,12 +8,13 @@ import { ISign, IUser } from 'types/interfaces';
 
 import './styles.scss';
 
-export const SignUp: React.FC<ISign> = ({ handleSwitch }) => {
+export const SignUp: React.FC<ISign> = ({ handleSwitch, style }) => {
   const { user } = useAuth();
   const [error, setError] = useState<string>('');
   const {
     handleSubmit,
     register,
+    reset,
     formState: { errors },
   } = useForm();
 
@@ -35,6 +36,7 @@ export const SignUp: React.FC<ISign> = ({ handleSwitch }) => {
       return signUp(data);
     }
     if (user.role === 'ADMIN') {
+      reset();
       return signUp({ ...data, role: 'MANAGER' });
     }
   };
@@ -110,7 +112,7 @@ export const SignUp: React.FC<ISign> = ({ handleSwitch }) => {
             Password
           </label>
         </div>
-        <div className="login__submit">
+        <div className={`login__submit login__submit--${style}`}>
           {!user && (
             <div className="login__sign-up">
               <h5 className="login__sign">Or</h5>

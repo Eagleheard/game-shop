@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { NavLink, Route, Routes } from 'react-router-dom';
 
 import {
   Discount,
-  GamesTable,
+  InfoTable,
   Loader,
   NewAuthor,
   NewGame,
@@ -11,6 +12,7 @@ import {
   SignUp,
   Users,
   ToastComponent,
+  DiscountsTable,
 } from 'components';
 import { OrdersReducerState } from 'toolkitStore/types';
 import { fetchAllOrders } from 'toolkitStore/thunk';
@@ -46,29 +48,13 @@ import {
   CssBaseline,
 } from '@mui/material';
 
-import ListAltIcon from '@mui/icons-material/ListAlt';
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import FiberNewIcon from '@mui/icons-material/FiberNew';
-import LocalOfferIcon from '@mui/icons-material/LocalOffer';
-import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt';
+import { People, PersonAddAlt, ChevronLeft, ChevronRight, ListAlt } from '@mui/icons-material';
 
 import { styled, createTheme, ThemeProvider } from '@mui/material/styles';
 
 enum orderOptions {
   NEWEST_ORDERS = 'Newest orders',
   OLDEST_ORDERS = 'Oldest orders',
-}
-
-enum pageOptions {
-  ORDERS = 'Orders',
-  ALL_GAMES = 'All games',
-  NEW_GAME = 'New game',
-  UPDATE_GAME = 'Update game',
-  NEW_AUTHOR = 'New author',
-  USERS = 'Users',
-  DISCOUNT = 'Discount',
-  SIGN_UP = 'Sign up',
 }
 
 const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(
@@ -105,19 +91,10 @@ export const AdminPanel = () => {
   const [params, setParams] = useState<IOrderParams>({ order: 'Newest' });
   const [orderParams, setOrderParams] = useState('');
   const { user } = useAuth();
-  const [isNewGameVisible, setIsNewGameVisible] = useState(false);
-  const [isUpdateGameVisible, setIsUpdateGameVisible] = useState(false);
-  const [isNewAuthorVisible, setIsNewAuthorVisible] = useState(false);
-  const [isOrdersVisible, setIsOrdersVisible] = useState(true);
-  const [isDiscountsVisible, setIsDiscountsVisible] = useState(false);
-  const [isGamesVisible, setIsGamesVisible] = useState(false);
-  const [isUsersVisible, setIsUsersVisible] = useState(false);
-  const [isSignUpVisible, setIsSignUpVisible] = useState(false);
   const dispatch = useDispatch();
   const { orders, isLoading, ordersError } = useSelector(
     (state: OrdersReducerState) => state.ordersReducer || [],
   );
-
   const { openToast } = useToast();
 
   const toggleDrawer = () => {
@@ -138,90 +115,6 @@ export const AdminPanel = () => {
     }
   };
 
-  const handleOpen = (page: string) => {
-    if (page === pageOptions.ALL_GAMES) {
-      setIsNewGameVisible(false);
-      setIsNewAuthorVisible(false);
-      setIsOrdersVisible(false);
-      setIsGamesVisible(true);
-      setIsUpdateGameVisible(false);
-      setIsUsersVisible(false);
-      setIsSignUpVisible(false);
-      setIsDiscountsVisible(false);
-    }
-    if (page === pageOptions.ORDERS) {
-      dispatch(fetchAllOrders({ params }));
-      setIsNewGameVisible(false);
-      setIsNewAuthorVisible(false);
-      setIsOrdersVisible(true);
-      setIsGamesVisible(false);
-      setIsUpdateGameVisible(false);
-      setIsUsersVisible(false);
-      setIsSignUpVisible(false);
-      setIsDiscountsVisible(false);
-    }
-    if (page === pageOptions.USERS) {
-      setIsUsersVisible(true);
-      setIsNewGameVisible(false);
-      setIsNewAuthorVisible(false);
-      setIsOrdersVisible(false);
-      setIsGamesVisible(false);
-      setIsUpdateGameVisible(false);
-      setIsSignUpVisible(false);
-      setIsDiscountsVisible(false);
-    }
-    if (page === pageOptions.NEW_GAME) {
-      setIsNewGameVisible(true);
-      setIsNewAuthorVisible(false);
-      setIsOrdersVisible(false);
-      setIsGamesVisible(false);
-      setIsUpdateGameVisible(false);
-      setIsUsersVisible(false);
-      setIsSignUpVisible(false);
-      setIsDiscountsVisible(false);
-    }
-    if (page === pageOptions.UPDATE_GAME) {
-      setIsNewGameVisible(false);
-      setIsNewAuthorVisible(false);
-      setIsOrdersVisible(false);
-      setIsGamesVisible(false);
-      setIsUpdateGameVisible(true);
-      setIsUsersVisible(false);
-      setIsSignUpVisible(false);
-      setIsDiscountsVisible(false);
-    }
-    if (page === pageOptions.NEW_AUTHOR) {
-      setIsNewGameVisible(false);
-      setIsNewAuthorVisible(true);
-      setIsOrdersVisible(false);
-      setIsGamesVisible(false);
-      setIsUpdateGameVisible(false);
-      setIsUsersVisible(false);
-      setIsSignUpVisible(false);
-      setIsDiscountsVisible(false);
-    }
-    if (page === pageOptions.DISCOUNT) {
-      setIsNewGameVisible(false);
-      setIsNewAuthorVisible(false);
-      setIsOrdersVisible(false);
-      setIsGamesVisible(false);
-      setIsUpdateGameVisible(false);
-      setIsUsersVisible(false);
-      setIsDiscountsVisible(true);
-      setIsSignUpVisible(false);
-    }
-    if (page === pageOptions.SIGN_UP) {
-      setIsNewGameVisible(false);
-      setIsNewAuthorVisible(false);
-      setIsOrdersVisible(false);
-      setIsGamesVisible(false);
-      setIsUpdateGameVisible(false);
-      setIsUsersVisible(false);
-      setIsDiscountsVisible(false);
-      setIsSignUpVisible(true);
-    }
-  };
-
   useEffect(() => {
     dispatch(fetchAllOrders({ params }));
     if (ordersError && !isLoading) {
@@ -231,7 +124,7 @@ export const AdminPanel = () => {
 
   return (
     <ThemeProvider theme={mdTheme}>
-      <Box sx={{ display: 'flex', height: '100vh' }}>
+      <Box sx={{ display: 'flex', height: '125vh' }}>
         <CssBaseline />
         <Drawer variant="permanent" open={open}>
           <Toolbar
@@ -243,56 +136,62 @@ export const AdminPanel = () => {
             }}
           >
             <IconButton onClick={toggleDrawer}>
-              {open ? <ChevronLeftIcon /> : <ChevronRightIcon />}
+              {open ? <ChevronLeft /> : <ChevronRight />}
             </IconButton>
           </Toolbar>
           <Divider />
           <List>
-            <ListItem button key="Orders" onClick={() => handleOpen(pageOptions.ORDERS)}>
-              <ListItemIcon>
-                <ListAltIcon />
-              </ListItemIcon>
-              <ListItemText primary="Orders" />
-            </ListItem>
-            {user?.role === userOptions.ADMIN && (
-              <ListItem button key="Users" onClick={() => handleOpen(pageOptions.USERS)}>
+            <NavLink to="orders" className="admin__link">
+              <ListItem button key="Orders">
                 <ListItemIcon>
-                  <ListAltIcon />
+                  <ListAlt />
                 </ListItemIcon>
-                <ListItemText primary="Users" />
+                <ListItemText primary="Orders" />
               </ListItem>
+            </NavLink>
+            {user?.role === userOptions.ADMIN && (
+              <NavLink to="users" className="admin__link">
+                <ListItem button key="Users">
+                  <ListItemIcon>
+                    <People />
+                  </ListItemIcon>
+                  <ListItemText primary="Users" />
+                </ListItem>
+              </NavLink>
             )}
-            <ListItem button key="All games" onClick={() => handleOpen(pageOptions.ALL_GAMES)}>
-              <ListItemIcon>
-                <ListAltIcon />
-              </ListItemIcon>
-              <ListItemText primary="All games" />
-            </ListItem>
-            <ListItem button key="New game" onClick={() => handleOpen(pageOptions.NEW_GAME)}>
-              <ListItemIcon>
-                <FiberNewIcon />
-              </ListItemIcon>
-              <ListItemText primary="New game" />
-            </ListItem>
-            <ListItem button key="New author" onClick={() => handleOpen(pageOptions.NEW_AUTHOR)}>
-              <ListItemIcon>
-                <FiberNewIcon />
-              </ListItemIcon>
-              <ListItemText primary="New author" />
-            </ListItem>
-            <ListItem button key="Discounts" onClick={() => handleOpen(pageOptions.DISCOUNT)}>
-              <ListItemIcon>
-                <LocalOfferIcon />
-              </ListItemIcon>
-              <ListItemText primary="Discounts" />
-            </ListItem>
-            {user?.role === userOptions.ADMIN && (
-              <ListItem button key="Create manager" onClick={() => handleOpen(pageOptions.SIGN_UP)}>
+            <NavLink to="games" className="admin__link">
+              <ListItem button key="Games">
                 <ListItemIcon>
-                  <PersonAddAltIcon />
+                  <ListAlt />
                 </ListItemIcon>
-                <ListItemText primary="Create manager" />
+                <ListItemText primary="Games" />
               </ListItem>
+            </NavLink>
+            <NavLink to="authors" className="admin__link">
+              <ListItem button key="Authors">
+                <ListItemIcon>
+                  <ListAlt />
+                </ListItemIcon>
+                <ListItemText primary="Authors" />
+              </ListItem>
+            </NavLink>
+            <NavLink to="discounts" className="admin__link">
+              <ListItem button key="Discounts">
+                <ListItemIcon>
+                  <ListAlt />
+                </ListItemIcon>
+                <ListItemText primary="Discounts" />
+              </ListItem>
+            </NavLink>
+            {user?.role === userOptions.ADMIN && (
+              <NavLink to="manager" className="admin__link">
+                <ListItem button key="Create manager">
+                  <ListItemIcon>
+                    <PersonAddAlt />
+                  </ListItemIcon>
+                  <ListItemText primary="Create manager" />
+                </ListItem>
+              </NavLink>
             )}
           </List>
         </Drawer>
@@ -302,7 +201,7 @@ export const AdminPanel = () => {
             backgroundColor: (theme) =>
               theme.palette.mode === 'light' ? theme.palette.grey[100] : theme.palette.grey[900],
             flexGrow: 1,
-            height: '105vh',
+            height: '125vh',
           }}
         >
           <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
@@ -314,92 +213,88 @@ export const AdminPanel = () => {
                     display: 'flex',
                     flexDirection: 'column',
                     overflow: 'auto',
-                    height: '100vh',
+                    maxHeight: '100vh',
                   }}
                 >
-                  {isOrdersVisible && (
-                    <>
-                      <FormControl
-                        sx={{
-                          mb: '20px',
-                          width: '100%',
-                          alignSelf: 'center',
-                        }}
-                      >
-                        <InputLabel id="demo-simple-select-label">Orders</InputLabel>
-                        <Select
-                          labelId="demo-simple-select-label"
-                          id="demo-simple-select"
-                          value={orderParams}
-                          label="Orders"
-                          onChange={handleSelect}
-                        >
-                          <MenuItem value={orderOptions.NEWEST_ORDERS}>Newest</MenuItem>
-                          <MenuItem value={orderOptions.OLDEST_ORDERS}>Oldest</MenuItem>
-                        </Select>
-                      </FormControl>
-                      {orders && !isLoading ? (
-                        <TableContainer component={Paper}>
-                          <Table aria-label="collapsible table">
-                            <TableHead>
-                              <TableRow>
-                                <TableCell />
-                                <TableCell>Game</TableCell>
-                                <TableCell align="right">Image</TableCell>
-                                <TableCell align="right">Price</TableCell>
-                                <TableCell align="right">Author</TableCell>
-                                <TableCell align="right">Genre</TableCell>
-                                <TableCell align="right">Type</TableCell>
-                              </TableRow>
-                            </TableHead>
-                            <TableBody>
-                              {orders.map((order) => (
-                                <Orders key={order.id} {...order} />
-                              ))}
-                            </TableBody>
-                          </Table>
-                        </TableContainer>
-                      ) : (
-                        <Loader />
-                      )}
-                    </>
-                  )}
-                  {isNewGameVisible && (
-                    <NewGame
-                      createMode="New game"
-                      handleOpenNewAuthor={() => handleOpen(pageOptions.NEW_GAME)}
+                  <Routes>
+                    <Route
+                      path="orders"
+                      element={
+                        <>
+                          <FormControl
+                            sx={{
+                              mb: '20px',
+                              width: '100%',
+                              alignSelf: 'center',
+                            }}
+                          >
+                            <InputLabel id="demo-simple-select-label">Orders</InputLabel>
+                            <Select
+                              labelId="demo-simple-select-label"
+                              id="demo-simple-select"
+                              value={orderParams}
+                              label="Orders"
+                              onChange={handleSelect}
+                            >
+                              <MenuItem value={orderOptions.NEWEST_ORDERS}>Newest</MenuItem>
+                              <MenuItem value={orderOptions.OLDEST_ORDERS}>Oldest</MenuItem>
+                            </Select>
+                          </FormControl>
+                          {orders && !isLoading ? (
+                            <TableContainer component={Paper}>
+                              <Table aria-label="collapsible table">
+                                <TableHead>
+                                  <TableRow>
+                                    <TableCell />
+                                    <TableCell>Game</TableCell>
+                                    <TableCell align="right">Image</TableCell>
+                                    <TableCell align="right">Price</TableCell>
+                                    <TableCell align="right">Author</TableCell>
+                                    <TableCell align="right">Genre</TableCell>
+                                    <TableCell align="right">Type</TableCell>
+                                  </TableRow>
+                                </TableHead>
+                                <TableBody>
+                                  {orders.map((order) => (
+                                    <Orders key={order.id} {...order} />
+                                  ))}
+                                </TableBody>
+                              </Table>
+                            </TableContainer>
+                          ) : (
+                            <Loader />
+                          )}
+                        </>
+                      }
                     />
-                  )}
-                  {isNewAuthorVisible && <NewAuthor />}
-                  {isUpdateGameVisible && (
-                    <NewGame
-                      createMode="Update game"
-                      isEditMode
-                      handleOpenNewAuthor={() => handleOpen(pageOptions.UPDATE_GAME)}
+                    <Route path="new-game" element={<NewGame createMode="New game" />} />
+                    <Route path="new-author" element={<NewAuthor />} />
+                    <Route
+                      path="update-game"
+                      element={<NewGame createMode="Update game" isEditMode />}
                     />
-                  )}
-                  {isGamesVisible && (
-                    <GamesTable handleOpenNewGame={() => handleOpen(pageOptions.UPDATE_GAME)} />
-                  )}
-                  {isUsersVisible && <Users />}
-                  {isDiscountsVisible && <Discount />}
-                  {isSignUpVisible && user.role === userOptions.ADMIN && (
-                    <SignUp handleSwitch={() => setIsSignUpVisible(false)} />
-                  )}
+                    <Route path="update-author" element={<NewAuthor isEditMode />} />
+                    <Route path="games" element={<InfoTable />} />
+                    <Route path="authors" element={<InfoTable authorMode />} />
+                    <Route path="users" element={<Users />} />
+                    <Route path="discount" element={<Discount />} />
+                    <Route path="discounts" element={<DiscountsTable />} />
+                    {user?.role === userOptions.ADMIN && (
+                      <Route
+                        path="manager"
+                        element={
+                          <SignUp
+                            style="admin"
+                            handleSwitch={() =>
+                              openToast('Successfully registered', ToastOptions.success)
+                            }
+                          />
+                        }
+                      />
+                    )}
+                  </Routes>
                 </Paper>
               </Grid>
-              {isOrdersVisible && (
-                <Grid item xs={12} md={4} lg={3}>
-                  <Paper
-                    sx={{
-                      p: 2,
-                      display: 'flex',
-                      flexDirection: 'column',
-                      height: '100vh',
-                    }}
-                  ></Paper>
-                </Grid>
-              )}
             </Grid>
           </Container>
         </Box>

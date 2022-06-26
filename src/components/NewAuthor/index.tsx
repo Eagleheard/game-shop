@@ -1,13 +1,20 @@
 import React, { ChangeEvent, useEffect, useState } from 'react';
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
+import {
+  addNewAuthorSaveOptionts,
+  resetNewAuthor,
+  resetUpdatedAuthor,
+  updateAuthorSaveOptionts,
+} from 'toolkitStore/actions/authors';
 import { AuthorsReducerState } from 'toolkitStore/types';
-import { addNewAuthor } from 'toolkitStore/thunk';
+import { addNewAuthor, updateSelectedAuthor } from 'toolkitStore/thunk';
 import { ToastOptions } from 'types/enumerators';
 import { useToast } from 'hooks';
 import { uploadGamePhoto } from 'api/adminRequests';
-import { Button, ToastComponent } from 'components';
+import { Button, Loader, ToastComponent } from 'components';
 
 import userPhoto from 'assets/userPhoto.png';
 
@@ -15,14 +22,21 @@ import './styles.scss';
 
 const MAX_DESCRIPTION_COUNT = 300;
 
-export const NewAuthor: React.FC = () => {
+interface INewAuthor {
+  isEditMode?: boolean;
+}
+
+export const NewAuthor: React.FC<INewAuthor> = ({ isEditMode }) => {
   const [authorPhoto, setAuthorPhoto] = useState<string>();
+  const [isPhotoLoading, setIsPhotoLoading] = useState(false);
   const [descriptionCount, setDescriptionCount] = useState(0);
+  const history = useNavigate();
   const dispatch = useDispatch();
   const { openToast } = useToast();
-  const { authorError, isLoading } = useSelector(
+  const { authorError, isLoading, updatedAuthor, newAuthor } = useSelector(
     (state: AuthorsReducerState) => state.authorsReducer || [],
   );
+  const authorType = isEditMode ? updatedAuthor : newAuthor;
 
   const { handleSubmit, register, reset } = useForm();
 
@@ -31,9 +45,16 @@ export const NewAuthor: React.FC = () => {
       const formData = new FormData();
       files ? formData.append('file', files[0]) : undefined;
       formData.append('upload_preset', 'fabra5gx');
+      setIsPhotoLoading(true);
       const { data } = await uploadGamePhoto(formData);
+      if (isEditMode) {
+        dispatch(updateAuthorSaveOptionts({ ...updatedAuthor, ['image']: data.url }));
+      }
+      if (!isEditMode) {
+        dispatch(addNewAuthorSaveOptionts({ ...newAuthor, ['image']: data.url }));
+      }
       setAuthorPhoto(data.url);
-      openToast('Successfully added', ToastOptions.success);
+      setIsPhotoLoading(false);
     } catch ({
       response: {
         data: { message },
@@ -43,17 +64,31 @@ export const NewAuthor: React.FC = () => {
     }
   };
 
+  const handleReset = () => {
+    dispatch(resetNewAuthor());
+    dispatch(resetUpdatedAuthor());
+    reset();
+  };
+
   const submitForm: SubmitHandler<FieldValues> = (data) => {
-    dispatch(addNewAuthor({ ...data, image: authorPhoto }));
-    if (!authorError && !isLoading) {
-      openToast('Successfully created', ToastOptions.success);
+    if (!isEditMode) {
+      dispatch(addNewAuthor({ ...data, image: authorPhoto }));
+    }
+    if (isEditMode) {
+      dispatch(updateSelectedAuthor({ ...data, id: updatedAuthor.id, image: authorPhoto }));
     }
     handleReset();
   };
 
-  const handleReset = () => {
-    reset();
-    setAuthorPhoto('');
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { id, value } = e.target;
+    dispatch(addNewAuthorSaveOptionts({ ...newAuthor, [id]: value }));
+  };
+
+  const handleDescriptionCount = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const { id, value } = e.target;
+    setDescriptionCount(e.target.value.length);
+    dispatch(addNewAuthorSaveOptionts({ ...newAuthor, [id]: value }));
   };
 
   useEffect(() => {
@@ -62,16 +97,33 @@ export const NewAuthor: React.FC = () => {
     }
   }, [authorError]);
 
+  useEffect(() => {
+    if (authorType.id) {
+      if (!authorError && !isLoading) {
+        openToast(
+          isEditMode ? 'Successfully updated' : 'Successfully created',
+          ToastOptions.success,
+        );
+        history(`/author/${authorType.id}`);
+        handleReset();
+      }
+    }
+  }, [submitForm]);
+
   return (
     <div className="new-author">
       <form onSubmit={handleSubmit(submitForm)} className="new-author__form">
-        <h1>New author</h1>
+        <h1>{isEditMode ? 'Update author' : 'New author'}</h1>
         <div className="new-author__image-info">
-          <img
-            className="new-author__image"
-            src={authorPhoto ? authorPhoto : userPhoto}
-            alt="profile photo"
-          />
+          {!isPhotoLoading ? (
+            <img
+              className="new-author__image"
+              src={authorType.image || userPhoto}
+              alt="profile photo"
+            />
+          ) : (
+            <Loader />
+          )}
           <label className="new-author__upload-label" htmlFor="file-upload">
             Upload new photo
           </label>
@@ -92,6 +144,8 @@ export const NewAuthor: React.FC = () => {
               })}
               type="text"
               id="name"
+              defaultValue={authorType.name ?? ''}
+              onChange={handleChange}
               placeholder="Name"
               className="new-author__name"
             />
@@ -106,6 +160,8 @@ export const NewAuthor: React.FC = () => {
               })}
               type="text"
               id="location"
+              defaultValue={authorType.location ?? ''}
+              onChange={handleChange}
               placeholder="Location"
               className="new-author__location"
             />
@@ -120,6 +176,8 @@ export const NewAuthor: React.FC = () => {
               })}
               type="text"
               id="popularity"
+              defaultValue={authorType.popularity ?? ''}
+              onChange={handleChange}
               placeholder="Popularity"
               className="new-author__location"
               onKeyPress={(e) => !/[0-9]/.test(e.key) && e.preventDefault()}
@@ -132,9 +190,10 @@ export const NewAuthor: React.FC = () => {
             <textarea
               {...register('description')}
               id="description"
+              defaultValue={authorType.description ?? ''}
               placeholder="description"
               className="new-author__description"
-              onChange={(e) => setDescriptionCount(e.target.value.length)}
+              onChange={handleDescriptionCount}
               maxLength={MAX_DESCRIPTION_COUNT}
             />
             <label htmlFor="description" className="new-author__label">
@@ -148,7 +207,12 @@ export const NewAuthor: React.FC = () => {
         <div className="new-author__additional-info"></div>
         <div className="new-author__submit">
           <Button style="admin-clear" text="Clear" type="reset" onClick={handleReset} />
-          <Button style="admin-search" text="Add game" type="submit" onClick={() => submitForm} />
+          <Button
+            style="admin-search"
+            text={isEditMode ? 'Update author' : 'Add author'}
+            type="submit"
+            onClick={() => submitForm}
+          />
         </div>
       </form>
       <ToastComponent />

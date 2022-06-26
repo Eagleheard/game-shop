@@ -1,6 +1,31 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
+  games: [
+    {
+      name: null,
+      price: null,
+      count: 0,
+      disk: false,
+      digital: false,
+      popularity: 0,
+      image: '',
+      description: '',
+      isNew: false,
+      isPreview: false,
+      preview: '',
+      genreId: 0,
+      genre: {
+        id: 0,
+        name: '',
+      },
+      authorId: 0,
+      author: {
+        id: 0,
+        name: '',
+      },
+    },
+  ],
   newGame: {
     name: null,
     price: null,
@@ -24,6 +49,30 @@ const initialState = {
       name: '',
     },
   },
+  updateGame: {
+    name: null,
+    price: null,
+    count: 0,
+    disk: false,
+    digital: false,
+    popularity: 0,
+    image: '',
+    description: '',
+    isNew: false,
+    isPreview: false,
+    preview: '',
+    genreId: 0,
+    genre: {
+      id: 0,
+      name: '',
+    },
+    authorId: 0,
+    author: {
+      id: 0,
+      name: '',
+    },
+  },
+  selectedGame: null,
   isLoading: false,
   gameError: '',
 };
@@ -49,8 +98,45 @@ export const gamesSlice = createSlice({
       state.isLoading = false;
       state.gameError = payload;
     },
+    updateGameRequest: (state, { payload }) => {
+      state.isLoading = true;
+      state.updateGame = payload;
+    },
+    updateGameSuccess: (state, { payload }) => {
+      state.isLoading = false;
+      state.updateGame = payload;
+      state.gameError = '';
+    },
+    updateGameSaveOptionts: (state, { payload }) => {
+      const updatedGame = { ...payload };
+      state.updateGame = updatedGame;
+    },
+    updateGameFailure: (state, { payload }) => {
+      state.isLoading = false;
+      state.gameError = payload;
+    },
+    getAllGamesRequest: (state) => {
+      state.isLoading = true;
+    },
+    getAllGamesSuccess: (state, { payload }) => {
+      state.isLoading = false;
+      state.games = payload;
+    },
+    getAllGamesFailure: (state, { payload }) => {
+      state.isLoading = false;
+      state.gameError = payload;
+    },
+    setSelectedGame: (state, { payload }) => {
+      state.selectedGame = payload;
+    },
+    resetSelectedGame: (state) => {
+      state.selectedGame = initialState.selectedGame;
+    },
     resetGame: (state) => {
       state.newGame = initialState.newGame;
+    },
+    resetUpdatedGame: (state) => {
+      state.updateGame = initialState.updateGame;
     },
   },
 });

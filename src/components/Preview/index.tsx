@@ -52,7 +52,7 @@ export const Preview = () => {
 
   return (
     <div className="preview" data-testid="container">
-      {previewGames.map(({ id, name, genre, price, preview }, index) => (
+      {previewGames.map(({ id, name, genre, price, preview, discount }, index) => (
         <div
           key={id}
           data-testid="preview"
@@ -79,7 +79,21 @@ export const Preview = () => {
               </NavLink>
             </h1>
             <p className="preview__genre">Genre: {genre.name}</p>
-            <h1 className="preview__price">Price: {price}$</h1>
+            <div className="preview__price-block">
+              <p className="preview__price-label">Price: </p>
+              <div className="preview__price-information">
+                {discount && (
+                  <p className="preview__price--new">
+                    {price - (price * parseInt(discount.discountCount)) / 100}$
+                  </p>
+                )}
+                {discount ? (
+                  <p className="preview__price--old">{price}$</p>
+                ) : (
+                  <p className="preview__price">{price}$</p>
+                )}
+              </div>
+            </div>
           </div>
         </div>
       ))}

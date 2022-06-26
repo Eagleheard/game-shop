@@ -1,4 +1,5 @@
 export { Home } from 'screen/Home/components';
+export { Author } from 'screen/Author/components';
 export { Store } from 'screen/Store/components';
 export { About } from 'screen/About/components';
 export { Card } from 'screen/Game/components/gameCard.tsx';

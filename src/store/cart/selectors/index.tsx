@@ -2,7 +2,12 @@ import { CartState } from '../types';
 
 export const cartPrice = (state: CartState) =>
   state.cartReducer.cart?.reduce(
-    (accumulator: number, { game, quantity }) => accumulator + game.price * quantity,
+    (accumulator: number, { game, quantity }) =>
+      accumulator +
+      (game.discount
+        ? game.price - (game.price * parseInt(game.discount.discountCount)) / 100
+        : game.price) *
+        quantity,
     0,
   );
 
