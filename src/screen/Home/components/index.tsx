@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { fetchGames } from 'api/fetchGames';
 
+import { useIsUnmounted } from 'hooks/useIsUnmounted';
+import { fetchPreviewGames } from 'api/fetchPreviewGames';
 import { ToastOptions } from 'types/enumerators';
 import { ToastComponent } from 'components/Toast';
 import { Card } from 'screen';
@@ -26,18 +28,22 @@ interface IParams {
 
 export const Home = () => {
   const [games, setGames] = useState<IGame[]>([]);
+  const [previewGames, setPreviewGames] = useState<IGame[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [params, setParams] = useState<IParams>();
   const [totalPages, setTotalPages] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const { openToast } = useToast();
+  const isUnmouted = useIsUnmounted();
 
   const fillGames = useCallback(
     async (params?: IParams) => {
       try {
         const { data } = await fetchGames(currentPage, DATA_LIMIT, { params });
-        setGames(data.rows);
-        setTotalPages(data.count);
+        if (!isUnmouted.current) {
+          setGames(data.rows);
+          setTotalPages(data.count);
+        }
       } catch ({
         response: {
           data: { message },
@@ -48,6 +54,21 @@ export const Home = () => {
     },
     [currentPage],
   );
+
+  const getPreviewGames = async () => {
+    try {
+      const { data } = await fetchPreviewGames();
+      if (!isUnmouted.current) {
+        setPreviewGames(data.rows);
+      }
+    } catch ({
+      response: {
+        data: { message },
+      },
+    }) {
+      openToast(message, ToastOptions.error);
+    }
+  };
 
   const handleSelect = (value: string) => {
     switch (value) {
@@ -69,34 +90,37 @@ export const Home = () => {
   useEffect(() => {
     setIsLoading(true);
     fillGames(params);
+    getPreviewGames();
     setIsLoading(false);
   }, [currentPage, params, fillGames]);
 
   return (
     <div className="home">
       <div className="home__container">
-        <Preview />
-        <Select
-          placeholder="Our games"
-          options={[
-            { id: 0, label: 'Our games', value: 'Our games' },
-            { id: 1, label: 'New games', value: 'New games' },
-            { id: 2, label: 'Popular games', value: 'Popular games' },
-          ]}
-          style="home"
-          handleSelect={handleSelect}
-        />
-        {isLoading || !games.length ? (
+        {isLoading || !games.length || !previewGames ? (
           <Loader />
         ) : (
-          <Pagination
-            RenderComponent={Card}
-            getPaginatedData={games}
-            currentPage={currentPage}
-            totalCount={totalPages}
-            pageSize={DATA_LIMIT}
-            onPageChange={(page: number) => setCurrentPage(page)}
-          />
+          <>
+            <Preview previewGames={previewGames} />
+            <Select
+              placeholder="Our games"
+              options={[
+                { id: 0, label: 'Our games', value: 'Our games' },
+                { id: 1, label: 'New games', value: 'New games' },
+                { id: 2, label: 'Popular games', value: 'Popular games' },
+              ]}
+              style="home"
+              handleSelect={handleSelect}
+            />
+            <Pagination
+              RenderComponent={Card}
+              getPaginatedData={games}
+              currentPage={currentPage}
+              totalCount={totalPages}
+              pageSize={DATA_LIMIT}
+              onPageChange={(page: number) => setCurrentPage(page)}
+            />
+          </>
         )}
       </div>
       <ToastComponent />

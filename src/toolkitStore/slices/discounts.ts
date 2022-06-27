@@ -1,8 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-  discount: [
+  discounts: [
     {
+      id: 0,
       startDiscount: '',
       endDiscount: '',
       gameId: 0,
@@ -20,11 +21,11 @@ export const discountsSlice = createSlice({
   reducers: {
     addDiscountsRequest: (state, { payload }) => {
       state.isLoading = true;
-      state.discount = payload;
+      state.discounts = payload;
     },
     addDiscountsSuccess: (state, { payload }) => {
       state.isLoading = false;
-      state.discount = [payload];
+      state.discounts = payload;
       state.discountError = '';
     },
     addDiscountsFailure: (state, { payload }) => {
@@ -36,7 +37,7 @@ export const discountsSlice = createSlice({
     },
     getDiscountsSuccess: (state, { payload }) => {
       state.isLoading = false;
-      state.discount = payload;
+      state.discounts = payload;
     },
     getDiscountsFailure: (state, { payload }) => {
       state.isLoading = false;

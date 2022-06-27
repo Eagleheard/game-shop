@@ -2,6 +2,7 @@ import React, { useEffect, useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useForm } from 'react-hook-form';
 
+import { useIsUnmounted } from 'hooks/useIsUnmounted';
 import { ToastOptions } from 'types/enumerators';
 import { ToastComponent } from 'components/Toast';
 import { useToast } from 'hooks';
@@ -25,6 +26,7 @@ export const Basket = () => {
   const dispatch = useDispatch();
   const discountedPrice = useMemo(() => totalPrice - totalPrice * discount, [totalPrice, discount]);
   const { openToast } = useToast();
+  const isUnmouted = useIsUnmounted();
 
   const {
     register,
@@ -36,8 +38,10 @@ export const Basket = () => {
   const fillOrder = async (params: IOrder) => {
     try {
       await createOrder(params);
-      dispatch(getCartRequest());
-      openToast('Successfully buyed', ToastOptions.success);
+      if (!isUnmouted.current) {
+        dispatch(getCartRequest());
+        openToast('Successfully buyed', ToastOptions.success);
+      }
     } catch ({
       response: {
         data: { message },

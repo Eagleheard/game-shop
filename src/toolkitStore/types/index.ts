@@ -291,7 +291,7 @@ export interface DiscountsReducerState {
   discountsReducer: {
     discountError: string;
     isLoading: boolean;
-    discount: {
+    discounts: {
       id: number;
       discountCount: number;
       formatedStartDiscount: string;

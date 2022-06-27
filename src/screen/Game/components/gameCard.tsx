@@ -142,14 +142,16 @@ export const Card = ({
             {!purchaseDate && discount && (
               <CardDiscount cart={cart}>-{discount.discountCount}%</CardDiscount>
             )}
-            <CardPriceInformation>
-              {!purchaseDate && discount ? (
-                <CardPrice cart={cart}>{price}$</CardPrice>
-              ) : (
-                <CardLabel cart={cart}>{price}$</CardLabel>
-              )}
-              {!purchaseDate && discount && <CardLabel cart={cart}>{discountedPrice}$</CardLabel>}
-            </CardPriceInformation>
+            {price !== 0 && (
+              <CardPriceInformation>
+                {!purchaseDate && discount ? (
+                  <CardPrice cart={cart}>{price}$</CardPrice>
+                ) : (
+                  <CardLabel cart={cart}>{price}$</CardLabel>
+                )}
+                {!purchaseDate && discount && <CardLabel cart={cart}>{discountedPrice}$</CardLabel>}
+              </CardPriceInformation>
+            )}
           </CardPaymentInformation>
           {author && (
             <CardAuthor search={search}>

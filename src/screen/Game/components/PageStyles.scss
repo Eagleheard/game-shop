@@ -207,9 +207,19 @@
     &__description {
       width: 90%;
     }
+    
+    &__buying {
+      flex-direction: column-reverse;
+      margin-top: 10px;
+    }
 
     &__logo {
       width: 60%;
+      max-height: 200px;
+    }
+
+    &__price-block {
+      margin-bottom: 5px;
     }
 
     .about {
@@ -244,10 +254,7 @@
   @include media-mobile-large {
     &__logo {
       width: 55%;
-    }
-
-    &__buying {
-      margin-top: 10px;
+      max-height: 130px;
     }
 
     .about {
@@ -260,8 +267,13 @@
       width: 50%;
     }
 
+    &__buying {
+      flex-direction: column-reverse;
+      align-items: flex-start;
+    }
+
     &__price {
-      font-size: 12px;
+      font-size: 16px;
     }
 
     .about {
@@ -274,6 +286,10 @@
       &__popularity {
         font-size: 12px;
       }
+    }
+    
+    .description {
+      font-size: 12px;
     }
   }
 }
