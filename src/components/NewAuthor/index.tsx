@@ -36,6 +36,7 @@ export const NewAuthor: React.FC<INewAuthor> = ({ isEditMode }) => {
   const { authorError, isLoading, updatedAuthor, newAuthor } = useSelector(
     (state: AuthorsReducerState) => state.authorsReducer || [],
   );
+  const authorType = isEditMode ? updatedAuthor : newAuthor;
 
   const { handleSubmit, register, reset } = useForm();
 
@@ -97,17 +98,13 @@ export const NewAuthor: React.FC<INewAuthor> = ({ isEditMode }) => {
   }, [authorError]);
 
   useEffect(() => {
-    if (!isEditMode && newAuthor.id) {
+    if (authorType.id) {
       if (!authorError && !isLoading) {
-        openToast('Successfully created', ToastOptions.success);
-        history(`/author/${newAuthor.id}`);
-        handleReset();
-      }
-    }
-    if (isEditMode && updatedAuthor.id) {
-      if (!authorError && !isLoading) {
-        openToast('Successfully updated', ToastOptions.success);
-        history(`/author/${updatedAuthor.id}`);
+        openToast(
+          isEditMode ? 'Successfully updated' : 'Successfully created',
+          ToastOptions.success,
+        );
+        history(`/author/${authorType.id}`);
         handleReset();
       }
     }
@@ -121,15 +118,7 @@ export const NewAuthor: React.FC<INewAuthor> = ({ isEditMode }) => {
           {!isPhotoLoading ? (
             <img
               className="new-author__image"
-              src={
-                isEditMode
-                  ? updatedAuthor.image
-                    ? updatedAuthor.image
-                    : userPhoto
-                  : newAuthor.image
-                  ? newAuthor.image
-                  : userPhoto
-              }
+              src={authorType.image || userPhoto}
               alt="profile photo"
             />
           ) : (
@@ -155,7 +144,7 @@ export const NewAuthor: React.FC<INewAuthor> = ({ isEditMode }) => {
               })}
               type="text"
               id="name"
-              defaultValue={isEditMode ? updatedAuthor.name ?? '' : newAuthor.name ?? ''}
+              defaultValue={authorType.name ?? ''}
               onChange={handleChange}
               placeholder="Name"
               className="new-author__name"
@@ -171,7 +160,7 @@ export const NewAuthor: React.FC<INewAuthor> = ({ isEditMode }) => {
               })}
               type="text"
               id="location"
-              defaultValue={isEditMode ? updatedAuthor.location ?? '' : newAuthor.location ?? ''}
+              defaultValue={authorType.location ?? ''}
               onChange={handleChange}
               placeholder="Location"
               className="new-author__location"
@@ -186,9 +175,7 @@ export const NewAuthor: React.FC<INewAuthor> = ({ isEditMode }) => {
                 required: true,
               })}
               id="popularity"
-              defaultValue={
-                isEditMode ? updatedAuthor.popularity ?? '' : newAuthor.popularity ?? ''
-              }
+              defaultValue={authorType.popularity ?? ''}
               onChange={handleChange}
               placeholder="Popularity"
               type="number"
@@ -204,9 +191,7 @@ export const NewAuthor: React.FC<INewAuthor> = ({ isEditMode }) => {
             <textarea
               {...register('description')}
               id="description"
-              defaultValue={
-                isEditMode ? updatedAuthor.description ?? '' : newAuthor.description ?? ''
-              }
+              defaultValue={authorType.description ?? ''}
               placeholder="description"
               className="new-author__description"
               onChange={handleDescriptionCount}

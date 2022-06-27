@@ -161,7 +161,7 @@ export const Profile = () => {
         />
         <Button text="Orders" onClick={handleSwitch} style="profile" disabled={isOrdersVisible} />
         {(userInfo.role === userOptions.ADMIN || userInfo.role === userOptions.MANAGER) && (
-          <Button text="Admin panel" onClick={() => navigate('/admin')} style="profile" />
+          <Button text="Admin panel" onClick={() => navigate('/admin/orders')} style="profile" />
         )}
       </ProfileNavigation>
       {!isLoading && (

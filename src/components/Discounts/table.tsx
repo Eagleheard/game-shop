@@ -14,6 +14,7 @@ import {
   Button,
 } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
+import { NavLink } from 'react-router-dom';
 
 import { useToast } from 'hooks';
 import { DiscountsReducerState } from 'toolkitStore/types';
@@ -22,11 +23,7 @@ import { ToastOptions } from 'types/enumerators';
 import { deleteDiscount, deleteDiscounts } from 'api/adminRequests';
 import { fetchAllDiscounts } from 'toolkitStore/thunk';
 
-interface IDiscountTable {
-  handleOpenDiscounts: () => void;
-}
-
-export const DiscountsTable: React.FC<IDiscountTable> = ({ handleOpenDiscounts }) => {
+export const DiscountsTable = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const dispatch = useDispatch();
@@ -104,8 +101,10 @@ export const DiscountsTable: React.FC<IDiscountTable> = ({ handleOpenDiscounts }
         </IconButton>
         {isMenuVisible && (
           <div>
-            <Button onClick={handleOpenDiscounts} color="inherit" startIcon={<FiberNew />}>
-              New discount
+            <Button color="inherit" startIcon={<FiberNew />}>
+              <NavLink className="admin__button" to="/admin/discount">
+                New discount
+              </NavLink>
             </Button>
             <Button
               disabled={discounts.length === 0}
