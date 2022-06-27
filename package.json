@@ -90,5 +90,5 @@
   "bugs": {
     "url": "https://github.com/Eagleheard/game-shop/issues"
   },
-  "proxy": "https://outcst-game-shop-server.herokuapp.com/"
+  "proxy": "http://localhost:7000/api"
 }
